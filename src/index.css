@@ -1,1 +1,12 @@
+:root{
+  --primary-color:#5151D3;
+}
+
+*{
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  box-sizing: border-box;
+  font-family: monospace;
+}
 

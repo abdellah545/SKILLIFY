@@ -1,0 +1,72 @@
+.section-signup{
+  background:linear-gradient(to bottom,#8181d1,#2424cf);
+}
+
+
+
+.signup-form {
+  background-color: white;
+  height: 100%;
+}
+
+.signup-form h1 {
+  margin-bottom: 50px;
+  color: #5151d3;
+}
+
+form .username,
+form .email,
+form .password,
+form .phone {
+  border: 2px solid #5151d3;
+  border-radius: 30px;
+  padding: 8px;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+form select {
+  border: 2px solid #5151d3;
+  border-radius: 30px;
+  padding: 8px;
+  width: 100%;
+  margin-bottom: 30px;
+}
+
+form select:focus {
+  outline: none;
+}
+
+form .username:focus,
+form .email:focus,
+form .password:focus,
+form .phone:focus {
+  outline: none;
+}
+
+form .username::placeholder,
+form .email::placeholder,
+form .password::placeholder,
+form .phone::placeholder {
+  color: gray;
+}
+
+form .signup-btn-form {
+  background:linear-gradient(to bottom,#8181d1,#2424cf);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 50px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-right: 10px;
+  text-decoration: none;
+  height: 60px;
+  width: 50%;
+  transition: all 0.3s ease;
+}
+
+form .signup-btn-form:hover {
+  background-color: #4949d3;
+}

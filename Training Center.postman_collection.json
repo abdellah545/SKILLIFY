@@ -1,0 +1,170 @@
+{
+	"info": {
+		"_postman_id": "f116128f-16d2-4c7f-90af-3267bd170ba2",
+		"name": "Training Center",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "32785362",
+		"_collection_link": "https://martian-satellite-953741.postman.co/workspace/GDSC-AL-AZHAR~69503009-86ed-4e1f-9cd7-f5a5f08eb299/collection/32785362-f116128f-16d2-4c7f-90af-3267bd170ba2?action=share&source=collection_link&creator=32785362"
+	},
+	"item": [
+		{
+			"name": "Signup",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"Yusuf\",\r\n    \"email\":\"youssefshirf45@gmail.com\",\r\n    \"gender\": \"MALE\",\r\n    \"password\":\"joo2330768\",\r\n    \"phone\":\"01229320144\",\r\n    \"github\":\"github\",\r\n    \"linkedin\":\"linkedin\"\r\n\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://training-center.onrender.com/users/signup",
+					"protocol": "https",
+					"host": [
+						"training-center",
+						"onrender",
+						"com"
+					],
+					"path": [
+						"users",
+						"signup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Resend OTP",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "SHA eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NWRjYWRmMTBmNTAzY2IzYzYxZDg5MmUiLCJpYXQiOjE3MDg5NjEyNjYsImV4cCI6MTcwOTAyNjA2Nn0.iOdXHrl--9rGA8LCP8YK5bxMlCgrtpzsm-oTnFFSFDg",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://training-center.onrender.com/users/resendOTP",
+					"protocol": "https",
+					"host": [
+						"training-center",
+						"onrender",
+						"com"
+					],
+					"path": [
+						"users",
+						"resendOTP"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Verify Signup",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "SHA eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NWRjYjJjODdmZDk2YWRhMzUwZTVmODIiLCJpYXQiOjE3MDg5NjI1MDYsImV4cCI6MTcwOTAyNzMwNn0.qxG2TR9EwzWLhNDZeuYtI6rmbYaVbQHvRK5E8RmvUSk",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"otp\":\"3251\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://training-center.onrender.com/users/verify",
+					"protocol": "https",
+					"host": [
+						"training-center",
+						"onrender",
+						"com"
+					],
+					"path": [
+						"users",
+						"verify"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\":\"youssefshirf45@gmail.com\",\r\n    \"password\":\"joo2330768\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://training-center.onrender.com/users/login",
+					"protocol": "https",
+					"host": [
+						"training-center",
+						"onrender",
+						"com"
+					],
+					"path": [
+						"users",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Verify Login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "SHA eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NWRjYWRmMTBmNTAzY2IzYzYxZDg5MmUiLCJpYXQiOjE3MDg5NjE5MjAsImV4cCI6MTcwOTAyNjcyMH0.qfcV8wFNPhl_ZFij8l23qqq51e5w1JrdC2Nh5-fke_A",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"otp\":\"2310\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://training-center.onrender.com/users/verifyLogin",
+					"protocol": "https",
+					"host": [
+						"training-center",
+						"onrender",
+						"com"
+					],
+					"path": [
+						"users",
+						"verifyLogin"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
