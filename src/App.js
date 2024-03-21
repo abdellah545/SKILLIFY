@@ -1,8 +1,7 @@
 import React from 'react'
 import Home from './Components/Home/Home'
 import { createBrowserRouter , RouterProvider } from 'react-router-dom'
-import Header from './Components/Header/Header'
-// import Categories from './Components/Dashboard/Dashboard'
+
 import Dashboard from './Components/Dashboard/Dashboard'
 import Layout from './Components/Layout/Layout'
 import SignUp from './Components/Sign up/SignUp'
