@@ -28,6 +28,11 @@ export default function Home() {
             <div className="col-lg-6 col-md-8 col-sm-10 p-3 d-flex align-items-center flex-column justify-content-evenly">
               <h1 className="text-center">LEARN ON YOUR OWN SCHEDULE</h1>
               <p className="text-center">
+                Learn from the comfort of your home. Our courses are designed
+                to help you learn on your own schedule.
+              </p>
+              <h2 className="text-center">EXPAND YOUR SKILLS</h2>
+              <p className="text-center">
                 Expand your skills by choosing from 200 different course and
                 enjoy the variations of our content.
               </p>
