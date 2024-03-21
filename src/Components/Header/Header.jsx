@@ -46,7 +46,6 @@ export default function Header() {
   };
   return (
     <div>
-      
       <nav className="navbar navbar-expand-lg sticky-top">
         <div className="container">
           <Link className="navbar-brand" id="navbar-link" to="/">
