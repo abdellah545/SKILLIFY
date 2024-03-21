@@ -29,6 +29,10 @@ export default function Home() {
               <h1 className="text-center">LEARN ON YOUR OWN SCHEDULE</h1>
               <h4 className="text-center">Choose from 200+ courses</h4>
               <p className="text-center">
+                Learn from the comfort of your home. Our courses are designed
+                to help you learn on your own schedule.
+              </p>
+              <p className="text-center">
                 Expand your skills by choosing from 200 different course and
                 enjoy the variations of our content.
               </p>
