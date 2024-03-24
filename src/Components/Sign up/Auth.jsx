@@ -13,10 +13,13 @@ export default function Auth() {
     document.cookie = `${name}=${value};expires=${expires.toUTCString()};path=/`;
   };
 
+
+
+
   const [seconds, setSeconds] = useState(120); // Initial time in seconds
-  const resendCode = async () => {
-    //==============================
-  };
+  const [otp, setOtp] = useState("");
+
+
   useEffect(() => {
     // Set up an interval to decrement the timer every second
     const intervalId = setInterval(() => {
@@ -28,7 +31,7 @@ export default function Auth() {
     }
     return () => clearInterval(intervalId);
   }, [seconds]);
-  const [otp, setOtp] = useState("");
+  
 
   const handleVerification = async (e) => {
     e.preventDefault();
@@ -54,6 +57,34 @@ export default function Auth() {
         // window.location.pathname = "/categories";
       }
     } catch (err) {
+      alert("Code is incorrect");
+      console.log(err);
+    }
+  };
+
+  const resendCode = async (e) => {
+    e.preventDefault();
+    try{
+      const res = await axios.post("https://training-center.onrender.com/users/resendOTP",
+      {
+        otp: String(otp),
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "SHA " + sessionStorage.getItem("Verifiedtoken"),
+        },
+      }
+      );
+      if (res.status === 200) {
+        setCookie("token", res.data.token, 30);
+        sessionStorage.removeItem("Verifiedtoken");
+        sessionStorage.setItem("userName", res.data.name);
+        window.location.pathname = "";
+        setSeconds(120);
+      }
+      console.log(res);
+    }catch(err){
       alert("Code is incorrect");
       console.log(err);
     }

@@ -76,7 +76,7 @@ export default function Login() {
                   />
                 </div>
                 {emailError && (
-                  <p style={{ color: "red", fontSize: "14px" }}>
+                  <p style={{ color: "red", fontSize: "14px" , textAlign:"center" }}>
                     *Email is incorrect
                   </p>
                 )}
