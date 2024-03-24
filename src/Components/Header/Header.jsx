@@ -45,8 +45,8 @@ export default function Header() {
     window.location.pathname = "/";
   };
   return (
-    <div>
-      <nav className="navbar navbar-expand-lg sticky-top">
+    <div className="sticky-top">
+      <nav className="navbar navbar-expand-lg">
         <div className="container">
           <Link className="navbar-brand" id="navbar-link" to="/">
             SKILLIFY
@@ -96,7 +96,7 @@ export default function Header() {
             </form> */}
             {!cookieExists("token") ? (
               <div className="d-flex ms-auto">
-                <div class="dropdown login-btn">
+                <div className="dropdown login-btn">
                   <button
                     className="btn btn-transparent text-white border-0 dropdown-toggle"
                     type="button"
@@ -119,7 +119,7 @@ export default function Header() {
                     </li>
                   </ul>
                 </div>
-                <div class="dropdown signup-btn">
+                <div className="dropdown signup-btn">
                   <button
                     className="btn btn-transparent border-0 dropdown-toggle"
                     type="button"
