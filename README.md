@@ -25,3 +25,9 @@ This project implements advanced security measures. Below is an overview of the 
 
 - **Testing Summary**: Overview of the penetration testing phases, tools used, and key findings.
 - **Mitigations Implemented**: Discuss how identified vulnerabilities were mitigated.
+
+## Built With
+React - Frontend framework
+Node.js - Server environment
+MongoDB - NoSQL database
+Express - Node.js web application framework
