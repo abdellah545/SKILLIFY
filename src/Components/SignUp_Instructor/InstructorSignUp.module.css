@@ -1,0 +1,29 @@
+/* Style the file input container
+.fileInputContainer {
+  position: relative;
+  display: inline-block;
+}
+
+/* Style the custom file input */
+.customFileInput {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* Style the label for the file input */
+/* .customFileInputLabel {
+  display: inline-block;
+  padding: 8px 12px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #007bff;
+  border: 2px solid #007bff;
+  border-radius: 5px;
+  cursor: pointer;
+}  */

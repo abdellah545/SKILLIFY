@@ -6,7 +6,7 @@
 }
 
 .navbar {
-  box-shadow: 1px 0px 10px #5151d3;
+  /* box-shadow: 1px 0px 10px #5151d3; */
   background-color: white;
 }
 
@@ -55,6 +55,7 @@
   /* width: 280px; */
 
 }
+
 .logout-user-container i {
   color: #5151d3;
   font-size: 24px;

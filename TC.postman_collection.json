@@ -1,10 +1,9 @@
 {
 	"info": {
-		"_postman_id": "1beb35d1-109b-4130-ab57-6f19bad7bbe6",
-		"name": "Training Center",
+		"_postman_id": "a86f3e14-5930-4ace-b6be-0047489b3f40",
+		"name": "TC",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "32785362",
-		"_collection_link": "https://martian-satellite-953741.postman.co/workspace/GDSC-AL-AZHAR~69503009-86ed-4e1f-9cd7-f5a5f08eb299/collection/32785362-1beb35d1-109b-4130-ab57-6f19bad7bbe6?action=share&source=collection_link&creator=32785362"
+		"_exporter_id": "31042606"
 	},
 	"item": [
 		{
@@ -93,13 +92,13 @@
 										"header": [
 											{
 												"key": "Authorization",
-												"value": "SHA eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjIyNzgzNmQ2OWJjYjA3Mjc2OTA5NGQiLCJpYXQiOjE3MTM1MzUwMzUsImV4cCI6MTcxMzUzODYzNX0.vWWfIQFP3Qxc02oxGD3MCVpt724HvLN8rpAUyb2q49o",
+												"value": "SHA eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjE0YmY1NzU0MDNjNzJmZjkxYWYzOTciLCJpYXQiOjE3MTI2MzU3MzcsImV4cCI6MTcxMjYzOTMzN30.ji3tt0uxdosAdfBzL78uVIplr8iITBlHEQuWU_va2Zw",
 												"type": "text"
 											}
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n    \"otp\":\"3544\"\r\n}",
+											"raw": "{\r\n    \"otp\":\"8405\"\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -168,13 +167,13 @@
 										"header": [
 											{
 												"key": "Authorization",
-												"value": "SHA eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjIyNzgzNmQ2OWJjYjA3Mjc2OTA5NGQiLCJpYXQiOjE3MTM3NTg4NDEsImV4cCI6MTcxMzc2MjQ0MX0.kN9ufNetWcvyu-_BeBNZ1YhFcj3RggFxv7FX0a-uaw4",
+												"value": "SHA eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjBjOGUyMjJhZDAwYjNmMmY4NmNmMTEiLCJpYXQiOjE3MTIwOTkwODMsImV4cCI6MTcxMjEwMjY4M30.Ek5Yaaluvzbu30KF-eRG6NVa7xBs6VWe58N00fWsS30",
 												"type": "text"
 											}
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n    \"otp\":\"7796\"\r\n}",
+											"raw": "{\r\n    \"otp\":\"5482\"\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -381,6 +380,10 @@
 											"value": "1"
 										},
 										{
+											"key": "limit",
+											"value": "2"
+										},
+										{
 											"key": "topics",
 											"value": "mongodb",
 											"disabled": true
@@ -404,10 +407,6 @@
 											"key": "search",
 											"value": "mongodb",
 											"disabled": true
-										},
-										{
-											"key": "limit",
-											"value": "2"
 										}
 									]
 								}
@@ -437,401 +436,6 @@
 								}
 							},
 							"response": []
-						},
-						{
-							"name": "Get My Courses",
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "SHA eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjIyNzgzNmQ2OWJjYjA3Mjc2OTA5NGQiLCJpYXQiOjE3MTM3NTkwMTIsImV4cCI6MTcxMzgyMzgxMn0.C7PUmhkpmu11pl5WhTLrP9BGjVY1_0h4xbHcoR85iug",
-										"type": "text"
-									}
-								],
-								"url": {
-									"raw": "https://165.232.129.48:3000/users/courses",
-									"protocol": "https",
-									"host": [
-										"165",
-										"232",
-										"129",
-										"48"
-									],
-									"port": "3000",
-									"path": [
-										"users",
-										"courses"
-									]
-								}
-							},
-							"response": []
-						}
-					]
-				},
-				{
-					"name": "Profile",
-					"item": [
-						{
-							"name": "Update Profile",
-							"request": {
-								"method": "PATCH",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "SHA eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjAwZDkzODE5ZmYzZjczMmMwNzYzMGQiLCJpYXQiOjE3MTM1MzQ2MDcsImV4cCI6MTcxMzU5OTQwN30.k2KXZNo03ckXe0D6ePoyW6gbF0yN8ktefVhI3D4BT_U",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "formdata",
-									"formdata": [
-										{
-											"key": "image",
-											"type": "file",
-											"src": "/D:/Images/wallpaper.png"
-										},
-										{
-											"key": "password",
-											"value": "password123",
-											"type": "text"
-										},
-										{
-											"key": "github",
-											"value": "github.com/StylishCS",
-											"type": "text"
-										}
-									]
-								},
-								"url": {
-									"raw": "https://165.232.129.48:3000/users/updateProfile",
-									"protocol": "https",
-									"host": [
-										"165",
-										"232",
-										"129",
-										"48"
-									],
-									"port": "3000",
-									"path": [
-										"users",
-										"updateProfile"
-									]
-								}
-							},
-							"response": []
-						}
-					]
-				},
-				{
-					"name": "Cart",
-					"item": [
-						{
-							"name": "Get Cart Items",
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "SHA eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjIyNzgzNmQ2OWJjYjA3Mjc2OTA5NGQiLCJpYXQiOjE3MTM3NDU2NTEsImV4cCI6MTcxMzgxMDQ1MX0.LPBV5meKb6FlwehBClg_WLNuaGvv1YHGQFm6WO03N6s",
-										"type": "text"
-									}
-								],
-								"url": {
-									"raw": "https://165.232.129.48:3000/users/cart",
-									"protocol": "https",
-									"host": [
-										"165",
-										"232",
-										"129",
-										"48"
-									],
-									"port": "3000",
-									"path": [
-										"users",
-										"cart"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Add To Cart",
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "SHA eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjIyNzgzNmQ2OWJjYjA3Mjc2OTA5NGQiLCJpYXQiOjE3MTM3NDU2NTEsImV4cCI6MTcxMzgxMDQ1MX0.LPBV5meKb6FlwehBClg_WLNuaGvv1YHGQFm6WO03N6s",
-										"type": "text"
-									}
-								],
-								"url": {
-									"raw": "https://165.232.129.48:3000/users/cart/6621c87a40128928bf0c06fb",
-									"protocol": "https",
-									"host": [
-										"165",
-										"232",
-										"129",
-										"48"
-									],
-									"port": "3000",
-									"path": [
-										"users",
-										"cart",
-										"6621c87a40128928bf0c06fb"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Remove Item From Cart",
-							"request": {
-								"method": "DELETE",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "SHA eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjIyNzgzNmQ2OWJjYjA3Mjc2OTA5NGQiLCJpYXQiOjE3MTM1MzU3MDgsImV4cCI6MTcxMzYwMDUwOH0.WcS-q-xzjpG65Uu06XjtgvNgSj7xmSsXnWD1hzsBRio",
-										"type": "text"
-									}
-								],
-								"url": {
-									"raw": "https://165.232.129.48:3000/users/cart/662193105d4f7a26d85c9af3",
-									"protocol": "https",
-									"host": [
-										"165",
-										"232",
-										"129",
-										"48"
-									],
-									"port": "3000",
-									"path": [
-										"users",
-										"cart",
-										"662193105d4f7a26d85c9af3"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Checkout",
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "SHA eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjIyNzgzNmQ2OWJjYjA3Mjc2OTA5NGQiLCJpYXQiOjE3MTM3NDU2NTEsImV4cCI6MTcxMzgxMDQ1MX0.LPBV5meKb6FlwehBClg_WLNuaGvv1YHGQFm6WO03N6s",
-										"type": "text"
-									}
-								],
-								"url": {
-									"raw": "https://165.232.129.48:3000/users/cart/checkout",
-									"protocol": "https",
-									"host": [
-										"165",
-										"232",
-										"129",
-										"48"
-									],
-									"port": "3000",
-									"path": [
-										"users",
-										"cart",
-										"checkout"
-									]
-								}
-							},
-							"response": []
-						}
-					]
-				},
-				{
-					"name": "Favorite Courses",
-					"item": [
-						{
-							"name": "Add to favorites",
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "SHA eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjIyNzgzNmQ2OWJjYjA3Mjc2OTA5NGQiLCJpYXQiOjE3MTM3NDU2NTEsImV4cCI6MTcxMzgxMDQ1MX0.LPBV5meKb6FlwehBClg_WLNuaGvv1YHGQFm6WO03N6s",
-										"type": "text"
-									}
-								],
-								"url": {
-									"raw": "https://165.232.129.48:3000/users/favorite/662193105d4f7a26d85c9af3",
-									"protocol": "https",
-									"host": [
-										"165",
-										"232",
-										"129",
-										"48"
-									],
-									"port": "3000",
-									"path": [
-										"users",
-										"favorite",
-										"662193105d4f7a26d85c9af3"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Get Favorites",
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "SHA eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjIyNzgzNmQ2OWJjYjA3Mjc2OTA5NGQiLCJpYXQiOjE3MTM3NDU2NTEsImV4cCI6MTcxMzgxMDQ1MX0.LPBV5meKb6FlwehBClg_WLNuaGvv1YHGQFm6WO03N6s",
-										"type": "text"
-									}
-								],
-								"url": {
-									"raw": "https://165.232.129.48:3000/users/favorite",
-									"protocol": "https",
-									"host": [
-										"165",
-										"232",
-										"129",
-										"48"
-									],
-									"port": "3000",
-									"path": [
-										"users",
-										"favorite"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Remove from favorites",
-							"request": {
-								"method": "DELETE",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "SHA eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjIyNzgzNmQ2OWJjYjA3Mjc2OTA5NGQiLCJpYXQiOjE3MTM3NDU2NTEsImV4cCI6MTcxMzgxMDQ1MX0.LPBV5meKb6FlwehBClg_WLNuaGvv1YHGQFm6WO03N6s",
-										"type": "text"
-									}
-								],
-								"url": {
-									"raw": "https://165.232.129.48:3000/users/favorite/662193105d4f7a26d85c9af3",
-									"protocol": "https",
-									"host": [
-										"165",
-										"232",
-										"129",
-										"48"
-									],
-									"port": "3000",
-									"path": [
-										"users",
-										"favorite",
-										"662193105d4f7a26d85c9af3"
-									]
-								}
-							},
-							"response": []
-						}
-					]
-				},
-				{
-					"name": "Wishlist Courses",
-					"item": [
-						{
-							"name": "Add to wishlist",
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "SHA eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjIyNzgzNmQ2OWJjYjA3Mjc2OTA5NGQiLCJpYXQiOjE3MTM3NDU2NTEsImV4cCI6MTcxMzgxMDQ1MX0.LPBV5meKb6FlwehBClg_WLNuaGvv1YHGQFm6WO03N6s",
-										"type": "text"
-									}
-								],
-								"url": {
-									"raw": "https://165.232.129.48:3000/users/wishlist/662193105d4f7a26d85c9af3",
-									"protocol": "https",
-									"host": [
-										"165",
-										"232",
-										"129",
-										"48"
-									],
-									"port": "3000",
-									"path": [
-										"users",
-										"wishlist",
-										"662193105d4f7a26d85c9af3"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Get Wishlist",
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "SHA eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjIyNzgzNmQ2OWJjYjA3Mjc2OTA5NGQiLCJpYXQiOjE3MTM3NDU2NTEsImV4cCI6MTcxMzgxMDQ1MX0.LPBV5meKb6FlwehBClg_WLNuaGvv1YHGQFm6WO03N6s",
-										"type": "text"
-									}
-								],
-								"url": {
-									"raw": "https://165.232.129.48:3000/users/wishlist",
-									"protocol": "https",
-									"host": [
-										"165",
-										"232",
-										"129",
-										"48"
-									],
-									"port": "3000",
-									"path": [
-										"users",
-										"wishlist"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Remove from wishlist",
-							"request": {
-								"method": "DELETE",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "SHA eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjIyNzgzNmQ2OWJjYjA3Mjc2OTA5NGQiLCJpYXQiOjE3MTM3NDU2NTEsImV4cCI6MTcxMzgxMDQ1MX0.LPBV5meKb6FlwehBClg_WLNuaGvv1YHGQFm6WO03N6s",
-										"type": "text"
-									}
-								],
-								"url": {
-									"raw": "https://165.232.129.48:3000/users/wishlist/662193105d4f7a26d85c9af3",
-									"protocol": "https",
-									"host": [
-										"165",
-										"232",
-										"129",
-										"48"
-									],
-									"port": "3000",
-									"path": [
-										"users",
-										"wishlist",
-										"662193105d4f7a26d85c9af3"
-									]
-								}
-							},
-							"response": []
 						}
 					]
 				}
@@ -856,12 +460,12 @@
 											"formdata": [
 												{
 													"key": "name",
-													"value": "Yusuf",
+													"value": "abozed",
 													"type": "text"
 												},
 												{
 													"key": "email",
-													"value": "joeshirf@gmail.com",
+													"value": "omarabozed58@gmail.com",
 													"type": "text"
 												},
 												{
@@ -872,7 +476,7 @@
 												{
 													"key": "image",
 													"type": "file",
-													"src": "/D:/Images/3lg6vy.jpg"
+													"src": "/C:/Users/OMAR/Pictures/WhatsApp Image 2024-03-24 at 21.12.09_08bcccf2.jpg"
 												},
 												{
 													"key": "title",
@@ -881,7 +485,7 @@
 												},
 												{
 													"key": "experience",
-													"value": "2",
+													"value": "1",
 													"type": "text"
 												},
 												{
@@ -946,13 +550,13 @@
 										"header": [
 											{
 												"key": "Authorization",
-												"value": "SHA eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjE5YzhmOThlZjUwMzZlMThiZmE0NjgiLCJpYXQiOjE3MTI5NjU4ODQsImV4cCI6MTcxMjk2OTQ4NH0.QSa4sgioIs2HD42QBYuotxkCDO-sCpI_m18KYJNUrXs",
+												"value": "SHA eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjIyYWQ0NmQ2OWJjYjA3Mjc2OTA5N2EiLCJpYXQiOjE3MTM1NDg4NjksImV4cCI6MTcxMzU1MjQ2OX0.cdMxd2u2Rz0jh-ZDfOWu_3hyi7CEpOqmY14H6-EzcuY",
 												"type": "text"
 											}
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n    \"otp\":\"3163\"\r\n}",
+											"raw": "{\r\n    \"otp\":\"6142\"\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -990,7 +594,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n    \"email\":\"joeshirf@gmail.com\",\r\n    \"password\":\"joo2330768\"\r\n}",
+											"raw": "{\r\n    \"email\":\"omarabozed58@gmail.com\",\r\n    \"password\":\"password123\"\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -1052,13 +656,13 @@
 										"header": [
 											{
 												"key": "Authorization",
-												"value": "SHA eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjE5YzhmOThlZjUwMzZlMThiZmE0NjgiLCJpYXQiOjE3MTM1MzE3ODAsImV4cCI6MTcxMzUzNTM4MH0.eS6HC0FQ1NBSr4jbDNuYeYK43SelDdK_JvBpIksp6gE",
+												"value": "SHA eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjIyYWQ0NmQ2OWJjYjA3Mjc2OTA5N2EiLCJpYXQiOjE3MTM1NDg4NjksImV4cCI6MTcxMzU1MjQ2OX0.cdMxd2u2Rz0jh-ZDfOWu_3hyi7CEpOqmY14H6-EzcuY",
 												"type": "text"
 											}
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n    \"otp\":\"2409\"\r\n}",
+											"raw": "{\r\n    \"otp\":\"6142\"\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -1096,7 +700,7 @@
 										"header": [
 											{
 												"key": "Authorization",
-												"value": "SHA eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjE5YzhmOThlZjUwMzZlMThiZmE0NjgiLCJpYXQiOjE3MTI5NjU5MzgsImV4cCI6MTcxMzAzMDczOH0.vWvqrz2M3Fx8QXScvXpusJmYtTrt6D-8gVlaHqkgy6s",
+												"value": "SHA eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjIyYWQ0NmQ2OWJjYjA3Mjc2OTA5N2EiLCJpYXQiOjE3MTM1NDg5MjksImV4cCI6MTcxMzYxMzcyOX0.ZiDD9ma0odSG0qc1ExETSj7dJyCHszGNs7a5XejT2rs",
 												"type": "text"
 											}
 										],
@@ -1106,17 +710,17 @@
 												{
 													"key": "CV",
 													"type": "file",
-													"src": "/D:/Images/CronJob for student mailing.png"
+													"src": "/C:/Users/OMAR/Pictures/WhatsApp Image 2024-03-24 at 21.12.09_08bcccf2.jpg"
 												},
 												{
 													"key": "ID",
 													"type": "file",
-													"src": "/D:/Images/vertical.png"
+													"src": "/C:/Users/OMAR/Pictures/WhatsApp Image 2024-03-24 at 21.12.09_08bcccf2.jpg"
 												},
 												{
 													"key": "Graduation_Certificate",
 													"type": "file",
-													"src": "/D:/Images/wallpaper.png"
+													"src": "/C:/Users/OMAR/Pictures/WhatsApp Image 2024-03-24 at 21.12.10_072cd1f9.jpg"
 												}
 											]
 										},
@@ -1172,7 +776,7 @@
 										{
 											"key": "image",
 											"type": "file",
-											"src": "/D:/Images/CronJob for student mailing.png"
+											"src": "/D:/Images/wallpaper.png"
 										},
 										{
 											"key": "description",
@@ -1340,121 +944,6 @@
 								}
 							},
 							"response": []
-						},
-						{
-							"name": "Update Course",
-							"request": {
-								"method": "PATCH",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "SHA eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjE5YzhmOThlZjUwMzZlMThiZmE0NjgiLCJpYXQiOjE3MTM1MzE4MDgsImV4cCI6MTcxMzU5NjYwOH0.Z0U3pUuIRAcDcI3oJ6p3zlpAPyHr2V5p9VCLLyeArZE",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "formdata",
-									"formdata": [
-										{
-											"key": "image",
-											"type": "file",
-											"src": "/D:/Images/3lg6vy.jpg"
-										},
-										{
-											"key": "keywords[]",
-											"value": "angular",
-											"type": "text"
-										},
-										{
-											"key": "topics[]",
-											"value": "frontend",
-											"type": "text"
-										},
-										{
-											"key": "subtitle",
-											"value": "Angular Masterclass To Implement Frontend",
-											"type": "text"
-										},
-										{
-											"key": "skills_accrued[]",
-											"value": "web development",
-											"type": "text"
-										}
-									]
-								},
-								"url": {
-									"raw": "https://165.232.129.48:3000/instructors/courses/update/6621c87a40128928bf0c06fb",
-									"protocol": "https",
-									"host": [
-										"165",
-										"232",
-										"129",
-										"48"
-									],
-									"port": "3000",
-									"path": [
-										"instructors",
-										"courses",
-										"update",
-										"6621c87a40128928bf0c06fb"
-									]
-								}
-							},
-							"response": []
-						}
-					]
-				},
-				{
-					"name": "Profile",
-					"item": [
-						{
-							"name": "Update Profile",
-							"request": {
-								"method": "PATCH",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "SHA eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjE5YzhmOThlZjUwMzZlMThiZmE0NjgiLCJpYXQiOjE3MTM0NzA2NjYsImV4cCI6MTcxMzUzNTQ2Nn0.9YU_0vwHIoT3xE3ysyoWvPnVPRlAtb8aVOUVc9XnBcY",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "formdata",
-									"formdata": [
-										{
-											"key": "title",
-											"value": "Backend Engineer",
-											"type": "text"
-										},
-										{
-											"key": "image",
-											"type": "file",
-											"src": "/D:/Images/CronJob for student mailing.png"
-										},
-										{
-											"key": "password",
-											"value": "joo2330768",
-											"type": "text"
-										}
-									]
-								},
-								"url": {
-									"raw": "https://165.232.129.48:3000/instructors/updateProfile",
-									"protocol": "https",
-									"host": [
-										"165",
-										"232",
-										"129",
-										"48"
-									],
-									"port": "3000",
-									"path": [
-										"instructors",
-										"updateProfile"
-									]
-								}
-							},
-							"response": []
 						}
 					]
 				}
@@ -1510,7 +999,7 @@
 								"header": [
 									{
 										"key": "Authorization",
-										"value": "SHA_ADMIN eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjE5Y2QyNDExOGJkMjE3MjkwOTNmMjYiLCJpYXQiOjE3MTM0NzA3MzcsImV4cCI6MTcxMzUzNTUzN30.VtzLAlIh2Q6oocXgCUL2x5BeAfUngz5f-TIHE9K0cnk",
+										"value": "SHA_ADMIN eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjE5Y2QyNDExOGJkMjE3MjkwOTNmMjYiLCJpYXQiOjE3MTM3MTcwNjQsImV4cCI6MTcxMzc4MTg2NH0.awBqrj5e2bobTM5ABShN8wQ2JKqDbxetV5TRNqMYNio",
 										"type": "text"
 									}
 								],
@@ -1539,12 +1028,12 @@
 								"header": [
 									{
 										"key": "Authorization",
-										"value": "SHA_ADMIN eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjE5Y2QyNDExOGJkMjE3MjkwOTNmMjYiLCJpYXQiOjE3MTM0NzA3MzcsImV4cCI6MTcxMzUzNTUzN30.VtzLAlIh2Q6oocXgCUL2x5BeAfUngz5f-TIHE9K0cnk",
+										"value": "SHA_ADMIN eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjE5Y2QyNDExOGJkMjE3MjkwOTNmMjYiLCJpYXQiOjE3MTM1NDkzNjMsImV4cCI6MTcxMzYxNDE2M30.h_2jGUK1weDJVhBYxL2kDtHxMf92dvakFsA8UejPZ-k",
 										"type": "text"
 									}
 								],
 								"url": {
-									"raw": "https://165.232.129.48:3000/admin/applications/approve/6619c8f98ef5036e18bfa468",
+									"raw": "https://165.232.129.48:3000/admin/applications/approve/6622ad46d69bcb072769097a",
 									"protocol": "https",
 									"host": [
 										"165",
@@ -1557,7 +1046,7 @@
 										"admin",
 										"applications",
 										"approve",
-										"6619c8f98ef5036e18bfa468"
+										"6622ad46d69bcb072769097a"
 									]
 								}
 							},

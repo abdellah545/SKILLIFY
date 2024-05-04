@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import rigisterPhoto from "../../assets/register.png";
-import "./SignUp.css";
-import "./Auth.css";
 import axios from "axios";
+import rigisterPhoto from "../../assets/register.png";
+import "../Sign up/SignUp.css";
+import "../Sign up/Auth.css";
 import baseURL from "../../BaseURL/BaseURL";
 import Swal from "sweetalert2";
 import { deleteCookie, getCookie } from "../../Helper/CookiesHelper";
@@ -10,11 +10,11 @@ import { deleteCookie, getCookie } from "../../Helper/CookiesHelper";
 export default function Auth() {
   const [loading, setLoading] = useState(false);
   const [resendLoading, setResendLoading] = useState(false);
-  const [seconds, setSeconds] = useState(300); // Set initial time to 300 seconds (5 minutes)
+  const [seconds, setSeconds] = useState(300); // Adjusted for 5 minutes as a starting point
   const [otp, setOtp] = useState("");
 
   useEffect(() => {
-    const intervalId = setInterval(() => {
+    let intervalId = setInterval(() => {
       setSeconds((prevSeconds) => (prevSeconds > 0 ? prevSeconds - 1 : 0));
       if (seconds === 0) {
         clearInterval(intervalId);
@@ -22,7 +22,6 @@ export default function Auth() {
     }, 1000);
     return () => clearInterval(intervalId);
   }, [seconds]);
-
   function formatTime(seconds) {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
@@ -34,21 +33,23 @@ export default function Auth() {
     setLoading(true);
     try {
       const res = await axios.post(
-        `${baseURL}/users/verify`,
+        `${baseURL}/instructors/signup/verify`,
         { otp: String(otp) },
         {
           headers: {
             "Content-Type": "application/json",
-            Authorization: "SHA " + getCookie("SignupToken"),
+            Authorization:
+              "SHA " + getCookie("VerifiedSignupInstructorToken"),
           },
         }
       );
+      Swal.fire("Success", "OTP verified successfully", "success");
 
-      deleteCookie("SignupToken");
-      window.location.pathname = "/login";
+      deleteCookie("VerifiedSignupInstructorToken");
+      window.location.pathname = "/login-instructor";
       setLoading(false);
     } catch (err) {
-      alert("Code is incorrect");
+      Swal.fire("Error", "Failed to verify OTP", "error");
       setLoading(false);
     }
   };
@@ -57,18 +58,19 @@ export default function Auth() {
     setResendLoading(true);
     try {
       await axios.post(
-        `${baseURL}/users/resendOTP`,
+        `${baseURL}/instructors/signup/resendOTP`,
         {},
         {
           headers: {
             "Content-Type": "application/json",
-            Authorization: "SHA " + getCookie("SignupToken"),
+            Authorization:
+              "SHA " + sessionStorage.getItem("VerifiedSignupInstructorToken"),
           },
         }
       );
       Swal.fire("Success", "OTP resent successfully!", "success");
+      setSeconds(300); // Reset the timer to 5 minutes
       setResendLoading(false);
-      setSeconds(300); // Reset the timer to 5 minutes after resend
     } catch (error) {
       Swal.fire("Error", "Failed to resend OTP", "error");
       setResendLoading(false);
@@ -100,54 +102,30 @@ export default function Auth() {
                   />
                 </div>
                 <div className="d-flex justify-content-center mt-4">
-                  <button
-                    type="submit"
-                    onClick={handleVerification}
-                    className="verify-btn"
-                  >
-                    {loading ? (
-                      <>
-                        <div className="d-flex justify-content-center">
-                          <div
-                            className="spinner-border text-white"
-                            role="status"
-                          >
-                            <span className="sr-only">Loading...</span>
-                          </div>
-                        </div>
-                      </>
-                    ) : (
-                      "Verify"
-                    )}
+                  <button type="submit" className="verify-btn">
+                    {loading ? "Verifying..." : "Verify"}
                   </button>
                 </div>
-                <div className="d-flex justify-content-center align-items-center mt-5">
-                  <div>
-                    {seconds === 0 ? (
-                      <button
-                        onClick={handleResendOTP}
-                        className="resend-code-btn"
-                        style={{ marginRight: "10px" }}
-                      >
-                        {resendLoading ? "Resending..." : "Resend Code"}
-                      </button>
-                    ) : (
-                      <button
-                        className="resend-code-btn"
-                        style={{
-                          color: "white",
-                          pointerEvents: "none",
-                          opacity: "0.5",
-                          cursor: "not-allowed",
-                        }}
-                        disabled
-                      >
-                        Resend Code in {formatTime(seconds)}
-                      </button>
-                    )}
-                  </div>
-                </div>
               </form>
+              <div className="d-flex justify-content-center align-items-center mt-5">
+                {seconds === 0 ? (
+                  <button onClick={handleResendOTP} className="resend-code-btn">
+                    {resendLoading ? "Resending..." : "Resend Code"}
+                  </button>
+                ) : (
+                  <button
+                    className="resend-code-btn"
+                    disabled
+                    style={{
+                      cursor: "not-allowed",
+                      pointerEvents: "none",
+                      opacity: "0.5",
+                    }}
+                  >
+                    Resend Code in {formatTime(seconds)}
+                  </button>
+                )}
+              </div>
             </div>
           </div>
         </div>

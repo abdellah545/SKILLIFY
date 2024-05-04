@@ -1,0 +1,65 @@
+.padding {
+  padding: 0 12px;
+}
+
+.content {
+  background-color: #e0e0f5;
+}
+
+.toggle_left_btn {
+  background-color: #5151d3;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 50px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.toggle_right_btn {
+  background-color: #5151d3;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 50px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  text-decoration: none;
+  position: absolute;
+  top: 63px;
+  right: 10px;
+}
+
+.scrollableContainer {
+  height: 100vh; /* Adjust the height as needed */
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.accept_reject_btn {
+  background-color: #5151d3;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  /* text-decoration: none; */
+}
+
+.btn_paper {
+  background-color: transparent;
+  color: white;
+  border: none;
+  padding: 50px 60px;
+  border: 2px solid #8686cf;
+  border-radius: 5px;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  text-decoration: none;
+}

@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 
 import rigisterPhoto from "../../assets/register.png";
 import "../Sign up/SignUp.css";
-import "./Login.css";
+import "../Login/Login.css";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import baseURL from "../../BaseURL/BaseURL";
@@ -11,21 +11,20 @@ import { setCookie } from "../../Helper/CookiesHelper";
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState(false);
   const [emailError, setEmailError] = useState(false);
-  const [passwordError, setPasswordError] = useState(false);
   const [loading, setLoading] = useState(false);
 
   async function handleLogin(e) {
     e.preventDefault();
-    setEmailError(false);
-    setPasswordError(false);
     if (!/^[^\s@]+@[^\s@]+.[^\s@]+$/.test(email)) {
       setEmailError(true);
     }
+    setError(true);
     setLoading(true);
     try {
       const res = await axios.post(
-        `${baseURL}/users/login`,
+        `${baseURL}/instructors/login`,
         {
           email: email,
           password: password,
@@ -38,20 +37,13 @@ export default function Login() {
       );
       console.log(res);
       if (res.status === 200) {
-        // sessionStorage.setItem("LoginToken", res.data.token);
-        setCookie("LoginToken", res.data.token);
-        window.location.pathname = "/Auth";
+        setCookie("LoginInstructorToken", res.data.token);
+        window.location.pathname = "/AuthLoginInstructor";
         setLoading(false);
         // console.log(res.data);
       }
     } catch (err) {
-      console.error("Login error", err.response || err);
-      if (err.response && err.response.status === 401) {
-        const message = err.response.data.message;
-        if (message.includes("email")) setEmailError(true);
-        if (message.includes("password")) setPasswordError(true);
-      }
-      setLoading(false);
+      console.log("error");
       setLoading(false);
     }
   }
@@ -64,10 +56,10 @@ export default function Login() {
           </div>
           <div className="col-lg-6 col-md-8 col-sm-10 p-0">
             <div className="signup-form p-3">
-              <h1 className="text-center my-2">Welcome Back</h1>
+              <h1 className="text-center my-2">Welcome, Instructor</h1>
               <div className="d-flex justify-content-center align-items-center mb-5">
-                <p className="text-center mt-3 mx-3">First time here ?</p>
-                <Link to="/register">
+                <p className="text-center mt-3 mx-3">Do you want to sign up ?</p>
+                <Link to="/InstructorSignUp">
                   <button className="signup-login-btn">Sign Up</button>
                 </Link>
               </div>
@@ -112,7 +104,7 @@ export default function Login() {
                   />
                 </div>
 
-                {passwordError && (
+                {error && emailError && (
                   <p
                     style={{
                       color: "red",
@@ -120,15 +112,13 @@ export default function Login() {
                       textAlign: "center",
                     }}
                   >
-                    *Password is incorrect
+                    *Email or password is incorrect
                   </p>
                 )}
-
                 <div className="d-flex justify-content-center mt-4">
                   {handleLogin && (
                     <>
                       <Link
-                        to="/Auth"
                         type="submit"
                         onClick={handleLogin}
                         className="login-form-btn text-center text-white fs-5"

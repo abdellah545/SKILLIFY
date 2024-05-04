@@ -3,6 +3,8 @@ import rigisterPhoto from "../../assets/register.png";
 import "./SignUp.css";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import baseURL from "../../BaseURL/BaseURL";
+import { setCookie } from "../../Helper/CookiesHelper";
 
 export default function SignUp() {
   const [name, setName] = useState("");
@@ -13,10 +15,13 @@ export default function SignUp() {
   const [error, setError] = useState(false);
   const [emailError, setEmailError] = useState(false);
 
+  const [loading, setLoading] = useState(false);
+
   async function submit(e) {
     let flag = true;
     e.preventDefault();
     setError(true);
+    setLoading(true);
     if (!/^[^\s@]+@[^\s@]+.[^\s@]+$/.test(email)) {
       flag = false;
     }
@@ -24,7 +29,7 @@ export default function SignUp() {
     if (flag) {
       try {
         const res = await axios.post(
-          "https://training-center-lkgs.onrender.com/users/signup",
+          `${baseURL}/users/signup`,
           {
             name: name,
             email: email,
@@ -37,15 +42,13 @@ export default function SignUp() {
               "Content-Type": "application/json",
             },
           }
-
         );
 
         console.log(res);
         if (res.status === 201) {
-          sessionStorage.setItem("VerifiedSignupToken", res.data.token);
+          setCookie("SignupToken", res.data.token);
           window.location.pathname = "/AuthSignup";
-        } else {
-          console.log("error");
+          setLoading(false);
         }
       } catch (err) {
         setEmailError(err.response.status === 400 ? true : false);
@@ -172,7 +175,9 @@ export default function SignUp() {
                           <option value="">Select Gender</option>
                           <option value="MALE">Male</option>
                           <option value="FEMALE">Female</option>
-                          <option value="PREFER NOT TO SAY">Prefer not to say</option>
+                          <option value="PREFER NOT TO SAY">
+                            Prefer not to say
+                          </option>
                         </select>
                         {gender.valueOf() === "" && error && (
                           <p style={{ color: "red", fontSize: "14px" }}>
@@ -181,14 +186,31 @@ export default function SignUp() {
                         )}
                       </div>
                     </div>
+
                     <div className="d-flex justify-content-center">
-                      <button
-                        type="submit"
-                        onClick={submit}
-                        className="signup-btn-form m-auto"
-                      >
-                        Sign Up
-                      </button>
+                      {submit && (
+                        <Link
+                          to="/AuthSignup"
+                          type="submit"
+                          onClick={submit}
+                          className="signup-btn-form m-auto fs-5 text-center text-white"
+                        >
+                          {loading ? (
+                            <>
+                              <div className="d-flex justify-content-center">
+                                <div
+                                  class="spinner-border text-white"
+                                  role="status"
+                                >
+                                  <span class="sr-only">Loading...</span>
+                                </div>
+                              </div>
+                            </>
+                          ) : (
+                            <>Sign Up</>
+                          )}
+                        </Link>
+                      )}
                     </div>
                   </div>
                 </div>
