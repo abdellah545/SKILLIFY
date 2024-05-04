@@ -1,19 +1,27 @@
-# Project Title
+# SKILLIFY | Training center
 
-One or two paragraphs providing an overview of your project. Essentially, this part should explain what your project does and its purpose.
+Secured web application that provides online courses.
 
-## Features
+## Key Features
 
-List the features of your project. Some examples might include:
+- Secure authentication using JSON Web Tokens (JWT).
+- Robust authorization handling to restrict access to certain functionalities.
+- Comprehensive logging of user actions and system events for audit and troubleshooting.
+- Penetration tested to ensure protection against common security vulnerabilities (e.g., SQL injection, XSS, CSRF).
 
-- Feature 1
-- Feature 2
-- Feature 3
+## Security
 
-## Getting Started
+This project implements advanced security measures. Below is an overview of the main security features:
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. 
+### Authentication
 
-### Prerequisites
+- **JWT Authentication**: Detailed explanation of how JWT authentication is implemented and used in the application.
 
-What things you need to install the software and how to install them:
+### Authorization
+
+- **Role-Based Access Control**: Describe how different user roles are defined and what access each role has.
+
+### Penetration Testing
+
+- **Testing Summary**: Overview of the penetration testing phases, tools used, and key findings.
+- **Mitigations Implemented**: Discuss how identified vulnerabilities were mitigated.
