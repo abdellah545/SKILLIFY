@@ -25,6 +25,20 @@ form .phone {
   margin-bottom: 20px;
 }
 
+form .bio{
+  border: 2px solid #5151d3;
+  border-radius: 30px;
+  padding: 8px;
+  width: 100%;
+  margin-bottom: 20px;
+  max-height: 150px;
+  min-height: 50px ;
+}
+
+form .bio:focus{
+  outline: none;
+}
+
 form select {
   border: 2px solid #5151d3;
   border-radius: 30px;

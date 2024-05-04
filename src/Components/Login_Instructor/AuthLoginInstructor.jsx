@@ -1,26 +1,23 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import Swal from "sweetalert2";
 import rigisterPhoto from "../../assets/register.png";
-import "./SignUp.css";
-import "./Auth.css";
+import "../Sign up/SignUp.css";
+import "../Sign up/Auth.css";
 import baseURL from "../../BaseURL/BaseURL";
 import { deleteCookie, getCookie, setCookie } from "../../Helper/CookiesHelper";
-import Swal from "sweetalert2";
 
 export default function Auth() {
   const [loading, setLoading] = useState(false);
   const [resendLoading, setResendLoading] = useState(false);
-  const [seconds, setSeconds] = useState(300); // Set initial time to 5 minutes for consistency with previous components
+  const [seconds, setSeconds] = useState(300); // Initial time in seconds set to 5 minutes
   const [otp, setOtp] = useState("");
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      if (seconds > 0) {
-        setSeconds((seconds) => seconds - 1);
-      } else {
-        clearInterval(intervalId); // Clear interval if the timer reaches zero
-      }
+      setSeconds((prevSeconds) => (prevSeconds > 0 ? prevSeconds - 1 : 0));
     }, 1000);
+
     return () => clearInterval(intervalId);
   }, [seconds]);
 
@@ -35,31 +32,41 @@ export default function Auth() {
     setLoading(true);
     try {
       const res = await axios.post(
-        `${baseURL}/users/verifyLogin`,
+        `${baseURL}/instructors/login/verify`,
         { otp: String(otp) },
         {
           headers: {
             "Content-Type": "application/json",
-            Authorization: "SHA " + getCookie("LoginToken"),
+            Authorization:
+              "SHA " + getCookie("LoginInstructorToken"),
           },
         }
       );
-
-      // Set cookies with an expiration. Assuming you want these to last for 1 day
-      const oneDay = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
-      setCookie("AccessTokenStudent", res.data.token, oneDay);
-      setCookie("userName", res.data.user.name, oneDay);
-
-      // Serialize and store the arrays in cookies
-      setCookie("favorites", JSON.stringify(res.data.user.favorite), oneDay);
-      setCookie("wishlist", JSON.stringify(res.data.user.wishlist), oneDay);
-      setCookie("courses", JSON.stringify(res.data.user.courses), oneDay);
-      setCookie("cart", JSON.stringify(res.data.user.cart), oneDay);
-      deleteCookie("LoginToken");
-      window.location.pathname = "/categories";
-      setLoading(false);
+      setCookie("VerifiedLoginInstructorToken", res.data.token);
+      if (
+        !res.data.user.CV ||
+        !res.data.user.ID ||
+        !res.data.user.Graduation_Certificate
+      ) {
+        window.location.pathname = "/UploadPapers";
+      } else if (res.data.user.rejected === true) {
+        window.location.pathname = "/rejection";
+      } else if (
+        res.data.user.rejected === false &&
+        res.data.user.papers_confirmed === false
+      ) {
+        window.location.pathname = "/pending";
+      } else {
+        // Navigation and session storage management here
+        deleteCookie("LoginInstructorToken");
+        setCookie("AccessTokenInstructor", res.data.token);
+        setCookie("InstructorName", res.data.user.name);
+        setCookie("InstructorImage", res.data.user.image);
+        window.location.pathname = "/instructor-dashboard";
+        setLoading(false);
+      }
     } catch (err) {
-      Swal.fire("Error", "Invalid OTP", "error");
+      Swal.fire("Error", "Failed to verify OTP", "error");
       setLoading(false);
     }
   };
@@ -68,20 +75,21 @@ export default function Auth() {
     setResendLoading(true);
     try {
       await axios.post(
-        `${baseURL}/users/login/resendOTP`,
+        `${baseURL}/instructors/login/resendOTP`,
         {},
         {
           headers: {
             "Content-Type": "application/json",
-            Authorization: "SHA " + sessionStorage.getItem("LoginToken"),
+            Authorization:
+              "SHA " + sessionStorage.getItem("LoginInstructorToken"),
           },
         }
       );
-      Swal.fire("Success", "OTP resent successfully!", "success");
-      setSeconds(300); // Reset the timer to 5 minutes
+      Swal.fire("Success", "OTP sent successfully", "success");
+      setSeconds(300); // Reset the timer
       setResendLoading(false);
     } catch (error) {
-      Swal.fire("Error", "Failed to resend OTP", "error");
+      Swal.fire("Error", "Failed to send OTP", "error");
       setResendLoading(false);
     }
   };
@@ -97,7 +105,8 @@ export default function Auth() {
             <div className="signup-form p-3">
               <form onSubmit={handleVerification}>
                 <h1 className="text-center py-5">Login Verification</h1>
-                <p className="text-center mt-3 mb-5">
+                <h3 className="text-center">Please check your gmail</h3>
+                <p className="text-center mt-3 m3-5">
                   The 4-digit verification code will expire in 5 minutes
                 </p>
                 <div className="d-flex justify-content-evenly pt-5">
@@ -116,30 +125,23 @@ export default function Auth() {
                 </div>
               </form>
               <div className="d-flex justify-content-center align-items-center mt-5">
-                <div>
-                  {seconds === 0 ? (
-                    <button
-                      type="button"
-                      onClick={handleResendOTP}
-                      className="resend-code-btn"
-                      style={{ marginRight: "10px" }}
-                    >
-                      {resendLoading ? "Resending..." : "Resend Code"}
-                    </button>
-                  ) : (
-                    <button
-                      className="resend-code-btn"
-                      style={{
-                        pointerEvents: "none",
-                        opacity: "0.5",
-                        cursor: "not-allowed",
-                      }}
-                      disabled
-                    >
-                      Resend Code in {formatTime(seconds)}
-                    </button>
-                  )}
-                </div>
+                {seconds === 0 ? (
+                  <button onClick={handleResendOTP} className="resend-code-btn">
+                    {resendLoading ? "Resending..." : "Resend Code"}
+                  </button>
+                ) : (
+                  <button
+                    className="resend-code-btn"
+                    disabled
+                    style={{
+                      cursor: "not-allowed",
+                      opacity: "0.5",
+                      pointerEvents: "none",
+                    }}
+                  >
+                    Resend Code in {formatTime(seconds)}
+                  </button>
+                )}
               </div>
             </div>
           </div>

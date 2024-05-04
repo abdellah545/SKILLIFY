@@ -1,0 +1,32 @@
+.pagination{
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+.pagination button {
+  width: 5%;
+  margin: 5px;
+  border-radius: 10px;
+  height: 40px;
+  font-weight: bold;
+  border:1px solid black;
+  transition: all  0.3s ease-in-out;  
+}
+.pagination button:hover{
+  background-color: rgb(196, 192, 192);
+
+}
+.pagination .currentPage:hover{
+  background-color: rgb(78, 77, 77);
+
+}
+.currentPage{
+  background-color: black;
+  color: white;
+}
+
+@media only screen and (max-width: 425px) {
+  .pagination button {
+    width: 10%;
+  }
+}
