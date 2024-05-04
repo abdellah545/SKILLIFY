@@ -27,7 +27,7 @@ This project implements advanced security measures. Below is an overview of the 
 - **Mitigations Implemented**: Discuss how identified vulnerabilities were mitigated.
 
 ## Built With
-React - Frontend framework
-Node.js - Server environment
-MongoDB - NoSQL database
-Express - Node.js web application framework
+- React - Frontend framework
+- Node.js - Server environment
+- MongoDB - NoSQL database
+- Express - Node.js web application framework
