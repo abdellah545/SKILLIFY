@@ -12,6 +12,7 @@ export default function EditProfile() {
   const [title, setTitle] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
   const fileInputRef = useRef(null); // Create a ref for the file input
 
   const handleImageChange = (e) => {
@@ -22,9 +23,22 @@ export default function EditProfile() {
     }
   };
 
+  const validatePassword = (password) => {
+    const passwordPattern = /^(?=.*[A-Z])(?=.*[@$!%*?&])(?=.*[0-9]).{6,}$/;
+    return passwordPattern.test(password);
+  };
+
   const handleEditProfile = async (e) => {
     e.preventDefault();
     setLoading(true);
+
+    if (!validatePassword(password)) {
+      setPasswordError(true);
+      setLoading(false);
+      return;
+    } else {
+      setPasswordError(false);
+    }
 
     const formData = new FormData();
     if (file) {
@@ -40,8 +54,7 @@ export default function EditProfile() {
         {
           headers: {
             "Content-Type": "multipart/form-data",
-            Authorization:
-              "SHA " + getCookie("AccessTokenInstructor"),
+            Authorization: "SHA " + getCookie("AccessTokenInstructor"),
           },
         }
       );
@@ -49,7 +62,6 @@ export default function EditProfile() {
       Swal.fire("Success", "Profile updated successfully", "success");
       setCookie("InstructorImage", res.data.image);
       setCookie("InstructorTitle", res.data.title);
-      
 
       setLoading(false);
 
@@ -78,9 +90,7 @@ export default function EditProfile() {
             <SidebarInstructor />
           </div>
           <div className="col-lg-10 p-0">
-            <div
-              className={`container-fluid ${style.scrollableContainer} py-3`}
-            >
+            <div className={`container-fluid ${style.scrollableContainer} py-3`}>
               <button
                 className={`d-lg-none w-50 mx-auto mb-3 ${style.toggle_left_btn}`}
                 type="button"
@@ -115,10 +125,12 @@ export default function EditProfile() {
                     </label>
                     <input
                       type="file"
+                      accept="image/*" // Only accept image files
                       className={`form-control mt-1 mx-auto ${style.input}`}
                       id="profileImage"
                       ref={fileInputRef} // Attach the ref to the file input
                       onChange={handleImageChange}
+                      required
                       style={{
                         border: "2px solid #5151D3",
                         borderRadius: "5px",
@@ -156,6 +168,7 @@ export default function EditProfile() {
                       value={title}
                       onChange={(e) => setTitle(e.target.value)}
                       required
+                      placeholder="Enter title"
                     />
                   </div>
                   <hr />
@@ -173,7 +186,13 @@ export default function EditProfile() {
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       required
+                      placeholder="Enter password"
                     />
+                    {!validatePassword(password) && passwordError && (
+                      <p style={{ color: "red", fontSize: "12px" }}>
+                        *Password must be at least 6 characters, contain at least one uppercase letter, one number, and one special character.
+                      </p>
+                    )}
                   </div>
                   <hr />
                   <div className="mb-3 w-50 mx-auto text-center">

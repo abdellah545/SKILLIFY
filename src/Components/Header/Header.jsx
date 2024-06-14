@@ -1,20 +1,25 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import "./Header.css";
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import './Header.css';
+import 'animate.css';
+import { useCart } from '../../Student/CartContext';
 
 export default function Header() {
   const [loading, setLoading] = useState(false);
+  const { cart, favorites } = useCart(); // Access cart and favorites from context
+
   const deleteCookie = (name) => {
     document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;`;
   };
+
   const cookieExists = (name) => {
     const cookieName = `${name}=`;
     const decodedCookie = decodeURIComponent(document.cookie);
-    const cookieArray = decodedCookie.split(";");
+    const cookieArray = decodedCookie.split(';');
 
     for (let i = 0; i < cookieArray.length; i++) {
       let cookie = cookieArray[i];
-      while (cookie.charAt(0) === " ") {
+      while (cookie.charAt(0) === ' ') {
         cookie = cookie.substring(1);
       }
       if (cookie.indexOf(cookieName) === 0) {
@@ -24,14 +29,15 @@ export default function Header() {
 
     return false; // Cookie not found
   };
+
   const getCookie = (name) => {
     const cookieName = `${name}=`;
     const decodedCookie = decodeURIComponent(document.cookie);
-    const cookieArray = decodedCookie.split(";");
+    const cookieArray = decodedCookie.split(';');
 
     for (let i = 0; i < cookieArray.length; i++) {
       let cookie = cookieArray[i];
-      while (cookie.charAt(0) === " ") {
+      while (cookie.charAt(0) === ' ') {
         cookie = cookie.substring(1);
       }
       if (cookie.indexOf(cookieName) === 0) {
@@ -41,24 +47,37 @@ export default function Header() {
 
     return null;
   };
+
   const handleLogout = () => {
     setLoading(true);
-    deleteCookie("AccessTokenStudent");
-    deleteCookie("cart");
-    deleteCookie("wishlist");
-    deleteCookie("favorites");
-    deleteCookie("userName");
-    deleteCookie("courses");
-    window.location.pathname = "/";
+    deleteCookie('AccessTokenStudent');
+    deleteCookie('cart');
+    deleteCookie('wishlist');
+    deleteCookie('favorites');
+    deleteCookie('userName');
+    deleteCookie('courses');
+    deleteCookie('userEmail');
+    deleteCookie('userImage');
+    deleteCookie('phone');
+    deleteCookie('gender');
+    deleteCookie('createdAt');
+    deleteCookie('updatedAt');
+    setLoading(false);
+    window.location.pathname = '/';
   };
+
   return (
     <div
       className="sticky-top"
-      style={{ boxShadow: "0 0 10px 0 rgba(0, 0, 0, 0.2)" }}
+      style={{ boxShadow: '0 0 10px 0 rgba(0, 0, 0, 0.2)' }}
     >
       <nav className="navbar navbar-expand-lg p-1">
         <div className="container">
-          <Link className="navbar-brand" id="navbar-link" to="/">
+          <Link
+            className="navbar-brand animate__animated animate__pulse animate__infinite"
+            id="navbar-link"
+            to="/"
+          >
             SKILLIFY
           </Link>
           <button
@@ -84,7 +103,7 @@ export default function Header() {
                   Home
                 </Link>
               </li>
-              {cookieExists("AccessTokenStudent") ? (
+              {cookieExists('AccessTokenStudent') ? (
                 <li className="nav-item">
                   <Link
                     className="nav-link fw-bold"
@@ -98,18 +117,7 @@ export default function Header() {
               ) : null}
             </ul>
 
-            {/* <form className="d-flex" role="search">
-              <input
-                className="search me-2"
-                type="search"
-                placeholder="Search"
-                aria-label="Search"
-              />
-              <button className="search-btn" type="submit">
-                <i className="fa-solid fa-magnifying-glass"></i>
-              </button>
-            </form> */}
-            {!cookieExists("AccessTokenStudent") ? (
+            {!cookieExists('AccessTokenStudent') ? (
               <div className="d-flex ms-auto">
                 <div className="dropdown login-btn">
                   <button
@@ -163,21 +171,15 @@ export default function Header() {
                     </li>
                   </ul>
                 </div>
-                {/* <Link className="signup-btn" to="/register">
-                  SignUp
-                </Link> */}
               </div>
             ) : (
               <div className="logout-user-container d-flex ms-auto align-items-center justify-content-between">
-                {/* <Link className="login-btn" to="/Auth">
-                  Profile
-                </Link> */}
                 <div
                   className="collapse navbar-collapse"
                   id="navbarSupportedContent"
                 >
                   <ul className="navbar-nav me-4 me-md-0 mb-2 mb-lg-0">
-                    {cookieExists("AccessTokenStudent") && (
+                    {cookieExists('AccessTokenStudent') && (
                       <>
                         <li className="nav-item me-1">
                           <Link
@@ -188,22 +190,28 @@ export default function Header() {
                             My Courses
                           </Link>
                         </li>
-                        <li className="nav-item me-2">
+                        <li className="nav-item me-2 position-relative">
                           <Link
                             className="nav-link fw-bold"
                             id="nav-link"
                             to="/cart"
                           >
-                            <i class="fa-solid fa-cart-shopping"></i>
+                            <i className="fa-solid fa-cart-shopping"></i>
+                            <span className="badge bg-danger position-absolute top-1 start-99 translate-middle" style={{fontSize: '10px'}}>
+                              {cart.length}
+                            </span>
                           </Link>
                         </li>
-                        <li className="nav-item me-2">
+                        <li className="nav-item me-2 position-relative">
                           <Link
                             className="nav-link fw-bold"
                             id="nav-link"
                             to="/favorites"
                           >
-                            <i class="fa-solid fa-heart"></i>
+                            <i className="fa-solid fa-heart"></i>
+                            <span className="badge bg-danger position-absolute top-1 start-99 translate-middle" style={{fontSize: '10px'}}>
+                              {favorites.length}
+                            </span>
                           </Link>
                         </li>
                       </>
@@ -211,55 +219,51 @@ export default function Header() {
                   </ul>
                 </div>
                 <div
-                  class="vr me-1 d-none d-md-block"
-                  style={{ color: "#5151d3" }}
+                  className="vr me-1 d-none d-md-block"
+                  style={{ color: '#5151d3' }}
                 ></div>
                 <div className="dropdown bg-white cursor-pointer">
                   <button
-                    className="dropdown-toggle border-0 bg-white cursor-pointer"
+                    className="btn border-0 dropdown-toggle d-flex align-items-center"
                     type="button"
                     data-bs-toggle="dropdown"
                     aria-expanded="false"
+                    style={{ color: '#5151d3' }}
+
                   >
-                    {cookieExists("AccessTokenStudent") && (
-                      <div className="d-inline cursor-pointer">
-                        <label htmlFor="">
-                          <i className="fa-regular fa-user"></i>{" "}
-                          <span
-                            className={`fw-bold`}
-                            style={{ color: "#5151d3" }}
-                          >
-                            {" "}
-                            User :{" "}
-                          </span>{" "}
-                          {getCookie("userName")}
-                        </label>
-                      </div>
-                    )}
+                    <img
+                      src={getCookie('userImage')}
+                      alt="User"
+                      width={30}
+                      height={30}
+                      className="me-2 rounded-circle"
+                    />
+                    <span
+                      className="fw-bold"
+                      // style={{ fontSize: '0.8rem' }}
+                    >
+                      {getCookie('userName')}
+                    </span>
                   </button>
-                  <ul className="dropdown-menu">
-                    <li>
+                  <ul className="dropdown-menu dropdown-menu-end">
+                    <li className="">
                       <Link className="dropdown-item" to="/profile">
-                        Your Profile
+                        Profile
                       </Link>
                     </li>
-                    <li>
-                      <Link className="dropdown-item">Another action</Link>
-                    </li>
-                    <li>
-                      <Link className="dropdown-item">
-                        <Link
-                          onClick={handleLogout}
-                          className="logout-btn d-flex justify-content-between align-items-center"
-                          to="/"
-                        >
-                          Logout
-                          <i
-                            className="fa-solid fa-arrow-right-to-bracket"
-                            style={{ color: "#ffffff", marginLeft: "10px" }}
-                          ></i>
-                        </Link>
+                    <li className="">
+                      <Link className="dropdown-item" to="/updateProfile">
+                        Update Profile
                       </Link>
+                    </li>
+                    <hr className="dropdown-divider" />
+                    <li>
+                      <button
+                        className="dropdown-item logout-btn"
+                        onClick={handleLogout}
+                      >
+                        Logout
+                      </button>
                     </li>
                   </ul>
                 </div>

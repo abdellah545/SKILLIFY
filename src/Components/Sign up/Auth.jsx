@@ -49,6 +49,12 @@ export default function Auth() {
       const oneDay = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
       setCookie("AccessTokenStudent", res.data.token, oneDay);
       setCookie("userName", res.data.user.name, oneDay);
+      setCookie("userEmail", res.data.user.email, oneDay);
+      setCookie("userImage", res.data.user.image, oneDay);
+      setCookie("phone", res.data.user.phone, oneDay);
+      setCookie("gender", res.data.user.gender, oneDay);
+      setCookie("createdAt", res.data.user.createdAt, oneDay);
+      setCookie("updatedAt", res.data.user.updatedAt, oneDay);
 
       // Serialize and store the arrays in cookies
       setCookie("favorites", JSON.stringify(res.data.user.favorite), oneDay);

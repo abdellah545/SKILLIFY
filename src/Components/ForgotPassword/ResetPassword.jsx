@@ -11,14 +11,27 @@ export default function ResetPassword() {
   const [password, setPassword] = useState("");
   const [repassword, setRepassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
 
   const handleReset = async (e) => {
     let flag = true;
     e.preventDefault();
     setLoading(true);
+
+    // Password validation
+    const passwordPattern = /^(?=.*[A-Z])(?=.*[@$!%*?&])(?=.*[0-9]).{6,}$/;
+    if (!passwordPattern.test(password)) {
+      setError(true);
+      setLoading(false);
+      return;
+    }
+
     if (password !== repassword) {
       flag = false;
-    } else flag = true;
+    } else {
+      flag = true;
+    }
+
     if (flag) {
       try {
         const res = await axios.post(
@@ -44,6 +57,7 @@ export default function ResetPassword() {
       }
     }
   };
+
   return (
     <>
       <section className="section-signup p-5">
@@ -62,26 +76,55 @@ export default function ResetPassword() {
                   <div className="mb-1">
                     <input
                       type="password"
-                      className="email-login my-3"
+                      className="email-login my-3 text-center"
                       value={password}
                       id="password"
                       placeholder="Enter new password"
                       required
                       onChange={(e) => setPassword(e.target.value)}
                     />
+                    {password === "" && error && (
+                      <p style={{ color: "red", fontSize: "14px" }}>
+                        *Password is required
+                      </p>
+                    )}
+                    {!/^(?=.*[A-Z])/.test(password) && error && (
+                      <p style={{ color: "red", fontSize: "14px" }}>
+                        *Password must contain at least one uppercase letter
+                      </p>
+                    )}
+                    {!/^(?=.*[@$!%*?&])/.test(password) && error && (
+                      <p style={{ color: "red", fontSize: "14px" }}>
+                        *Password must contain at least one special character
+                      </p>
+                    )}
+                    {!/^(?=.*[0-9])/.test(password) && error && (
+                      <p style={{ color: "red", fontSize: "14px" }}>
+                        *Password must contain at least one number
+                      </p>
+                    )}
+                    {!/^.{6,}$/.test(password) && error && (
+                      <p style={{ color: "red", fontSize: "14px" }}>
+                        *Password must be at least 6 characters
+                      </p>
+                    )}
                   </div>
                   <div className="mb-3">
                     <input
                       type="password"
                       className="email-login my-3 text-center"
                       value={repassword}
-                      id="password"
+                      id="repassword"
                       placeholder="Re-enter new password"
                       required
                       onChange={(e) => setRepassword(e.target.value)}
                     />
+                    {password !== repassword && error && (
+                      <p style={{ color: "red", fontSize: "14px" }}>
+                        *Passwords do not match
+                      </p>
+                    )}
                   </div>
-                  
                   <div className="d-flex justify-content-center align-items-center w-100">
                     <Link
                       to="/login"
@@ -90,11 +133,8 @@ export default function ResetPassword() {
                     >
                       {loading ? (
                         <div className="d-flex justify-content-center mb-3">
-                          <div
-                            class="spinner-border text-white"
-                            role="status"
-                          >
-                            <span class="sr-only">Loading...</span>
+                          <div className="spinner-border text-white" role="status">
+                            <span className="sr-only">Loading...</span>
                           </div>
                         </div>
                       ) : (

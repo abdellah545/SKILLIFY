@@ -168,13 +168,13 @@
 										"header": [
 											{
 												"key": "Authorization",
-												"value": "SHA eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjIyNzgzNmQ2OWJjYjA3Mjc2OTA5NGQiLCJpYXQiOjE3MTM3NTg4NDEsImV4cCI6MTcxMzc2MjQ0MX0.kN9ufNetWcvyu-_BeBNZ1YhFcj3RggFxv7FX0a-uaw4",
+												"value": "SHA eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjIyNzgzNmQ2OWJjYjA3Mjc2OTA5NGQiLCJpYXQiOjE3MTM4MTI1MjUsImV4cCI6MTcxMzgxNjEyNX0.tw9qb_0WXOGNH9w1Na0nJj9wtdzB1tnCtndA6jva4JM",
 												"type": "text"
 											}
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n    \"otp\":\"7796\"\r\n}",
+											"raw": "{\r\n    \"otp\":\"7727\"\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -445,7 +445,7 @@
 								"header": [
 									{
 										"key": "Authorization",
-										"value": "SHA eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjIyNzgzNmQ2OWJjYjA3Mjc2OTA5NGQiLCJpYXQiOjE3MTM3NTkwMTIsImV4cCI6MTcxMzgyMzgxMn0.C7PUmhkpmu11pl5WhTLrP9BGjVY1_0h4xbHcoR85iug",
+										"value": "SHA eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjIyNzgzNmQ2OWJjYjA3Mjc2OTA5NGQiLCJpYXQiOjE3MTM4MTI1NDksImV4cCI6MTcxMzg3NzM0OX0.TZTuMeUpQsNnxS6aN7uSE64w99SbYx7QwTeamJ8NB9c",
 										"type": "text"
 									}
 								],
@@ -562,12 +562,12 @@
 								"header": [
 									{
 										"key": "Authorization",
-										"value": "SHA eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjIyNzgzNmQ2OWJjYjA3Mjc2OTA5NGQiLCJpYXQiOjE3MTM3NDU2NTEsImV4cCI6MTcxMzgxMDQ1MX0.LPBV5meKb6FlwehBClg_WLNuaGvv1YHGQFm6WO03N6s",
+										"value": "SHA eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjIyNzgzNmQ2OWJjYjA3Mjc2OTA5NGQiLCJpYXQiOjE3MTM4MTI1NDksImV4cCI6MTcxMzg3NzM0OX0.TZTuMeUpQsNnxS6aN7uSE64w99SbYx7QwTeamJ8NB9c",
 										"type": "text"
 									}
 								],
 								"url": {
-									"raw": "https://165.232.129.48:3000/users/cart/6621c87a40128928bf0c06fb",
+									"raw": "https://165.232.129.48:3000/users/cart/662193105d4f7a26d85c9af3",
 									"protocol": "https",
 									"host": [
 										"165",
@@ -579,7 +579,7 @@
 									"path": [
 										"users",
 										"cart",
-										"6621c87a40128928bf0c06fb"
+										"662193105d4f7a26d85c9af3"
 									]
 								}
 							},
@@ -622,7 +622,7 @@
 								"header": [
 									{
 										"key": "Authorization",
-										"value": "SHA eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjIyNzgzNmQ2OWJjYjA3Mjc2OTA5NGQiLCJpYXQiOjE3MTM3NDU2NTEsImV4cCI6MTcxMzgxMDQ1MX0.LPBV5meKb6FlwehBClg_WLNuaGvv1YHGQFm6WO03N6s",
+										"value": "SHA eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjIyNzgzNmQ2OWJjYjA3Mjc2OTA5NGQiLCJpYXQiOjE3MTM4MTI1NDksImV4cCI6MTcxMzg3NzM0OX0.TZTuMeUpQsNnxS6aN7uSE64w99SbYx7QwTeamJ8NB9c",
 										"type": "text"
 									}
 								],
@@ -1052,13 +1052,13 @@
 										"header": [
 											{
 												"key": "Authorization",
-												"value": "SHA eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjE5YzhmOThlZjUwMzZlMThiZmE0NjgiLCJpYXQiOjE3MTM1MzE3ODAsImV4cCI6MTcxMzUzNTM4MH0.eS6HC0FQ1NBSr4jbDNuYeYK43SelDdK_JvBpIksp6gE",
+												"value": "SHA eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjE5YzhmOThlZjUwMzZlMThiZmE0NjgiLCJpYXQiOjE3MTQ5MzM1ODksImV4cCI6MTcxNDkzNzE4OX0.D3n7Y3aqMA1pYMDzcpBE5R5NQUujrmqx7eJ9ghMzqlU",
 												"type": "text"
 											}
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n    \"otp\":\"2409\"\r\n}",
+											"raw": "{\r\n    \"otp\":\"1509\"\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -1397,6 +1397,35 @@
 										"courses",
 										"update",
 										"6621c87a40128928bf0c06fb"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Courses",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "SHA eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjE5YzhmOThlZjUwMzZlMThiZmE0NjgiLCJpYXQiOjE3MTQ5MzM2MTUsImV4cCI6MTcxNDk5ODQxNX0.-xDMwisWlKtSK2Ah8B7VM08sJx2RPC2D04K5Qzko7lA",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "https://165.232.129.48:3000/instructors/courses",
+									"protocol": "https",
+									"host": [
+										"165",
+										"232",
+										"129",
+										"48"
+									],
+									"port": "3000",
+									"path": [
+										"instructors",
+										"courses"
 									]
 								}
 							},

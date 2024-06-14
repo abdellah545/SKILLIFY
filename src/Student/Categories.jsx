@@ -3,16 +3,18 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import baseURL from "../BaseURL/BaseURL";
 import { getCookie } from "../Helper/CookiesHelper";
+import { useForm } from "react-hook-form";
 
 export default function MyCourses() {
   const [courses, setCourses] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [totalCourses, setTotalCourses] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
 
-  const limit = 5;
+  const limit = 6;
   const fetchCourses = useCallback(() => {
+    document.title = "SKILLIFY | Categories";
     setLoading(true);
     const url = `${baseURL}/users/courses/?page=${currentPage}&limit=${limit}`;
     axios
@@ -51,7 +53,8 @@ export default function MyCourses() {
       </div>
     );
   if (error) return <div>Error: {error.message}</div>;
-  if (!courses.length) return <div>No courses found</div>;
+  if (!courses.length)
+    return <div className="text-center fw-bold fs-1">No courses found!</div>;
 
   return (
     <div className="container my-5 pb-5">

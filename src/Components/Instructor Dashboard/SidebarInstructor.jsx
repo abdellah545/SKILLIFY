@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import style from "./InstructorDashboard.module.css";
 import logo from "../../assets/icon-logo.png";
 import { Link } from "react-router-dom";
 import { deleteCookie, getCookie } from "../../Helper/CookiesHelper";
 
 export default function SidebarInstructor() {
+  const [showImageModal, setShowImageModal] = useState(false);
+
   const handleLogout = () => {
     deleteCookie("AccessTokenInstructor");
     deleteCookie("InstructorImage");
@@ -12,6 +14,15 @@ export default function SidebarInstructor() {
 
     window.location.pathname = "/";
   };
+
+  const handleImageClick = () => {
+    setShowImageModal(true);
+  };
+
+  const closeModal = () => {
+    setShowImageModal(false);
+  };
+
   return (
     <>
       <div className={`${style.sidebar}`}>
@@ -19,18 +30,25 @@ export default function SidebarInstructor() {
           <div className="row">
             <div className="col-lg-12 text-center mt-3">
               <div className="d-flex flex-column align-items-center">
-                <img
-                  src={getCookie("InstructorImage")}
-                  style={{
-                    width: "120px",
-                    boxShadow: "0 0 10px 0 rgba(0, 0, 0, 0.2)",
-                    borderRadius: "50%",
-                  }}
-                  alt=""
-                />
-                <h4 className="mt-3" style={{ color: "#5151D3" }}>
-                  {getCookie("InstructorName")}
-                </h4>
+                <div className={style.imageWrapper} onClick={handleImageClick}>
+                  <img
+                    src={getCookie("InstructorImage")}
+                    className={style.profileImage}
+                    alt=""
+                  />
+                  <div className={style.imageOverlay}>
+                    <span className={style.overlayText}>View Image</span>
+                  </div>
+                </div>
+
+                <Link
+                  to="/instructor-profile"
+                  style={{ textDecoration: "none" }}
+                >
+                  <h4 className="mt-3" style={{ color: "#5151D3" }}>
+                    {getCookie("InstructorName")}
+                  </h4>
+                </Link>
                 <div className="col-lg-12 text-center mt-5">
                   <ul className="list-unstyled">
                     {window.location.pathname === "/instructor-dashboard" ? (
@@ -50,7 +68,7 @@ export default function SidebarInstructor() {
                               padding: "10px",
                             }}
                           >
-                            <i class="fa-solid fa-house"></i> My Courses
+                            <i className="fa-solid fa-house"></i> My Courses
                           </li>
                         </Link>
                       </>
@@ -68,7 +86,7 @@ export default function SidebarInstructor() {
                             className={`mb-3 fw-bold`}
                             style={{ padding: "10px" }}
                           >
-                            <i class="fa-solid fa-house"></i> My Courses
+                            <i className="fa-solid fa-house"></i> My Courses
                           </li>
                         </Link>
                       </>
@@ -92,7 +110,7 @@ export default function SidebarInstructor() {
                               padding: "10px",
                             }}
                           >
-                            <i class="fa-solid fa-folder-plus"></i> Add Course
+                            <i className="fa-solid fa-folder-plus"></i> Add Course
                           </li>
                         </Link>
                       </>
@@ -110,7 +128,7 @@ export default function SidebarInstructor() {
                             className={`mb-3 fw-bold`}
                             style={{ padding: "10px" }}
                           >
-                            <i class="fa-solid fa-folder-plus"></i> Add Course
+                            <i className="fa-solid fa-folder-plus"></i> Add Course
                           </li>
                         </Link>
                       </>
@@ -134,8 +152,7 @@ export default function SidebarInstructor() {
                               padding: "10px",
                             }}
                           >
-                            <i class="fa-solid fa-pen-to-square"></i> Edit
-                            Course
+                            <i className="fa-solid fa-pen-to-square"></i> Edit Course
                           </li>
                         </Link>
                       </>
@@ -150,8 +167,7 @@ export default function SidebarInstructor() {
                             className={`mb-3 fw-bold`}
                             style={{ padding: "10px" }}
                           >
-                            <i class="fa-solid fa-pen-to-square"></i> Edit
-                            Course
+                            <i className="fa-solid fa-pen-to-square"></i> Edit Course
                           </li>
                         </Link>
                       </>
@@ -175,7 +191,7 @@ export default function SidebarInstructor() {
                               padding: "10px",
                             }}
                           >
-                            <i class="fa-solid fa-user-pen"></i> Edit Profile
+                            <i className="fa-solid fa-user-pen"></i> Edit Profile
                           </li>
                         </Link>
                       </>
@@ -190,7 +206,7 @@ export default function SidebarInstructor() {
                             className={`mb-3 fw-bold`}
                             style={{ padding: "10px" }}
                           >
-                            <i class="fa-solid fa-user-pen"></i> Edit Profile
+                            <i className="fa-solid fa-user-pen"></i> Edit Profile
                           </li>
                         </Link>
                       </>
@@ -206,10 +222,20 @@ export default function SidebarInstructor() {
             className="btn text-danger fw-bold fs-4"
             onClick={handleLogout}
           >
-            <i class="fa-solid fa-arrow-right-from-bracket"></i> Log Out
+            <i className="fa-solid fa-arrow-right-from-bracket"></i> Log Out
           </button>
         </div>
       </div>
+
+      {showImageModal && (
+        <div className={style.modal} onClick={closeModal}>
+          <img
+            src={getCookie("InstructorImage")}
+            alt="Instructor"
+            className={style.modalImage}
+          />
+        </div>
+      )}
     </>
   );
 }

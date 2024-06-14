@@ -16,9 +16,11 @@ export default function Login() {
 
   async function handleLogin(e) {
     e.preventDefault();
+    // Trim username before checking
+    const trimmedUsername = username.trim();
 
     // Check if both username and password are 'admin'
-    if (username !== "admin" || password !== "admin") {
+    if (trimmedUsername !== "admin" || password !== "admin") {
       alert("Invalid username or password. Please try again.");
       setLoading(false); // Ensure loading is reset if credentials are wrong
       return; // Stop the function if the validation fails

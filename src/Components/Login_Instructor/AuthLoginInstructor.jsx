@@ -58,7 +58,7 @@ export default function Auth() {
         window.location.pathname = "/pending";
       } else {
         // Navigation and session storage management here
-        deleteCookie("LoginInstructorToken");
+        // deleteCookie("VerifiedLoginInstructorToken");
         setCookie("AccessTokenInstructor", res.data.token);
         setCookie("InstructorName", res.data.user.name);
         setCookie("InstructorImage", res.data.user.image);

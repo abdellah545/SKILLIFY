@@ -23,8 +23,7 @@ export default function CourseDetails() {
         const response = await axios.get(`${baseURL}/users/courses/${id}`, {
           headers: {
             "Content-Type": "application/json",
-            Authorization:
-              "SHA " + getCookie("AccessTokenStudent"),
+            Authorization: "SHA " + getCookie("AccessTokenStudent"),
           },
         });
         setCourse(response.data);
@@ -38,9 +37,7 @@ export default function CourseDetails() {
         const cart = JSON.parse(getCookie("cart") || "[]");
         setIsInCart(cart.includes(id));
 
-        const favoriteIds = JSON.parse(
-          getCookie("favorites") || "[]"
-        );
+        const favoriteIds = JSON.parse(getCookie("favorites") || "[]");
         setIsFavorite(favoriteIds.includes(id)); // Check if the id is in the favorites array
       } catch (err) {
         setError("Failed to fetch course details");
@@ -70,12 +67,15 @@ export default function CourseDetails() {
         {
           headers: {
             "Content-Type": "application/json",
-            Authorization:
-              "SHA " + getCookie("AccessTokenStudent"),
+            Authorization: "SHA " + getCookie("AccessTokenStudent"),
           },
         }
       );
-      Swal.fire("Success", "Course added to cart successfully", "success");
+      Swal.fire("Success", "Course added to cart successfully", "success").then(
+        () => {
+          window.location.reload();
+        }
+      );
       setAddLoading(false);
       // Retrieve the existing cart from sessionStorage or initialize a new one
       const cart = JSON.parse(getCookie("cart") || "[]");
@@ -86,9 +86,6 @@ export default function CourseDetails() {
         cart.push(id);
         setCookie("cart", JSON.stringify(cart)); // Update the cart in sessionStorage
       }
-      setTimeout(() => {
-        window.location.reload();
-      }, 500);
     } catch (err) {
       console.error(err);
       Swal.fire(
@@ -115,15 +112,16 @@ export default function CourseDetails() {
         await axios.delete(`${baseURL}/users/favorite/${id}`, {
           headers: {
             "Content-Type": "application/json",
-            Authorization:
-              "SHA " + getCookie("AccessTokenStudent"),
+            Authorization: "SHA " + getCookie("AccessTokenStudent"),
           },
         });
         Swal.fire(
           "Success",
           "Course removed from favorites successfully",
           "success"
-        );
+        ).then(() => {
+          window.location.reload();
+        });
       } catch (err) {
         console.error(err);
         Swal.fire(
@@ -145,8 +143,7 @@ export default function CourseDetails() {
           {
             headers: {
               "Content-Type": "application/json",
-              Authorization:
-                "SHA " + getCookie("AccessTokenStudent"),
+              Authorization: "SHA " + getCookie("AccessTokenStudent"),
             },
           }
         );
@@ -154,7 +151,9 @@ export default function CourseDetails() {
           "Success",
           "Course added to favorites successfully",
           "success"
-        );
+        ).then(() => {
+          window.location.reload();
+        });
       } catch (err) {
         console.error(err);
         Swal.fire("Error", "The Course is already in your favorites", "error");

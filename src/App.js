@@ -34,6 +34,8 @@ import EditProfile from "./Components/Instructor Dashboard/EditProfile";
 import EditCourse from "./Components/Instructor Dashboard/EditCourse";
 import InstructorPapers from "./Components/Dashboard/InstructorPapers";
 import Favorites from "./Student/Favorites";
+import Profile from "./Student/Profile";
+import UpdateProfile from "./Student/UpdateProfile";
 // import ResendOTP from "./Components/Sign up/ResendOTP";
 
 //========================= COOKIES =========================
@@ -159,6 +161,21 @@ export default function App() {
           ),
         },
         {
+          path: "/profile",
+          element: (
+            <ProtectedRouteStudent element={<Profile />} path="/profile" />
+          ),
+        },
+        {
+          path: "/updateProfile",
+          element: (
+            <ProtectedRouteStudent
+              element={<UpdateProfile />}
+              path="/updateProfile"
+            />
+          ),
+        },
+        {
           path: "/favorites",
           element: (
             <ProtectedRouteStudent element={<Favorites />} path="/favorites" />
@@ -166,11 +183,13 @@ export default function App() {
         },
         {
           path: "/cart",
-          element: <Cart />,
+          element: <ProtectedRouteStudent element={<Cart />} path="/cart" />,
         },
         {
           path: "/courseDetails/:id",
-          element: <CourseDetails />,
+          element: (
+            <ProtectedRoute element={<CourseDetails />} path="/courseDetails" />
+          ),
         },
       ],
     },
@@ -221,7 +240,6 @@ export default function App() {
         />
       ),
     },
-    
   ]);
   return (
     <>

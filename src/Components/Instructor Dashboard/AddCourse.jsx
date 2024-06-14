@@ -11,6 +11,7 @@ export default function AddCourse() {
   const [title, setTitle] = useState("");
   const [subtitle, setSubtitle] = useState("");
   const [image, setImage] = useState(null);
+  const [imagePreviewUrl, setImagePreviewUrl] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [duration, setDuration] = useState("");
@@ -25,13 +26,16 @@ export default function AddCourse() {
   const [fileName, setFileName] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // Event handler for file input changes
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
       setFileName(file.name);
+      setImage(file);
+      setImagePreviewUrl(URL.createObjectURL(file));
     } else {
       setFileName("");
+      setImage(null);
+      setImagePreviewUrl("");
     }
   };
 
@@ -60,8 +64,7 @@ export default function AddCourse() {
         {
           headers: {
             "Content-Type": "multipart/form-data",
-            Authorization:
-              "SHA " + getCookie("AccessTokenInstructor"),
+            Authorization: "SHA " + getCookie("AccessTokenInstructor"),
           },
         }
       );
@@ -73,12 +76,12 @@ export default function AddCourse() {
         timer: 2000,
       });
       setLoading(false);
-      // console.log(res.data);
     } catch (err) {
       console.log(err);
       setLoading(false);
     }
   };
+
   return (
     <>
       <div className={`${style.content}`}>
@@ -88,7 +91,7 @@ export default function AddCourse() {
           </div>
           <div className="col-lg-10 p-0">
             <div
-              className={`container-fluid ${style.scrollableContainer} py-3`}
+              className={`container-fluid ${style.scrollableContainer} p-5 py-3`}
             >
               <button
                 className={`d-lg-none w-50 mx-auto mb-3 ${style.toggle_left_btn}`}
@@ -105,7 +108,7 @@ export default function AddCourse() {
               >
                 Add Course
               </h2>
-
+              <hr />
               <form onSubmit={handleAddCourse}>
                 <div className="row">
                   <div className="col-lg-6">
@@ -142,27 +145,35 @@ export default function AddCourse() {
                   <div className="col-lg-6 d-flex justify-content-center align-items-center mt-3">
                     <input
                       type="file"
-                      class={`custom_file_input ${style.custom_file_input}`}
+                      accept="image/*" // Only accept image files
+                      className={`custom_file_input ${style.custom_file_input}`}
                       id="customFile"
-                      onClick={handleFileChange}
-                      onChange={(e) => setImage(e.target.files[0])}
+                      onChange={handleFileChange}
                     />
                     <label
                       htmlFor="customFile"
-                      class={`custom_file_label fw-bold w-100 ${style.custom_file_label}`}
+                      className={`custom_file_label fw-bold w-100 ${style.custom_file_label}`}
                     >
                       <i
-                        class="fa-solid fa-upload fs-3"
+                        className="fa-solid fa-upload fs-3"
                         style={{ color: "#5151D3" }}
                       ></i>
                       {"  "}
                       Upload course image
                     </label>
-                    {fileName && ( // Display the file name if a file is selected
-                      <div
-                        className={`mt-2 text-center ${style.fileNameDisplay}`}
-                      >
-                        {fileName}
+                    {imagePreviewUrl && (
+                      <div className="ms-3 col-lg-4">
+                        <img
+                          src={imagePreviewUrl}
+                          alt="Course Preview"
+                          className="img-thumbnail"
+                          // style={{
+                          //   borderRadius: "5px",
+                          //   width: "100px",
+                          //   height: "100px",
+                          // }}
+                          onLoad={() => URL.revokeObjectURL(imagePreviewUrl)}
+                        />
                       </div>
                     )}
                   </div>
@@ -208,7 +219,7 @@ export default function AddCourse() {
                   </div>
                   <div className="col-lg-6 mt-3">
                     <label htmlFor="language" className="fw-bold fs-6 d-block">
-                      Language
+                      Language of course
                     </label>
                     <input
                       type="text"

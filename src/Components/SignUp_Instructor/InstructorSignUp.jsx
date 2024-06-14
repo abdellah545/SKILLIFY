@@ -1,26 +1,11 @@
 import React, { useState } from "react";
-import rigisterPhoto from "../../assets/register.png";
+import registerPhoto from "../../assets/register.png";
 import "../Sign up/SignUp.css";
 import "../Login/Login.css";
 import axios from "axios";
 import style from "./InstructorSignUp.module.css";
-import { styled } from "@mui/material/styles";
-import Button from "@mui/material/Button";
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import baseURL from "../../BaseURL/BaseURL";
 import { setCookie } from "../../Helper/CookiesHelper";
-
-const VisuallyHiddenInput = styled("input")({
-  clip: "rect(0 0 0 0)",
-  clipPath: "inset(50%)",
-  height: 1,
-  overflow: "hidden",
-  position: "absolute",
-  bottom: 0,
-  left: 0,
-  whiteSpace: "nowrap",
-  width: 1,
-});
 
 export default function InstructorSignUp() {
   const [name, setName] = useState("");
@@ -38,6 +23,14 @@ export default function InstructorSignUp() {
     e.preventDefault();
     setError(true);
     setLoading(true);
+
+    // Password validation
+    const passwordPattern = /^(?=.*[A-Z])(?=.*[@$!%*?&])(?=.*[0-9]).{6,}$/;
+    if (!passwordPattern.test(password)) {
+      setError(true);
+      setLoading(false);
+      return;
+    }
 
     const formData = new FormData();
     formData.append("name", name);
@@ -60,7 +53,7 @@ export default function InstructorSignUp() {
         window.location.pathname = "/AuthSignUpInstructor";
         setLoading(false);
       } else {
-        console.log("error");
+        console.log("Error");
       }
     } catch (err) {
       setEmailError(err.response.status === 400 ? true : false);
@@ -69,12 +62,13 @@ export default function InstructorSignUp() {
       setLoading(false);
     }
   }
+
   return (
     <section className="section-signup p-5">
       <div className="container">
         <div className="row justify-content-center">
           <div className="col-lg-6 col-md-10 col-sm-12 p-0">
-            <img src={rigisterPhoto} alt="" className="w-100 h-100" />
+            <img src={registerPhoto} alt="" className="w-100 h-100" />
           </div>
           <div className="col-lg-6 col-md-10 col-sm-12 p-0">
             <div className="signup-form p-3">
@@ -83,7 +77,7 @@ export default function InstructorSignUp() {
                 <p className="text-center mt-3">Welcome onboard with us!</p>
                 <div className="container">
                   <div className="row justify-content-center">
-                    <div className="col-lg-6 col-md-8 col-sm-10 ">
+                    <div className="col-lg-6 col-md-8 col-sm-10">
                       <div className="d-flex flex-column w-100 align-items-center">
                         <label htmlFor="name" className="pb-2">
                           Full Name
@@ -96,7 +90,7 @@ export default function InstructorSignUp() {
                           onChange={(e) => setName(e.target.value)}
                           required
                           className="username text-center"
-                        ></input>
+                        />
                         {name === "" && error && (
                           <p style={{ color: "red", fontSize: "14px" }}>
                             *Name is required
@@ -104,7 +98,7 @@ export default function InstructorSignUp() {
                         )}
                       </div>
                     </div>
-                    <div className="col-lg-6 col-md-8 col-sm-10 ">
+                    <div className="col-lg-6 col-md-8 col-sm-10">
                       <div className="d-flex flex-column w-100 align-items-center">
                         <label htmlFor="email" className="pb-2">
                           Email
@@ -117,7 +111,7 @@ export default function InstructorSignUp() {
                           onChange={(e) => setEmail(e.target.value)}
                           required
                           className="email text-center"
-                        ></input>
+                        />
                         {email === "" && error && (
                           <p style={{ color: "red", fontSize: "14px" }}>
                             *Invalid email format
@@ -125,12 +119,12 @@ export default function InstructorSignUp() {
                         )}
                         {emailError && (
                           <p style={{ color: "red", fontSize: "14px" }}>
-                            *This email already exist
+                            *This email already exists
                           </p>
                         )}
                       </div>
                     </div>
-                    <div className="col-lg-6 col-md-8 col-sm-10 ">
+                    <div className="col-lg-6 col-md-8 col-sm-10">
                       <div className="d-flex flex-column w-100 align-items-center">
                         <label htmlFor="password" className="pb-2">
                           Password
@@ -143,20 +137,40 @@ export default function InstructorSignUp() {
                           onChange={(e) => setPassword(e.target.value)}
                           required
                           className="password text-center"
-                        ></input>
+                        />
                         {password === "" && error && (
-                          <p style={{ color: "red", fontSize: "14px" }}>
+                          <p style={{ color: "red", fontSize: "12px" }}>
                             *Password is required
+                          </p>
+                        )}
+                        {!/^(?=.*[A-Z])/.test(password) && error && (
+                          <p style={{ color: "red", fontSize: "12px" }}>
+                            *Password must contain at least one uppercase letter
+                          </p>
+                        )}
+                        {!/^(?=.*[@$!%*?&])/.test(password) && error && (
+                          <p style={{ color: "red", fontSize: "12px" }}>
+                            *Password must contain at least one special character
+                          </p>
+                        )}
+                        {!/^(?=.*[0-9])/.test(password) && error && (
+                          <p style={{ color: "red", fontSize: "12px" }}>
+                            *Password must contain at least one number
+                          </p>
+                        )}
+                        {!/^.{6,}$/.test(password) && error && (
+                          <p style={{ color: "red", fontSize: "12px" }}>
+                            *Password must be at least 6 characters
                           </p>
                         )}
                       </div>
                     </div>
-                    <div className="col-lg-6 col-md-8 col-sm-10 ">
+                    <div className="col-lg-6 col-md-8 col-sm-10">
                       <div
                         className={`d-flex flex-column w-100 align-items-center ${style.fileInputContainer}`}
                       >
                         <label
-                          htmlFor="Your image"
+                          htmlFor="image"
                           className={`pb-2 ${style.customFileInputLabel}`}
                         >
                           Image
@@ -166,19 +180,11 @@ export default function InstructorSignUp() {
                           name="image"
                           id="image"
                           className="password text-center"
-                          // placeholder="Enter your password"
-                          // value={image}
                           onChange={(e) => setImage(e.target.files[0])}
-                          required
-                        ></input>
-                        {image === "" && error && (
-                          <p style={{ color: "red", fontSize: "14px" }}>
-                            *Your image is required
-                          </p>
-                        )}
+                        />
                       </div>
                     </div>
-                    <div className="col-lg-6 col-md-8 col-sm-10 ">
+                    <div className="col-lg-6 col-md-8 col-sm-10">
                       <div className="d-flex flex-column w-100 align-items-center">
                         <label htmlFor="title" className="pb-2">
                           Title
@@ -192,7 +198,7 @@ export default function InstructorSignUp() {
                           value={title}
                           onChange={(e) => setTitle(e.target.value)}
                           required
-                        ></input>
+                        />
                         {title === "" && error && (
                           <p style={{ color: "red", fontSize: "14px" }}>
                             *Title is required
@@ -200,7 +206,7 @@ export default function InstructorSignUp() {
                         )}
                       </div>
                     </div>
-                    <div className="col-lg-6 col-md-8 col-sm-10 ">
+                    <div className="col-lg-6 col-md-8 col-sm-10">
                       <div className="d-flex flex-column w-100 align-items-center">
                         <label htmlFor="experience" className="pb-2">
                           Years Of Experience
@@ -214,7 +220,7 @@ export default function InstructorSignUp() {
                           value={experience}
                           onChange={(e) => setExperience(e.target.value)}
                           required
-                        ></input>
+                        />
                         {experience === "" && error && (
                           <p style={{ color: "red", fontSize: "14px" }}>
                             *Experience is required
@@ -222,7 +228,7 @@ export default function InstructorSignUp() {
                         )}
                       </div>
                     </div>
-                    <div className="col-lg-12 col-md-8 col-sm-10 ">
+                    <div className="col-lg-12 col-md-8 col-sm-10">
                       <div className="d-flex flex-column w-100 align-items-center">
                         <label htmlFor="Bio" className="pb-2">
                           Bio
@@ -246,7 +252,6 @@ export default function InstructorSignUp() {
                     </div>
                     <div className="d-flex justify-content-center">
                       <button
-                        // to="/register-instructor/pending"
                         type="submit"
                         className="signup-btn-form m-auto fs-5 text-center text-white"
                       >
