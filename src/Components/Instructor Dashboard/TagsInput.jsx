@@ -1,21 +1,21 @@
-import React, { useState } from 'react';
-import style from './TagsInput.module.css';  // Import or define CSS styles here
+import React, { useState } from "react";
+import style from "./TagsInput.module.css"; // Import or define CSS styles here
 
 function TagsInput({ value, setValue, placeholder }) {
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState("");
 
   const handleKeyDown = (e) => {
-    if (e.key === 'Enter' && input.trim()) {
+    if (e.key === "Enter" && input.trim()) {
       e.preventDefault();
       if (!value.includes(input.trim())) {
         setValue([...value, input.trim()]);
-        setInput('');
+        setInput("");
       }
     }
   };
 
   const removeTag = (tag) => {
-    setValue(value.filter(item => item !== tag));
+    setValue(value.filter((item) => item !== tag));
   };
 
   return (
@@ -24,7 +24,13 @@ function TagsInput({ value, setValue, placeholder }) {
         {value.map((tag, index) => (
           <li key={index}>
             {tag}
-            <button type="button" className={style.deleteButton} onClick={() => removeTag(tag)}>x</button>
+            <button
+              type="button"
+              className={style.deleteButton}
+              onClick={() => removeTag(tag)}
+            >
+              x
+            </button>
           </li>
         ))}
       </ul>

@@ -1,7 +1,26 @@
-import React from 'react'
+import React from "react";
+import ChatApp from "../../chatBot/ChatBot";
 
 export default function Footer() {
   return (
-    <div style={{color:"#5151d3", textAlign:"center", fontSize:"20px", fontWeight:"bold",height:"50px",lineHeight:"50px",width:"100%",backgroundColor:"white" }} className='fixed-bottom'>All Rights Reserved</div>
-  )
+    <div style={{ position: "relative" }}>
+      <div
+        style={{
+          color: "#5151d3",
+          textAlign: "center",
+          fontSize: "15px",
+          fontWeight: "bold",
+
+          // lineHeight: "40px",
+          width: "100%",
+          backgroundColor: "white",
+          margin: "auto",
+        }}
+        className="fixed-bottom"
+      >
+        All Rights Reserved
+      </div>
+      {/* <ChatApp /> */}
+    </div>
+  );
 }

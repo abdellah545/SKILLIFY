@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import baseURL from "../../BaseURL/BaseURL";
+import { getCookie } from "../../Helper/CookiesHelper";
 
 export default function UploadPapers() {
   const [CV, setCv] = useState(null);
@@ -28,7 +29,7 @@ export default function UploadPapers() {
           headers: {
             "Content-Type": "multipart/form-data",
             Authorization:
-              "SHA " + sessionStorage.getItem("VerifiedLoginInstructorToken"),
+              "SHA " + getCookie("VerifiedLoginInstructorToken"),
           },
         }
       );

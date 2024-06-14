@@ -1,0 +1,35 @@
+.profile_info {
+  border: 1px solid #5151d3;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 10px;
+  background-color: white;
+  box-shadow: 0 0 20px 10px rgba(0, 0, 0, 0.2);
+}
+
+.label {
+  color: #5151d3;
+  font-weight: bold;
+}
+
+.input_field {
+  border: 2px solid #5151d3;
+  border-radius: 30px;
+  padding: 8px;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.input_field:focus {
+  outline: none;
+}
+
+.selected_image {
+  width: 100px;
+  border-radius: 20px;
+  margin: 0 auto 10px auto;
+}
+
+.header {
+  color: #5151d3;
+}

@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import baseURL from "../BaseURL/BaseURL";
 import Swal from "sweetalert2";
 import "../Components/loading.css";
@@ -8,7 +9,7 @@ import { getCookie, setCookie } from "../Helper/CookiesHelper";
 export default function Cart() {
   const [cart, setCart] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [deleteloading, setDeleteLoading] = useState(false);
+  const [removingCourseId, setRemovingCourseId] = useState(null); // State to manage which course is being removed
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(null);
 
@@ -19,8 +20,7 @@ export default function Cart() {
         const response = await axios.get(`${baseURL}/users/cart`, {
           headers: {
             "Content-Type": "application/json",
-            Authorization:
-              "SHA " + getCookie("AccessTokenStudent"),
+            Authorization: "SHA " + getCookie("AccessTokenStudent"),
           },
         });
         setCart(response.data);
@@ -35,7 +35,7 @@ export default function Cart() {
   }, []);
 
   const removeCourseFromCart = async (courseId) => {
-    setDeleteLoading(true);
+    setRemovingCourseId(courseId);
     try {
       await axios.delete(`${baseURL}/users/cart/${courseId}`, {
         headers: {
@@ -43,6 +43,7 @@ export default function Cart() {
           Authorization: "SHA " + getCookie("AccessTokenStudent"),
         },
       });
+
       // Retrieve the existing cart from sessionStorage
       const currentCart = JSON.parse(getCookie("cart") || "[]");
 
@@ -57,30 +58,57 @@ export default function Cart() {
         (item) => item._id !== courseId
       );
       setCart({ ...cart, cart: updatedCartDetails });
-      Swal.fire("Success", "Course removed from cart successfully", "success");
-      setDeleteLoading(false);
-      setTimeout(() => {
+      Swal.fire(
+        "Success",
+        "Course removed from cart successfully",
+        "success"
+      ).then(() => {
         window.location.reload();
-      }, 1000);
+      });
+      setRemovingCourseId(null);
     } catch (err) {
       setError("Failed to remove the course");
-      // Optionally refresh the cart details or show a more specific error
       console.error(err);
-      setDeleteLoading(false);
+      setRemovingCourseId(null);
     }
   };
 
   if (loading)
     return (
       <div className="redirect">
-        <div class="loader"></div>
+        <div className="loader"></div>
       </div>
     ); // Loading message
+
   if (error) return <div>Error: {error.message}</div>;
+
   if (!cart || cart.cart.length === 0)
     return (
-      <div className="text-center fs-1 fw-bold d-flex justify-content-center">
-        No course found!
+      <div className="container-fluid my-5">
+        <h1 className="fw-bold" style={{ color: "#5151D3" }}>
+          Shopping Cart
+        </h1>
+        <div className="text-center fs-1 fw-bold d-flex justify-content-center">
+          Your cart is empty!
+        </div>
+        <div className="col-lg-4 col-md-12 col-sm-12 mt-5">
+          <hr />
+          <div
+            className="card text-center p-5"
+            style={{ boxShadow: "0 4px 6px rgba(0, 0, 0, 0.2)" }}
+          >
+            <h3 className="fw-bold mb-5" style={{ color: "#5151D3" }}>
+              Total: <span className="text-black">$0</span>
+            </h3>
+            <button
+              className="btn btn-primary w-75 mx-auto fw-bold mb-3 py-3"
+              disabled
+            >
+              Checkout
+            </button>
+          </div>
+          <hr />
+        </div>
       </div>
     );
 
@@ -95,9 +123,7 @@ export default function Cart() {
       });
       // Assuming checkout is successful, add course IDs to 'courses' in sessionStorage
       const courseIds = cart.cart.map((item) => item._id); // Extract course IDs from cart
-      const existingCourses = JSON.parse(
-        getCookie("courses") || "[]"
-      );
+      const existingCourses = JSON.parse(getCookie("courses") || "[]");
       const updatedCourses = [...new Set([...existingCourses, ...courseIds])]; // Combine and remove duplicates
       setCookie("courses", JSON.stringify(updatedCourses));
       // Set the cart in sessionStorage to an empty array after a successful checkout
@@ -123,26 +149,33 @@ export default function Cart() {
             {cart.cart.map((item) => (
               <div key={item._id} className="card mb-3">
                 <div className="row g-0">
-                  <div
-                    className="col-md-4"
-                    style={{
-                      backgroundImage: `url(${item.image})`,
-                      backgroundPosition: "center",
-                      objectFit: "cover",
-                      backgroundSize: "cover",
-                      boxShadow: "0 4px 4px rgba(0, 0, 0, 0.1)",
-                    }}
-                  >
-                    <img
-                      src={item.image}
-                      className="img-fluid rounded"
-                      alt={item.title}
-                      style={{
-                        objectFit: "cover",
-                        height: "250px",
-                        width: "100%",
-                      }}
-                    />
+                  <div className="col-md-4">
+                    <Link
+                      to={`/courseDetails/${item._id}`}
+                      style={{ textDecoration: "none" }}
+                    >
+                      <div
+                        className="card-img"
+                        style={{
+                          backgroundImage: `url(${item.image})`,
+                          backgroundPosition: "center",
+                          objectFit: "cover",
+                          backgroundSize: "cover",
+                          boxShadow: "0 4px 4px rgba(0, 0, 0, 0.1)",
+                        }}
+                      >
+                        <img
+                          src={item.image}
+                          className="img-fluid rounded"
+                          alt={item.title}
+                          style={{
+                            objectFit: "cover",
+                            height: "250px",
+                            width: "100%",
+                          }}
+                        />
+                      </div>
+                    </Link>
                   </div>
                   <div className="col-md-8">
                     <div className="card-body">
@@ -161,8 +194,11 @@ export default function Cart() {
                         <button
                           className="btn btn-danger"
                           onClick={() => removeCourseFromCart(item._id)}
+                          disabled={removingCourseId === item._id}
                         >
-                          {deleteloading ? "Removing..." : "Remove from cart"}
+                          {removingCourseId === item._id
+                            ? "Removing..."
+                            : "Remove from cart"}
                         </button>
                       </div>
                     </div>

@@ -8,7 +8,14 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import baseURL from "../../BaseURL/BaseURL";
 import { setCookie } from "../../Helper/CookiesHelper";
+
+import { useForm } from "react-hook-form";
 export default function Login() {
+  const { register, handleSubmit } = useForm();
+  const onSubmit = (data) => {
+    console.log(data);
+  };
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState(false);
@@ -84,9 +91,10 @@ export default function Login() {
                     id="email"
                     aria-describedby="emailHelp"
                     onChange={(e) => setEmail(e.target.value)}
+                    
                   />
                 </div>
-                {emailError && (
+                {/* {emailError && (
                   <p
                     style={{
                       color: "red",
@@ -96,7 +104,7 @@ export default function Login() {
                   >
                     *Email is incorrect
                   </p>
-                )}
+                )} */}
                 <div className="mb-4 w-75 m-auto">
                   <div className="text-center">
                     <label htmlFor="password" className="">

@@ -3,9 +3,12 @@ import React, { useEffect, useState } from "react";
 import baseURL from "../BaseURL/BaseURL";
 import { Link } from "react-router-dom";
 import { getCookie } from "../Helper/CookiesHelper";
+import "../Components/loading.css"; // Ensure this CSS file contains the styles for the loading spinner
 
 export default function Favorites() {
   const [favorites, setFavorites] = useState([]); // State to hold favorite courses
+  const [loading, setLoading] = useState(true); // State to manage loading
+  const [error, setError] = useState(null); // State to manage errors
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -20,11 +23,25 @@ export default function Favorites() {
       .get(`${baseURL}/users/favorite`, { headers })
       .then((response) => {
         setFavorites(response.data.favorite); // Assuming the response has a 'favorite' array
+        setLoading(false); // Set loading to false after data is fetched
       })
       .catch((error) => {
         console.error("Error fetching favorites", error);
+        setError(error); // Set error state
+        setLoading(false); // Set loading to false after error
       });
   }, []);
+
+  if (loading)
+    return (
+      <div className="redirect">
+        <div className="loader"></div>
+      </div>
+    ); // Loading message
+  if (error) return <div>Error: {error.message}</div>;
+  if (!favorites.length)
+    return <div className="text-center fw-bold fs-1">No favorite courses found!</div>;
+
   return (
     <>
       <div className="container py-5">

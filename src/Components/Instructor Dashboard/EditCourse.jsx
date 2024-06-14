@@ -1,8 +1,26 @@
-import React from "react";
+import React, { useState, useRef } from "react";
 import style from "./EditCourse.module.css";
 import SidebarInstructor from "./SidebarInstructor";
+import TagsInput from "./TagsInput";
 
 export default function EditCourse() {
+  const [subtitle, setSubtitle] = useState("");
+  const [topics, setTopics] = useState([]);
+  const [keywords, setKeywords] = useState([]);
+  const [accrued_skills, setAccrued_skills] = useState([]);
+  const [image, setImage] = useState(null);
+  const [imagePreviewUrl, setImagePreviewUrl] = useState("");
+  const [loading, setLoading] = useState(false);
+  const fileInputRef = useRef(null);
+
+  const handleImageChange = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setImage(file);
+      setImagePreviewUrl(URL.createObjectURL(file));
+    }
+  };
+
   return (
     <>
       <div className={style.content}>
@@ -29,6 +47,121 @@ export default function EditCourse() {
               >
                 Edit Course
               </h2>
+              <hr />
+              <form>
+                <div className="container">
+                  <div className="row justify-content-center">
+                    <div className="col-lg-12 d-flex justify-content-center align-items-center mt-3">
+                      <div className="col-lg-6">
+                        <input
+                          type="file"
+                          accept="image/*" // Only accept image files
+                          className={`custom_file_input ${style.custom_file_input}`}
+                          id="customFile"
+                          ref={fileInputRef}
+                          onChange={handleImageChange}
+                        />
+                        <label
+                          htmlFor="customFile"
+                          className={`custom_file_label fw-bold w-100 ${style.custom_file_label}`}
+                        >
+                          <i
+                            className="fa-solid fa-upload fs-3"
+                            style={{ color: "#5151D3" }}
+                          ></i>
+                          {"  "}
+                          Upload course image
+                        </label>
+                        {imagePreviewUrl && (
+                          <div className="mt-3 text-center">
+                            <img
+                              src={imagePreviewUrl}
+                              alt="Course Preview"
+                              className="img-thumbnail d-block mx-auto"
+                              style={{
+                                borderRadius: "5px",
+                                width: "200px",
+                                height: "200px",
+                              }}
+                              onLoad={() =>
+                                URL.revokeObjectURL(imagePreviewUrl)
+                              }
+                            />
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                    <div>
+                      <br />
+                    </div>
+
+                    <div className="col-lg-5 col-md-12 col-sm-12">
+                      <label
+                        htmlFor="subtitle"
+                        className="fw-bold fs-6 d-block"
+                      >
+                        Subtitle
+                      </label>
+                      <input
+                        type="text"
+                        className={`mt-1 ${style.input}`}
+                        id="subtitle"
+                        placeholder="Enter subtitle"
+                        value={subtitle}
+                        onChange={(e) => setSubtitle(e.target.value)}
+                      />
+                    </div>
+
+                    <div>
+                      <br />
+                    </div>
+                    <div className="col-lg-5 col-md-12 col-sm-12">
+                      <label htmlFor="topics" className="fw-bold fs-6 d-block">
+                        Topics
+                      </label>
+                      <TagsInput
+                        value={topics}
+                        setValue={setTopics}
+                        placeholder="Add topics"
+                      />
+                    </div>
+
+                    <div>
+                      <br />
+                    </div>
+
+                    <div className="col-lg-5 col-md-12 col-sm-12">
+                      <label
+                        htmlFor="keywords"
+                        className="fw-bold fs-6 d-block"
+                      >
+                        Keywords
+                      </label>
+                      <TagsInput
+                        value={keywords}
+                        setValue={setKeywords}
+                        placeholder="Add keywords"
+                      />
+                    </div>
+                    <div>
+                      <br />
+                    </div>
+                    <div className="col-lg-5 col-md-12 col-sm-12">
+                      <label
+                        htmlFor="skillsAccrued"
+                        className="fw-bold fs-6 d-block"
+                      >
+                        Skills Accrued
+                      </label>
+                      <TagsInput
+                        value={accrued_skills}
+                        setValue={setAccrued_skills}
+                        placeholder="Add skills accrued"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </form>
             </div>
           </div>
         </div>

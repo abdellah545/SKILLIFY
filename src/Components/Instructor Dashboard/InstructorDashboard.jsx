@@ -1,12 +1,37 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import style from "./InstructorDashboard.module.css";
 import logo from "../../assets/icon-logo.png";
 import courseImg from "../../assets/course.png";
 import SidebarInstructor from "./SidebarInstructor";
+import axios from "axios";
+import { getCookie } from "../../Helper/CookiesHelper";
+import baseURL from "../../BaseURL/BaseURL";
 
 export default function InstructorDashboard() {
-  
+  const [courses, setCourses] = useState([]);
+  useEffect(() => {
+    const fetchCourses = async () => {
+      try {
+        const response = await axios.get(
+          `${baseURL}/instructors/courses`,
+
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "SHA " + getCookie("AccessTokenInstructor"),
+            },
+          }
+        );
+        setCourses(response.data);
+      } catch (error) {
+        console.error("There was an error fetching the courses!", error);
+      }
+    };
+
+    fetchCourses();
+  }, []);
+
   return (
     <>
       <div className={`${style.content}`}>
@@ -18,7 +43,7 @@ export default function InstructorDashboard() {
           <div className="col-lg-10 p-0">
             <div className={`col-lg-12 p-0 ${style.scrollableContainer}`}>
               <div className="row pt-3 mx-2 g-0">
-              <button
+                <button
                   className={`d-lg-none w-50 mx-auto mb-3 ${style.toggle_left_btn}`}
                   type="button"
                   data-bs-toggle="offcanvas"
@@ -27,18 +52,32 @@ export default function InstructorDashboard() {
                 >
                   Side Bar
                 </button>
-                <div className="col-lg-3 col-md-12 col-sm-12">
-                  <div class="card p-0">
-                    <img src={courseImg} class="card-img img-fluid" alt="" />
-                    <div class="card-body">
-                      <h5 class="card-title text-center">Card title</h5>
-                      <p class="card-text">
-                        Some quick example text to build on the card title and
-                        make up the bulk of the card's content.
-                      </p>
+                {courses.length > 0 ? (
+                  courses.map((course) => (
+                    <div
+                      key={course.id}
+                      className="col-lg-3 col-md-12 col-sm-12"
+                    >
+                      <div className="card p-0">
+                        <img
+                          src={courseImg}
+                          className="card-img img-fluid"
+                          alt=""
+                        />
+                        <div className="card-body">
+                          <h5 className="card-title text-center">
+                            {course.title}
+                          </h5>
+                          <p className="card-text">{course.description}</p>
+                        </div>
+                      </div>
                     </div>
+                  ))
+                ) : (
+                  <div className="col-12 text-center">
+                    <p className="mt-3 fw-bold fs-1">No courses yet</p>
                   </div>
-                </div>
+                )}
               </div>
             </div>
           </div>

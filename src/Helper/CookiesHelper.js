@@ -58,11 +58,18 @@ const setCookie = (name, value, expirationDate) => {
   // Encode the value
   const encodedValue = encodeURIComponent(value);
 
-  // Parse the expiration date string into a Date object
-  const expires = new Date(expirationDate);
-
-  // Convert the expiration date to UTC string
-  const expiresUTC = expires.toUTCString();
+  // Set default expiration date to one year from now if not provided
+  let expiresUTC;
+  if (!expirationDate) {
+    const expires = new Date();
+    expires.setFullYear(expires.getFullYear() + 1);
+    expiresUTC = expires.toUTCString();
+  } else {
+    // Parse the expiration date string into a Date object
+    const expires = new Date(expirationDate);
+    // Convert the expiration date to UTC string
+    expiresUTC = expires.toUTCString();
+  }
 
   // Set the cookie with the provided name, value, and expiration date
   document.cookie = `${name}=${encodedValue};expires=${expiresUTC};path=/`;
