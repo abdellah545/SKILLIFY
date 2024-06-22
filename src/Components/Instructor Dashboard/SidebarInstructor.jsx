@@ -11,6 +11,8 @@ export default function SidebarInstructor() {
     deleteCookie("AccessTokenInstructor");
     deleteCookie("InstructorImage");
     deleteCookie("InstructorName");
+    deleteCookie("VerifiedSignupInstructorToken");
+    deleteCookie("LoginInstructorToken")
 
     window.location.pathname = "/";
   };
@@ -110,7 +112,8 @@ export default function SidebarInstructor() {
                               padding: "10px",
                             }}
                           >
-                            <i className="fa-solid fa-folder-plus"></i> Add Course
+                            <i className="fa-solid fa-folder-plus"></i> Add
+                            Course
                           </li>
                         </Link>
                       </>
@@ -128,13 +131,14 @@ export default function SidebarInstructor() {
                             className={`mb-3 fw-bold`}
                             style={{ padding: "10px" }}
                           >
-                            <i className="fa-solid fa-folder-plus"></i> Add Course
+                            <i className="fa-solid fa-folder-plus"></i> Add
+                            Course
                           </li>
                         </Link>
                       </>
                     )}
 
-                    {window.location.pathname ===
+                    {/* {window.location.pathname ===
                     "/instructor-dashboard/edit-course" ? (
                       <>
                         <Link
@@ -171,7 +175,7 @@ export default function SidebarInstructor() {
                           </li>
                         </Link>
                       </>
-                    )}
+                    )} */}
 
                     {window.location.pathname ===
                     "/instructor-dashboard/edit-profile" ? (
@@ -191,7 +195,8 @@ export default function SidebarInstructor() {
                               padding: "10px",
                             }}
                           >
-                            <i className="fa-solid fa-user-pen"></i> Edit Profile
+                            <i className="fa-solid fa-user-pen"></i> Edit
+                            Profile
                           </li>
                         </Link>
                       </>
@@ -206,7 +211,8 @@ export default function SidebarInstructor() {
                             className={`mb-3 fw-bold`}
                             style={{ padding: "10px" }}
                           >
-                            <i className="fa-solid fa-user-pen"></i> Edit Profile
+                            <i className="fa-solid fa-user-pen"></i> Edit
+                            Profile
                           </li>
                         </Link>
                       </>

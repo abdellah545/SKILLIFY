@@ -62,6 +62,8 @@ export default function Header() {
     deleteCookie('gender');
     deleteCookie('createdAt');
     deleteCookie('updatedAt');
+    deleteCookie('github');
+    sessionStorage.clear();
     setLoading(false);
     window.location.pathname = '/';
   };
@@ -232,15 +234,14 @@ export default function Header() {
 
                   >
                     <img
-                      src={getCookie('userImage')}
-                      alt="User"
+                      src={sessionStorage.getItem("userImage")}
+                      alt="userImage"
                       width={30}
                       height={30}
                       className="me-2 rounded-circle"
                     />
                     <span
                       className="fw-bold"
-                      // style={{ fontSize: '0.8rem' }}
                     >
                       {getCookie('userName')}
                     </span>

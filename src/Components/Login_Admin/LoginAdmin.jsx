@@ -59,7 +59,7 @@ export default function Login() {
           </div>
           <div className="col-lg-6 col-md-8 col-sm-10 p-0">
             <div className="signup-form p-3">
-              <h1 className="text-center my-2">Welcome</h1>
+              <h1 className="text-center my-2">Welcome Admin</h1>
               <form onSubmit={handleLogin} className="d-flex flex-column mt-5">
                 <br />
                 <div className="mb-4 w-75 m-auto">

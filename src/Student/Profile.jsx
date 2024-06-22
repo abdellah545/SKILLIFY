@@ -66,13 +66,15 @@ export default function Profile() {
             <div className={`row ${style.profile_info}`}>
               <div className="col-lg-3 col-md-3">
                 <img
-                  src={getCookie("userImage")}
+                  src={sessionStorage.getItem("userImage")}
                   alt="Profile"
                   className="img-fluid"
+                  width={"250px"}
+                  // height={100}
                 />
               </div>
               <div className="col-lg-9 col-md-9">
-                <h1 className="fw-bold">{getCookie("userName")}</h1>
+                <h4 className="fw-bold">{getCookie("userName")}</h4>
                 <p className="fw-bold" style={{ color: "#5151D3" }}>
                   Gender :{" "}
                   <span style={{ color: "black" }}>{getCookie("gender")}</span>

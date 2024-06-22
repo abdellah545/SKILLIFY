@@ -1,9 +1,15 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import style from "./EditCourse.module.css";
 import SidebarInstructor from "./SidebarInstructor";
 import TagsInput from "./TagsInput";
+import { useParams } from "react-router-dom";
+import axios from "axios";
+import { getCookie } from "../../Helper/CookiesHelper";
+import baseURL from "../../BaseURL/BaseURL";
+import Swal from "sweetalert2";
 
 export default function EditCourse() {
+  const { id } = useParams();
   const [subtitle, setSubtitle] = useState("");
   const [topics, setTopics] = useState([]);
   const [keywords, setKeywords] = useState([]);
@@ -13,11 +19,81 @@ export default function EditCourse() {
   const [loading, setLoading] = useState(false);
   const fileInputRef = useRef(null);
 
+  useEffect(() => {
+    fetchCourseDetails();
+  }, [id]);
+
+  const fetchCourseDetails = async () => {
+    try {
+      const response = await axios.get(`${baseURL}/instructors/courses/${id}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "SHA " + getCookie("AccessTokenInstructor"),
+        },
+      });
+      const course = response.data;
+      setSubtitle(course.subtitle);
+      setTopics(course.topics);
+      setKeywords(course.keywords);
+      setAccrued_skills(course.accrued_skills);
+      setImagePreviewUrl(course.image);
+    } catch (error) {
+      console.error("There was an error fetching the course details!", error);
+    }
+  };
+
   const handleImageChange = (e) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
       setImage(file);
       setImagePreviewUrl(URL.createObjectURL(file));
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    const formData = new FormData();
+    formData.append("subtitle", subtitle);
+    formData.append("topics", JSON.stringify(topics));
+    formData.append("keywords", JSON.stringify(keywords));
+    formData.append("accrued_skills", JSON.stringify(accrued_skills));
+    if (image) {
+      formData.append("image", image);
+    }
+
+    try {
+      console.log("Sending request to update course", id);
+      const response = await axios.patch(
+        `${baseURL}/instructors/courses/update/${id}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: "SHA " + getCookie("AccessTokenInstructor"),
+          },
+        }
+      );
+      console.log("Response:", response);
+      Swal.fire({
+        title: "Success!",
+        text: "Course updated successfully!",
+        icon: "success",
+        confirmButtonText: "OK",
+      }).then(() => {
+        window.location.reload();
+        window.location.pathname = "/instructor-dashboard";
+      });
+    } catch (error) {
+      console.error("There was an error updating the course!", error);
+      if (error.response) {
+        console.error("Response data:", error.response.data);
+        console.error("Response status:", error.response.status);
+        console.error("Response headers:", error.response.headers);
+      }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -48,14 +124,14 @@ export default function EditCourse() {
                 Edit Course
               </h2>
               <hr />
-              <form>
+              <form onSubmit={handleSubmit}>
                 <div className="container">
                   <div className="row justify-content-center">
                     <div className="col-lg-12 d-flex justify-content-center align-items-center mt-3">
                       <div className="col-lg-6">
                         <input
                           type="file"
-                          accept="image/*" // Only accept image files
+                          accept="image/*"
                           className={`custom_file_input ${style.custom_file_input}`}
                           id="customFile"
                           ref={fileInputRef}
@@ -94,7 +170,6 @@ export default function EditCourse() {
                     <div>
                       <br />
                     </div>
-
                     <div className="col-lg-5 col-md-12 col-sm-12">
                       <label
                         htmlFor="subtitle"
@@ -111,7 +186,6 @@ export default function EditCourse() {
                         onChange={(e) => setSubtitle(e.target.value)}
                       />
                     </div>
-
                     <div>
                       <br />
                     </div>
@@ -125,11 +199,9 @@ export default function EditCourse() {
                         placeholder="Add topics"
                       />
                     </div>
-
                     <div>
                       <br />
                     </div>
-
                     <div className="col-lg-5 col-md-12 col-sm-12">
                       <label
                         htmlFor="keywords"
@@ -158,6 +230,15 @@ export default function EditCourse() {
                         setValue={setAccrued_skills}
                         placeholder="Add skills accrued"
                       />
+                    </div>
+                    <div className="col-lg-12 text-center mt-4">
+                      <button
+                        type="submit"
+                        className="btn btn-primary"
+                        disabled={loading}
+                      >
+                        {loading ? "Updating..." : "Update Course"}
+                      </button>
                     </div>
                   </div>
                 </div>
