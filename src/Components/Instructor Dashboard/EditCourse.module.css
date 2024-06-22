@@ -42,3 +42,9 @@
   cursor: pointer;
   border: #5151d3 2px solid;
 }
+
+.scrollableContainer {
+  max-height: 100vh; /* Adjust this value as needed */
+  overflow-y: auto;
+  padding-right: 15px; /* Optional: to prevent content from being cut off by scrollbar */
+}

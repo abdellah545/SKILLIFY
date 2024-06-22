@@ -47,20 +47,20 @@ export default function Auth() {
 
       // Set cookies with an expiration. Assuming you want these to last for 1 day
       const oneDay = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
-      setCookie("AccessTokenStudent", res.data.token, oneDay);
-      setCookie("userName", res.data.user.name, oneDay);
-      setCookie("userEmail", res.data.user.email, oneDay);
-      setCookie("userImage", res.data.user.image, oneDay);
-      setCookie("phone", res.data.user.phone, oneDay);
-      setCookie("gender", res.data.user.gender, oneDay);
-      setCookie("createdAt", res.data.user.createdAt, oneDay);
-      setCookie("updatedAt", res.data.user.updatedAt, oneDay);
+      setCookie("AccessTokenStudent", res.data.token);
+      setCookie("userName", res.data.user.name);
+      setCookie("userEmail", res.data.user.email);
+      sessionStorage.setItem("userImage", res.data.user.image);
+      setCookie("phone", res.data.user.phone);
+      setCookie("gender", res.data.user.gender);
+      setCookie("createdAt", res.data.user.createdAt);
+      setCookie("updatedAt", res.data.user.updatedAt);
 
       // Serialize and store the arrays in cookies
-      setCookie("favorites", JSON.stringify(res.data.user.favorite), oneDay);
-      setCookie("wishlist", JSON.stringify(res.data.user.wishlist), oneDay);
-      setCookie("courses", JSON.stringify(res.data.user.courses), oneDay);
-      setCookie("cart", JSON.stringify(res.data.user.cart), oneDay);
+      setCookie("favorites", JSON.stringify(res.data.user.favorite));
+      setCookie("wishlist", JSON.stringify(res.data.user.wishlist));
+      setCookie("courses", JSON.stringify(res.data.user.courses));
+      setCookie("cart", JSON.stringify(res.data.user.cart));
       deleteCookie("LoginToken");
       window.location.pathname = "/categories";
       setLoading(false);

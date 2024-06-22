@@ -45,7 +45,7 @@ export default function MyCourses() {
   return (
     <div className="container my-5 pb-5">
       <h1 className="text-center fw-bold mb-3" style={{ color: "#5151D3" }}>
-        Your SKILLIFY Courses
+        Your Courses
       </h1>
       <hr />
       <div className="d-flex justify-content-between">

@@ -1,4 +1,4 @@
-.pagination{
+.pagination {
   display: flex;
   justify-content: center;
   margin-bottom: 20px;
@@ -9,18 +9,16 @@
   border-radius: 10px;
   height: 40px;
   font-weight: bold;
-  border:1px solid black;
-  transition: all  0.3s ease-in-out;  
+  border: 1px solid black;
+  transition: all 0.3s ease-in-out;
 }
-.pagination button:hover{
+.pagination button:hover {
   background-color: rgb(196, 192, 192);
-
 }
-.pagination .currentPage:hover{
+.pagination .currentPage:hover {
   background-color: rgb(78, 77, 77);
-
 }
-.currentPage{
+.currentPage {
   background-color: black;
   color: white;
 }
@@ -29,4 +27,19 @@
   .pagination button {
     width: 10%;
   }
+}
+
+.ReactModal__Overlay {
+  background-color: rgba(0, 0, 0, 0.75);
+}
+
+.ReactModal__Content {
+  top: 50%;
+  left: 50%;
+  right: auto;
+  bottom: auto;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  max-width: 500px;
 }

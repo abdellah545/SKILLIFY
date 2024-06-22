@@ -21,6 +21,8 @@
 
 .scrollableContainer {
   height: 100vh; /* Adjust the height as needed */
+  overflow-y: auto;
+  padding-right: 15px; /* Optional: to prevent content from being cut off by scrollbar */
 }
 
 .list {

@@ -66,6 +66,7 @@ export default function UploadPapers() {
                             </label>
                             <input
                               type="file"
+                              accept="image/*"
                               className="email-login my-3"
                               id="cv"
                               placeholder="Enter your email"
@@ -84,6 +85,7 @@ export default function UploadPapers() {
                             </label>
                             <input
                               type="file"
+                              accept="image/*"
                               className="email-login my-3"
                               id="graduationCertificate"
                               placeholder="Enter your email"
@@ -104,6 +106,7 @@ export default function UploadPapers() {
                             </label>
                             <input
                               type="file"
+                              accept="image/*"
                               className="email-login my-3"
                               id="id"
                               placeholder="Enter your email"

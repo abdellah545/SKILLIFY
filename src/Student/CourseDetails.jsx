@@ -5,6 +5,10 @@ import baseURL from "../BaseURL/BaseURL";
 import { useParams } from "react-router-dom";
 import "../Components/loading.css";
 import { getCookie, setCookie } from "../Helper/CookiesHelper";
+import Modal from "react-bootstrap/Modal";
+import style from "./Categories.module.css";
+import logo from "../assets/icon-logo.png";
+import { Button } from "react-bootstrap";
 
 export default function CourseDetails() {
   const [course, setCourse] = useState(null);
@@ -14,31 +18,65 @@ export default function CourseDetails() {
   const [isFavorite, setIsFavorite] = useState(false);
   const [isPurchased, setIsPurchased] = useState(false);
   const [isInCart, setIsInCart] = useState(false);
+  const [courseContent, setCourseContent] = useState([]);
+  const [selectedVideo, setSelectedVideo] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [loadingContent, setLoadingContent] = useState(false);
 
   const { id } = useParams();
 
+  const fetchCourseContent = async () => {
+    setLoadingContent(true);
+    const token = getCookie("AccessTokenStudent");
+    console.log("Token:", token); // Debugging: Log the token to the console
+
+    try {
+      const response = await axios.get(
+        `${baseURL}/users/courses/content/${id}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "SHA " + token,
+          },
+        }
+      );
+      setCourseContent(response.data);
+      setLoadingContent(false);
+    } catch (error) {
+      console.error("Error fetching course content:", error);
+      setError(error);
+      setLoadingContent(false);
+    }
+  };
+
   useEffect(() => {
     const fetchCourseDetails = async () => {
+      const token = getCookie("AccessTokenStudent");
+      console.log("Token:", token); // Debugging: Log the token to the console
+
       try {
         const response = await axios.get(`${baseURL}/users/courses/${id}`, {
           headers: {
             "Content-Type": "application/json",
-            Authorization: "SHA " + getCookie("AccessTokenStudent"),
+            Authorization: "SHA " + token,
           },
         });
         setCourse(response.data);
         setLoading(false);
 
-        // Check if the id is in the purchased array
         const courses = JSON.parse(getCookie("courses") || "[]");
         setIsPurchased(courses.includes(id));
 
-        // Check if the id is in the cart array
         const cart = JSON.parse(getCookie("cart") || "[]");
         setIsInCart(cart.includes(id));
 
         const favoriteIds = JSON.parse(getCookie("favorites") || "[]");
-        setIsFavorite(favoriteIds.includes(id)); // Check if the id is in the favorites array
+        setIsFavorite(favoriteIds.includes(id));
+
+        // Fetch course content only if the course is purchased
+        if (courses.includes(id)) {
+          fetchCourseContent();
+        }
       } catch (err) {
         setError("Failed to fetch course details");
         setLoading(false);
@@ -48,18 +86,33 @@ export default function CourseDetails() {
     fetchCourseDetails();
   }, [id]);
 
-  if (loading)
-    return (
-      <div className="redirect">
-        <div class="loader"></div>
-      </div>
-    ); // Loading message
-  if (error) return <div>Error: {error}</div>;
-  if (!course) return <div>No course found!</div>;
+  const handleVideoClick = (video) => {
+    setSelectedVideo(video);
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setSelectedVideo(null);
+  };
+
+  const formatDate = (dateString) => {
+    const options = {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  };
 
   const handleAddToCart = async (e) => {
     setAddLoading(true);
     e.preventDefault();
+    const token = getCookie("AccessTokenStudent");
+    console.log("Token:", token); // Debugging: Log the token to the console
+
     try {
       await axios.post(
         `${baseURL}/users/cart/${id}`,
@@ -67,7 +120,7 @@ export default function CourseDetails() {
         {
           headers: {
             "Content-Type": "application/json",
-            Authorization: "SHA " + getCookie("AccessTokenStudent"),
+            Authorization: "SHA " + token,
           },
         }
       );
@@ -77,14 +130,11 @@ export default function CourseDetails() {
         }
       );
       setAddLoading(false);
-      // Retrieve the existing cart from sessionStorage or initialize a new one
       const cart = JSON.parse(getCookie("cart") || "[]");
 
-      // Add the current course ID to the cart array
       if (!cart.includes(id)) {
-        // Check if the course ID is not already in the cart
         cart.push(id);
-        setCookie("cart", JSON.stringify(cart)); // Update the cart in sessionStorage
+        setCookie("cart", JSON.stringify(cart));
       }
     } catch (err) {
       console.error(err);
@@ -96,14 +146,16 @@ export default function CourseDetails() {
       setAddLoading(false);
     }
   };
+
   const toggleFavorite = async () => {
     let favorites = JSON.parse(getCookie("favorites") || "[]");
+    const token = getCookie("AccessTokenStudent");
+    console.log("Token:", token); // Debugging: Log the token to the console
 
     if (isFavorite) {
-      // Remove from favorites
       const index = favorites.indexOf(id);
       if (index > -1) {
-        favorites.splice(index, 1); // Remove the course from array
+        favorites.splice(index, 1);
       }
       setCookie("favorites", JSON.stringify(favorites));
       setIsFavorite(false);
@@ -112,7 +164,7 @@ export default function CourseDetails() {
         await axios.delete(`${baseURL}/users/favorite/${id}`, {
           headers: {
             "Content-Type": "application/json",
-            Authorization: "SHA " + getCookie("AccessTokenStudent"),
+            Authorization: "SHA " + token,
           },
         });
         Swal.fire(
@@ -131,7 +183,6 @@ export default function CourseDetails() {
         );
       }
     } else {
-      // Add to favorites
       favorites.push(id);
       setCookie("favorites", JSON.stringify(favorites));
       setIsFavorite(true);
@@ -143,7 +194,7 @@ export default function CourseDetails() {
           {
             headers: {
               "Content-Type": "application/json",
-              Authorization: "SHA " + getCookie("AccessTokenStudent"),
+              Authorization: "SHA " + token,
             },
           }
         );
@@ -160,6 +211,17 @@ export default function CourseDetails() {
       }
     }
   };
+
+  if (loading)
+    return (
+      <div className="redirect">
+        <div className="loader"></div>
+      </div>
+    );
+
+  if (error) return <div>Error: {error.toString()}</div>;
+
+  if (!course) return <div>No course found!</div>;
 
   return (
     <>
@@ -216,8 +278,59 @@ export default function CourseDetails() {
               </div>
             </div>
             <hr />
+            <h1
+              className="text-center mt-3 fw-bold"
+              style={{ color: "#5151D3" }}
+            >
+              Course Content
+            </h1>
+
+            {isPurchased ? (
+              loadingContent ? (
+                <div className="text-center">
+                  <div className="spinner-border text-primary" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                  </div>
+                </div>
+              ) : courseContent.length === 0 ? (
+                <div className="text-center fw-bold fs-1">No Content Yet</div>
+              ) : (
+                <div className="list-group w-75 mx-auto">
+                  {courseContent.map((content) => (
+                    <div
+                      key={content._id}
+                      className="list-group-item list-group-item-action d-flex align-items-center"
+                      onClick={() => handleVideoClick(content)}
+                      style={{ cursor: "pointer" }}
+                    >
+                      <img
+                        src={logo}
+                        alt={content.title}
+                        style={{
+                          width: "80px",
+                          height: "45px",
+                          marginRight: "15px",
+                          objectFit: "cover",
+                        }}
+                      />
+                      <div>
+                        <h5 className="mb-1">{content.title}</h5>
+                        <small className="text-muted">
+                          {formatDate(content.createdAt)}
+                        </small>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )
+            ) : (
+              <div className="text-center fw-bold fs-5">No Content Yet , Purchase course to see content</div>
+            )}
           </div>
-          <div className="col-lg-5 text-center d-flex justify-content-center">
+          <div
+            className="col-lg-5 text-center d-flex justify-content-center"
+            style={{ height: "450px" }}
+          >
             <div className="card">
               <img
                 src={course.image || "https://picsum.photos/200"}
@@ -263,6 +376,25 @@ export default function CourseDetails() {
           </div>
         </div>
       </div>
+
+      {selectedVideo && (
+        <Modal show={showModal} onHide={handleCloseModal} centered>
+          <Modal.Header closeButton>
+            <Modal.Title>{selectedVideo.title}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <video controls className="w-100">
+              <source src={selectedVideo.media} type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleCloseModal}>
+              Close
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      )}
     </>
   );
 }

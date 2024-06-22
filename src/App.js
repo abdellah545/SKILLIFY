@@ -1,11 +1,10 @@
 import React from "react";
-import Home from "./Components/Home/Home";
 import {
   createBrowserRouter,
   RouterProvider,
   Navigate,
 } from "react-router-dom";
-
+import Home from "./Components/Home/Home";
 import AdminDashboard from "./Components/Dashboard/AdminDashboard";
 import Layout from "./Components/Layout/Layout";
 import LoginAdmin from "./Components/Login_Admin/LoginAdmin";
@@ -36,7 +35,7 @@ import InstructorPapers from "./Components/Dashboard/InstructorPapers";
 import Favorites from "./Student/Favorites";
 import Profile from "./Student/Profile";
 import UpdateProfile from "./Student/UpdateProfile";
-// import ResendOTP from "./Components/Sign up/ResendOTP";
+import UploadContent from "./Components/Instructor Dashboard/UploadContent";
 
 //========================= COOKIES =========================
 const deleteCookie = (name) => {
@@ -85,7 +84,7 @@ const isAuthenticated = () => {
   } // Placeholder, implement your logic here
 };
 
-// Define a higher-order component for protected routes
+// Define a higher-order component for protected routes for admin
 const ProtectedRoute = ({ element, path }) => {
   if (!isAuthenticated()) {
     // Redirect to login if not authenticated
@@ -100,7 +99,7 @@ const isAuthenticatedStudent = () => {
   } // Placeholder, implement your logic here
 };
 
-// Define a higher-order component for protected routes
+// Define a higher-order component for protected routes for student
 const ProtectedRouteStudent = ({ element, path }) => {
   if (!isAuthenticatedStudent()) {
     // Redirect to login if not authenticated
@@ -115,7 +114,7 @@ const isAuthenticatedInstructor = () => {
   } // Placeholder, implement your logic here
 };
 
-// Define a higher-order component for protected routes
+// Define a higher-order component for protected routes for instructor
 const ProtectedRouteInstructor = ({ element, path }) => {
   if (!isAuthenticatedInstructor()) {
     // Redirect to login if not authenticated
@@ -188,7 +187,10 @@ export default function App() {
         {
           path: "/courseDetails/:id",
           element: (
-            <ProtectedRoute element={<CourseDetails />} path="/courseDetails" />
+            <ProtectedRouteStudent
+              element={<CourseDetails />}
+              path="/courseDetails"
+            />
           ),
         },
       ],
@@ -232,11 +234,20 @@ export default function App() {
       ),
     },
     {
-      path: "/instructor-dashboard/edit-course",
+      path: "/instructor-dashboard/edit-course/:id",
       element: (
         <ProtectedRouteInstructor
           element={<EditCourse />}
-          path="/instructor-dashboard/edit-course"
+          path="/instructor-dashboard/edit-course/:id"
+        />
+      ),
+    },
+    {
+      path: "/instructor-dashboard/upload-content/:id",
+      element: (
+        <ProtectedRouteInstructor
+          element={<UploadContent />}
+          path="/instructor-dashboard/upload-content/:id"
         />
       ),
     },

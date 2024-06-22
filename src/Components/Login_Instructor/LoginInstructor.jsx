@@ -59,7 +59,7 @@ export default function Login() {
               <h1 className="text-center my-2">Welcome, Instructor</h1>
               <div className="d-flex justify-content-center align-items-center mb-5">
                 <p className="text-center mt-3 mx-3">Do you want to sign up ?</p>
-                <Link to="/InstructorSignUp">
+                <Link to="/register-instructor">
                   <button className="signup-login-btn">Sign Up</button>
                 </Link>
               </div>
