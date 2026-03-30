@@ -6,9 +6,9 @@ export default function Confirmation() {
   return (
     <>
       <MainPending
-        title="Verification Successful"
+        title="Good Job!"
         photo={successful}
-        status="Your transaction is successful."
+        status="Your transaction is copleted successfully."
         message="Now you can join to your course!"
         button="Back to Home"
         path="/categories"

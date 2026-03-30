@@ -28,8 +28,7 @@ export default function AdminDashboard() {
       const res = await axios.get(`${baseURL}/admin/applications`, {
         headers: {
           "Content-Type": "application/json",
-          Authorization:
-            "SHA_ADMIN " + getCookie("AccessTokenAdmin"),
+          Authorization: "SHA_ADMIN " + getCookie("AccessTokenAdmin"),
         },
       });
       setApplications(res.data);
@@ -135,7 +134,7 @@ export default function AdminDashboard() {
                               >
                                 {row.name}
                               </Link>{" "}
-                              {!row.rejected ? (
+                              {row.rejected ? (
                                 <span
                                   style={{
                                     color: "red",
@@ -147,12 +146,13 @@ export default function AdminDashboard() {
                               ) : (
                                 <>
                                   <span
+                                  className="text-secondary"
                                     style={{
-                                      color: "green",
+                                      
                                       fontSize: "12px",
                                     }}
                                   >
-                                    Accepted
+                                    Pending
                                   </span>
                                 </>
                               )}
@@ -219,15 +219,6 @@ export default function AdminDashboard() {
           <LeftSidebar />
         </div>
       </div>
-      {/* <button
-        className={`d-lg-none ${style.toggle_right_btn}`}
-        type="button"
-        data-bs-toggle="offcanvas"
-        data-bs-target="#rightOffcanvas"
-        aria-controls="rightOffcanvas"
-      >
-        <i class="fa-solid fa-left-long fs-4"></i>
-      </button> */}
     </>
   );
 }

@@ -53,6 +53,8 @@ export default function Auth() {
       sessionStorage.setItem("userImage", res.data.user.image);
       setCookie("phone", res.data.user.phone);
       setCookie("gender", res.data.user.gender);
+      setCookie("github", res.data.user.github);
+      setCookie("linkedin", res.data.user.linkedin);
       setCookie("createdAt", res.data.user.createdAt);
       setCookie("updatedAt", res.data.user.updatedAt);
 

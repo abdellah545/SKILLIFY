@@ -9,8 +9,8 @@ export default function Rejection() {
         photo={rejected}
         status="Your account has been rejected. "
         message="Please contact the admin."
-        button="Back to Sign Up"
-        path="/register"
+        button="Back to Upload Papers"
+        path="/UploadPapers"
       />
     </>
   )

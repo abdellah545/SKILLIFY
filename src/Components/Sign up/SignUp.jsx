@@ -64,7 +64,7 @@ export default function SignUp() {
           </div>
           <div className="col-lg-6 col-md-10 col-sm-12 p-0">
             <div className="signup-form p-3">
-              <form onSubmit={handleSignUp} className="pt-5">
+              <form onSubmit={handleSignUp} className="pt-5" autoComplete="off">
                 <h1 className="text-center">Sign Up!</h1>
                 <p className="text-center mt-3">Welcome onboard with us!</p>
                 <div className="container">

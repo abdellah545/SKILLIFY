@@ -79,6 +79,10 @@ export default function UploadContent() {
       );
       setCourseContent(response.data);
       setLoadingContent(false);
+      if (response.status === 404) {
+        setError("Course not found");
+        setCourseContent([]); // Set courseContent to an empty array if not found
+      }
     } catch (error) {
       console.error("Error fetching course content:", error);
       setError(error);
@@ -146,7 +150,7 @@ export default function UploadContent() {
                     </label>
                     <input
                       type="file"
-                      accept="video/*" // Only accept video files
+                      accept=".mkv, .mp4 , .avi , .mov , .wmv , .flv , .webm , .m3u8 " // Only accept video files
                       className={`form-control mt-1 mx-auto ${style.input}`}
                       id="video"
                       onChange={handleVideoChange}
@@ -206,47 +210,50 @@ export default function UploadContent() {
                   Course Content
                 </h1>
 
-                {loadingContent ? (
-                  <div className="text-center">
-                    <div className="spinner-border text-primary" role="status">
-                      <span className="visually-hidden">Loading...</span>
+                <>
+                  {loadingContent ? (
+                    <div className="text-center">
+                      <span
+                        className="spinner-border spinner-border-lg"
+                        style={{ color: "#5151D3" }}
+                        role="status"
+                        aria-hidden="true"
+                      ></span>
                     </div>
-                  </div>
-                ) : error ? (
-                  <div className="text-center text-danger">
-                    Error: {error.message}
-                  </div>
-                ) : courseContent.length === 0 ? (
-                  <div className="text-center fw-bold fs-1">No Content Yet</div>
-                ) : (
-                  <div className="list-group w-75 mx-auto">
-                    {courseContent.map((content) => (
-                      <div
-                        key={content._id}
-                        className="list-group-item list-group-item-action d-flex align-items-center"
-                        onClick={() => handleVideoClick(content)}
-                        style={{ cursor: "pointer" }}
-                      >
-                        <img
-                          src={logo}
-                          alt={content.title}
-                          style={{
-                            width: "80px",
-                            height: "45px",
-                            marginRight: "15px",
-                            objectFit: "cover",
-                          }}
-                        />
-                        <div>
-                          <h5 className="mb-1">{content.title}</h5>
-                          <small className="text-muted">
-                            {formatDate(content.createdAt)}
-                          </small>
+                  ) : courseContent.length === 0 ? (
+                    <div className="text-center fw-bold fs-1">
+                      No Content Yet
+                    </div>
+                  ) : (
+                    <div className="list-group w-75 mx-auto">
+                      {courseContent.map((content) => (
+                        <div
+                          key={content._id}
+                          className="list-group-item list-group-item-action d-flex align-items-center"
+                          onClick={() => handleVideoClick(content)}
+                          style={{ cursor: "pointer" }}
+                        >
+                          <img
+                            src={logo}
+                            alt={content.title}
+                            style={{
+                              width: "80px",
+                              height: "45px",
+                              marginRight: "15px",
+                              objectFit: "cover",
+                            }}
+                          />
+                          <div>
+                            <h5 className="mb-1">{content.title}</h5>
+                            <small className="text-muted">
+                              {formatDate(content.createdAt)}
+                            </small>
+                          </div>
                         </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
+                      ))}
+                    </div>
+                  )}
+                </>
               </div>
             </div>
           </div>
