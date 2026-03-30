@@ -57,7 +57,7 @@ Instructors can register and log in to their accounts, create and manage courses
 <br/>
 
 <p align="center">
-  <img src="./src/assets/Instructor-dashboard/course-content.png" width="45%" />
+  <img src="src/assets/Instructor-dashboard/course-content.png" width="45%" />
   <img src="./src/assets/Instructor-dashboard/edit-course.png" width="45%" />
 </p>
 
