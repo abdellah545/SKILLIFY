@@ -35,8 +35,8 @@ SKILLIFY is an online learning platform where instructors can publish and manage
 Instructors can register and log in to their accounts, create and manage courses, upload learning materials, edit course details, and organize course sessions through a dedicated dashboard.
 
 <p align="center">
-  <img src="./src/assets/Instructor-dashboard/signup-instructor.png" width="45%" />
-  <img src="./src/assets/Instructor-dashboard/login-instructor.png" width="45%" />
+  <img src="./src/assets/Interface/Instructor-dashboard/signup-instructor.png" width="45%" />
+  <img src="./src/assets/Interface/Instructor-dashboard/login-instructor.png" width="45%" />
 </p>
 
 <p align="center">
@@ -46,8 +46,8 @@ Instructors can register and log in to their accounts, create and manage courses
 <br/>
 
 <p align="center">
-  <img src="./src/assets/Instructor-dashboard/add-course.png" width="45%" />
-  <img src="./src/assets/Instructor-dashboard/instructor-dashboard.png" width="45%" />
+  <img src="./src/assets/Interface/Instructor-dashboard/add-course.png" width="45%" />
+  <img src="./src/assets/Interface/Instructor-dashboard/instructor-dashboard.png" width="45%" />
 </p>
 
 <p align="center">
@@ -57,8 +57,8 @@ Instructors can register and log in to their accounts, create and manage courses
 <br/>
 
 <p align="center">
-  <img src="./src/assets/Instructor-dashboard/course-content.png" width="45%" />
-  <img src="./src/assets/Instructor-dashboard/edit-course.png" width="45%" />
+  <img src="./src/assets/Interface/Instructor-dashboard/course-content.png" width="45%" />
+  <img src="./src/assets/Interface/Instructor-dashboard/edit-course.png" width="45%" />
 </p>
 
 <p align="center">
@@ -68,7 +68,7 @@ Instructors can register and log in to their accounts, create and manage courses
 <br/>
 
 <p align="center">
-  <img src="./src/assets/Instructor-dashboard/update-course-content.png" width="60%" />
+  <img src="./src/assets/Interface/Instructor-dashboard/update-course-content.png" width="60%" />
 </p>
 
 <p align="center">
@@ -80,8 +80,8 @@ Instructors can register and log in to their accounts, create and manage courses
 Users can create accounts, explore all available courses published by instructors, view course details, add courses to favourites or cart, complete purchases, access enrolled courses, and manage their personal profile.
 
 <p align="center">
-  <img src="./src/assets/user/sign-up-user.png" width="45%" />
-  <img src="./src/assets/user/skillify-courses.png" width="45%" />
+  <img src="./src/assets/Interface/user/sign-up-user.png" width="45%" />
+  <img src="./src/assets/Interface/user/skillify-courses.png" width="45%" />
 </p>
 
 <p align="center">
@@ -91,8 +91,8 @@ Users can create accounts, explore all available courses published by instructor
 <br/>
 
 <p align="center">
-  <img src="./src/assets/user/course-details.png" width="45%" />
-  <img src="./src/assets/user/favorites.png" width="45%" />
+  <img src="./src/assets/Interface/user/course-details.png" width="45%" />
+  <img src="./src/assets/Interface/user/favorites.png" width="45%" />
 </p>
 
 <p align="center">
@@ -102,8 +102,8 @@ Users can create accounts, explore all available courses published by instructor
 <br/>
 
 <p align="center">
-  <img src="./src/assets/user/cart.png" width="45%" />
-  <img src="./src/assets/user/user-courses.png" width="45%" />
+  <img src="./src/assets/Interface/user/cart.png" width="45%" />
+  <img src="./src/assets/Interface/user/user-courses.png" width="45%" />
 </p>
 
 <p align="center">
@@ -113,8 +113,8 @@ Users can create accounts, explore all available courses published by instructor
 <br/>
 
 <p align="center">
-  <img src="./src/assets/user/user-profile.png" width="45%" />
-  <img src="./src/assets/user/update-profile.png" width="45%" />
+  <img src="./src/assets/Interface/user/user-profile.png" width="45%" />
+  <img src="./src/assets/Interface/user/update-profile.png" width="45%" />
 </p>
 
 <p align="center">
@@ -126,8 +126,8 @@ Users can create accounts, explore all available courses published by instructor
 Admins are responsible for reviewing instructor applications and deciding whether submitted instructors should be accepted or rejected before accessing the platform as course publishers.
 
 <p align="center">
-  <img src="./src/assets/admin-dashboard/admin-login.png" width="45%" />
-  <img src="./src/assetsadmin-dashboard/admin-dashboard.png" width="45%" />
+  <img src="./src/assets/Interface/admin-dashboard/admin-login.png" width="45%" />
+  <img src="./src/assets/Interface/admin-dashboard/admin-dashboard.png" width="45%" />
 </p>
 
 <p align="center">
@@ -137,7 +137,7 @@ Admins are responsible for reviewing instructor applications and deciding whethe
 <br/>
 
 <p align="center">
-  <img src="./src/assets/admin-dashboard/admin-accept-reject.png" width="60%" />
+  <img src="./src/assets/Interface/admin-dashboard/admin-accept-reject.png" width="60%" />
 </p>
 
 <p align="center">
