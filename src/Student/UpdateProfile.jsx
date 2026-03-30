@@ -7,12 +7,17 @@ import baseURL from "../BaseURL/BaseURL";
 
 export default function UpdateProfile() {
   const [selectedImage, setSelectedImage] = useState(null);
+  const [imagePreviewUrl, setImagePreviewUrl] = useState("");
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [github, setGithub] = useState("");
+  const [linkedin, setLinkedin] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
   const [passwordError, setPasswordError] = useState("");
   const [githubError, setGithubError] = useState("");
+  const [linkedinError, setLinkedinError] = useState("");
+  const [error, setError] = useState(false);
 
   const validatePassword = (password) => {
     const passwordPattern = /^(?=.*[A-Z])(?=.*[@$!%*?&])(?=.*[0-9]).{6,}$/;
@@ -34,13 +39,16 @@ export default function UpdateProfile() {
       reader.readAsDataURL(file);
     } else {
       setSelectedImage(null);
+      setImagePreviewUrl(null);
     }
   };
 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
     if (!validatePassword(e.target.value)) {
-      setPasswordError("Password must be at least 6 characters, contain one uppercase letter, one number, and one special character.");
+      setPasswordError(
+        "Password must be at least 6 characters, contain one uppercase letter, one number, and one special character."
+      );
     } else {
       setPasswordError("");
     }
@@ -49,9 +57,22 @@ export default function UpdateProfile() {
   const handleGithubChange = (e) => {
     setGithub(e.target.value);
     if (!validateGithub(e.target.value)) {
-      setGithubError("GitHub URL must be in the format: https://github.com/username");
+      setGithubError(
+        "GitHub URL must be in the format: https://github.com/username"
+      );
     } else {
       setGithubError("");
+    }
+  };
+
+  const handleLinkedinChange = (e) => {
+    setLinkedin(e.target.value);
+    if (!validateGithub(e.target.value)) {
+      setLinkedinError(
+        "LinkedIn URL must be in the format: https://www.linkedin.com/in/username"
+      );
+    } else {
+      setLinkedinError("");
     }
   };
 
@@ -67,8 +88,11 @@ export default function UpdateProfile() {
     setLoading(true);
 
     const formData = new FormData();
+    formData.append("name", name);
+    formData.append("phone", phone);
     formData.append("password", password);
     formData.append("github", github);
+    formData.append("linkedin", linkedin);
     if (selectedImage) {
       formData.append("image", selectedImage);
     }
@@ -85,8 +109,7 @@ export default function UpdateProfile() {
         }
       );
 
-      const updatedImage = response.data.image;
-      sessionStorage.setItem("userImage", response.data.image);
+      // console.log("Profile updated successfully:", response.data);
 
       Swal.fire({
         icon: "success",
@@ -94,8 +117,11 @@ export default function UpdateProfile() {
         text: "Your profile has been updated successfully.",
         confirmButtonText: "OK",
       }).then(() => {
-        window.location.reload();
         sessionStorage.setItem("userImage", response.data.image);
+        setCookie("userName", response.data.name);
+        setCookie("github", response.data.github);
+        setCookie("linkedin", response.data.linkedin);
+        window.location.reload();
       });
     } catch (error) {
       console.error("There was an error updating the profile!", error);
@@ -136,7 +162,34 @@ export default function UpdateProfile() {
               )}
 
               <hr />
-
+              <label htmlFor="name" className={style.label} id="label">
+                Name
+              </label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                placeholder="Enter your name"
+                className={style.input_field}
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+              />
+              <hr />
+              <label htmlFor="phone" className={style.label} id="label">
+                Phone
+              </label>
+              <input
+                type="text"
+                id="phone"
+                name="phone"
+                placeholder="Enter your phone number"
+                className={style.input_field}
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                required
+              />
+              <hr />
               <label htmlFor="password" className={style.label}>
                 Password
               </label>
@@ -150,7 +203,9 @@ export default function UpdateProfile() {
                 className={style.input_field}
               />
               {passwordError && (
-                <p style={{ color: "red", fontSize: "12px" }}>{passwordError}</p>
+                <p style={{ color: "red", fontSize: "12px" }}>
+                  {passwordError}
+                </p>
               )}
               <hr />
 
@@ -170,6 +225,20 @@ export default function UpdateProfile() {
                 <p style={{ color: "red", fontSize: "12px" }}>{githubError}</p>
               )}
 
+              <hr />
+              <label htmlFor="linkedin" className={style.label} id="label">
+                LinkedIn
+              </label>
+              <input
+                type="text"
+                id="linkedin"
+                name="linkedin"
+                placeholder="https://www.linkedin.com/in/username"
+                value={linkedin}
+                onChange={handleLinkedinChange}
+                className={style.input_field}
+                required
+              />
               <hr />
 
               <button

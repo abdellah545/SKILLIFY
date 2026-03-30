@@ -8,6 +8,7 @@ import baseURL from "../../BaseURL/BaseURL";
 
 export default function InstructorDashboard() {
   const [courses, setCourses] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -21,6 +22,8 @@ export default function InstructorDashboard() {
         setCourses(response.data);
       } catch (error) {
         console.error("There was an error fetching the courses!", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -53,7 +56,16 @@ export default function InstructorDashboard() {
                   My Courses
                 </h1>
                 <hr />
-                {courses.length > 0 ? (
+                {loading ? (
+                  <div className="text-center">
+                    <span
+                      className="spinner-border spinner-border-lg"
+                      style={{ color: "#5151D3" }}
+                      role="status"
+                      aria-hidden="true"
+                    ></span>
+                  </div>
+                ) : courses.length > 0 ? (
                   courses.map((course) => (
                     <div
                       key={course.id}

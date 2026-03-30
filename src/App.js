@@ -36,6 +36,7 @@ import Favorites from "./Student/Favorites";
 import Profile from "./Student/Profile";
 import UpdateProfile from "./Student/UpdateProfile";
 import UploadContent from "./Components/Instructor Dashboard/UploadContent";
+import AuthAdmin from "./Components/Login_Admin/AuthAdmin";
 
 //========================= COOKIES =========================
 const deleteCookie = (name) => {
@@ -131,6 +132,7 @@ export default function App() {
       children: [
         { path: "", element: <Home /> },
         { path: "/login-admin", element: <LoginAdmin /> },
+        { path: "/admin-auth", element: <AuthAdmin /> },
         { path: "/login", element: <Login /> },
         { path: "/Auth", element: <Auth /> },
         { path: "/register", element: <SignUp /> },

@@ -1,11 +1,19 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import axios from 'axios';
-import baseURL from '../BaseURL/BaseURL';
-import { getCookie } from '../Helper/CookiesHelper';
+import React, { createContext, useContext, useState, useEffect } from "react";
+import axios from "axios";
+import baseURL from "../BaseURL/BaseURL";
+import { cookieExists, getCookie } from "../Helper/CookiesHelper";
 
-const CartContext = createContext();
+const CartContext = createContext({
+  cart: [],
+  favorites: [],
+  loading: { cart: false, favorites: false },
+  error: null,
+  setCart: () => {},
+  setFavorites: () => {}
+});
 
 export const useCart = () => useContext(CartContext);
+
 
 export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
@@ -18,8 +26,8 @@ export const CartProvider = ({ children }) => {
       try {
         const cartResponse = await axios.get(`${baseURL}/users/cart`, {
           headers: {
-            'Content-Type': 'application/json',
-            Authorization: 'SHA ' + getCookie('AccessTokenStudent'),
+            "Content-Type": "application/json",
+            Authorization: "SHA " + getCookie("AccessTokenStudent"),
           },
         });
         setCart(cartResponse.data.cart || []);
@@ -27,8 +35,8 @@ export const CartProvider = ({ children }) => {
 
         const favoritesResponse = await axios.get(`${baseURL}/users/favorite`, {
           headers: {
-            'Content-Type': 'application/json',
-            Authorization: 'SHA ' + getCookie('AccessTokenStudent'),
+            "Content-Type": "application/json",
+            Authorization: "SHA " + getCookie("AccessTokenStudent"),
           },
         });
         setFavorites(favoritesResponse.data.favorite || []);
@@ -43,8 +51,10 @@ export const CartProvider = ({ children }) => {
   }, []);
 
   return (
-    <CartContext.Provider value={{ cart, favorites, loading, error, setCart, setFavorites }}>
+    <>
+      <CartContext.Provider value={{ cart, favorites, loading, error, setCart, setFavorites }}>
       {children}
     </CartContext.Provider>
+    </>
   );
 };

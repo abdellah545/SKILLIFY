@@ -8,7 +8,9 @@ import baseURL from "../../BaseURL/BaseURL";
 import axios from "axios";
 import { Carousel } from "react-bootstrap";
 import "animate.css";
-
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 export default function Home() {
   const [courses, setCourses] = useState([]);
@@ -19,7 +21,7 @@ export default function Home() {
 
   const fetchCourses = useCallback(() => {
     document.title = "SKILLIFY | Home";
-    const url = `${baseURL}/users/courses/?page=1&limit=6`;
+    const url = `${baseURL}/users/courses`;
     axios
       .get(url, {
         headers: {
@@ -43,24 +45,65 @@ export default function Home() {
     }
   }
 
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    centerMode: true,
+    centerPadding: "0px",
+    autoplay: true,
+    autoplaySpeed: 2000,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2,
+          infinite: true,
+          dots: true,
+        },
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          infinite: true,
+          dots: true,
+        },
+      },
+    ],
+  };
+
   return (
     <div className="main__page position-relative">
       <div className="main-page p-5">
         <div className="container">
           <div className="row justify-content-center mb-5">
             <div className="col-lg-6 col-md-8 col-sm-10 p-3 d-flex align-items-center flex-column justify-content-evenly">
-              <h1 className="text-center animate__animated animate__bounceInLeft">LEARN ON YOUR OWN SCHEDULE</h1>
+              <h1 className="text-center animate__animated animate__bounceInLeft">
+                LEARN ON YOUR OWN SCHEDULE
+              </h1>
               <h3 className="text-center animate__animated animate__bounceInLeft animate__delay-1s">
                 Learn from the comfort of your home. Our courses are designed to
                 help you learn on your own schedule.
               </h3>
 
-              <a className="home-btn animate__animated animate__bounceInUp animate__delay-2s" href="#offer">
+              <a
+                className="home-btn animate__animated animate__bounceInUp animate__delay-2s"
+                href="#offer"
+              >
                 Get Started
               </a>
             </div>
             <div className="col-lg-6 col-md-8 col-sm-10 p-3">
-              <img src={HomeImage} className="img-fluid animate__animated animate__pulse animate__slower animate__infinite" alt="" />
+              <img
+                src={HomeImage}
+                className="img-fluid animate__animated animate__pulse animate__slower animate__infinite"
+                alt=""
+              />
             </div>
           </div>
 
@@ -448,7 +491,7 @@ export default function Home() {
           <h5 className="text-center">
             The most joined courses on our website.
           </h5>
-          <div className="row my-5">
+          {/* <div className="row my-5">
             <Carousel>
               {courses.map((course, index) => (
                 <Carousel.Item key={index}>
@@ -465,9 +508,32 @@ export default function Home() {
                 </Carousel.Item>
               ))}
             </Carousel>
-          </div>
+          </div> */}
           <hr />
-          <div className="row">
+          <div className="slider-container">
+            <Slider {...settings}>
+              {courses.map((course, index) => (
+                <div key={index}>
+                  <img
+                    src={course.image}
+                    alt={course.title}
+                    style={{
+                      width: "100%",
+                      height: "300px",
+                      objectFit: "cover",
+                    }}
+                  />
+                  <h3 className="fw-bold text-center">{course.title}</h3>
+                  <p className="text-center text-truncate p-2">
+                    {course.description}
+                  </p>
+                </div>
+              ))}
+            </Slider>
+          </div>
+          <br />
+          <hr />
+          {/* <div className="row">
             <h1>Choose your preferable subscription</h1>
             <h3 class="mb-5">We offer you different kind of packages.</h3>
 
@@ -537,8 +603,8 @@ export default function Home() {
                 <button class="btn_starter_3 px-2">Purchase Package</button>
               </div>
             </div>
-          </div>
-          <hr />
+          </div> */}
+
           <h1>What Our Students Say About Us?</h1>
           <h3 class="mb-5">
             The most commonly used method for evaluating and getting feedback
@@ -803,7 +869,6 @@ export default function Home() {
           </div>
         </div>
       </div>
-      
     </div>
   );
 }

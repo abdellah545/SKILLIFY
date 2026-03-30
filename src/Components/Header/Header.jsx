@@ -1,79 +1,82 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import './Header.css';
-import 'animate.css';
-import { useCart } from '../../Student/CartContext';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import "./Header.css";
+import "animate.css";
+import { useCart } from "../../Student/CartContext";
+import { cookieExists, deleteCookie, getCookie } from "../../Helper/CookiesHelper";
+
 
 export default function Header() {
   const [loading, setLoading] = useState(false);
   const { cart, favorites } = useCart(); // Access cart and favorites from context
 
-  const deleteCookie = (name) => {
-    document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;`;
-  };
+  // const deleteCookie = (name) => {
+  //   document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;`;
+  // };
 
-  const cookieExists = (name) => {
-    const cookieName = `${name}=`;
-    const decodedCookie = decodeURIComponent(document.cookie);
-    const cookieArray = decodedCookie.split(';');
+  // const cookieExists = (name) => {
+  //   const cookieName = `${name}=`;
+  //   const decodedCookie = decodeURIComponent(document.cookie);
+  //   const cookieArray = decodedCookie.split(";");
 
-    for (let i = 0; i < cookieArray.length; i++) {
-      let cookie = cookieArray[i];
-      while (cookie.charAt(0) === ' ') {
-        cookie = cookie.substring(1);
-      }
-      if (cookie.indexOf(cookieName) === 0) {
-        return true; // Cookie found
-      }
-    }
+  //   for (let i = 0; i < cookieArray.length; i++) {
+  //     let cookie = cookieArray[i];
+  //     while (cookie.charAt(0) === " ") {
+  //       cookie = cookie.substring(1);
+  //     }
+  //     if (cookie.indexOf(cookieName) === 0) {
+  //       return true; // Cookie found
+  //     }
+  //   }
 
-    return false; // Cookie not found
-  };
+  //   return false; // Cookie not found
+  // };
 
-  const getCookie = (name) => {
-    const cookieName = `${name}=`;
-    const decodedCookie = decodeURIComponent(document.cookie);
-    const cookieArray = decodedCookie.split(';');
+  // const getCookie = (name) => {
+  //   const cookieName = `${name}=`;
+  //   const decodedCookie = decodeURIComponent(document.cookie);
+  //   const cookieArray = decodedCookie.split(";");
 
-    for (let i = 0; i < cookieArray.length; i++) {
-      let cookie = cookieArray[i];
-      while (cookie.charAt(0) === ' ') {
-        cookie = cookie.substring(1);
-      }
-      if (cookie.indexOf(cookieName) === 0) {
-        return cookie.substring(cookieName.length, cookie.length);
-      }
-    }
+  //   for (let i = 0; i < cookieArray.length; i++) {
+  //     let cookie = cookieArray[i];
+  //     while (cookie.charAt(0) === " ") {
+  //       cookie = cookie.substring(1);
+  //     }
+  //     if (cookie.indexOf(cookieName) === 0) {
+  //       return cookie.substring(cookieName.length, cookie.length);
+  //     }
+  //   }
 
-    return null;
-  };
+  //   return null;
+  // };
 
   const handleLogout = () => {
     setLoading(true);
-    deleteCookie('AccessTokenStudent');
-    deleteCookie('cart');
-    deleteCookie('wishlist');
-    deleteCookie('favorites');
-    deleteCookie('userName');
-    deleteCookie('courses');
-    deleteCookie('userEmail');
-    deleteCookie('userImage');
-    deleteCookie('phone');
-    deleteCookie('gender');
-    deleteCookie('createdAt');
-    deleteCookie('updatedAt');
-    deleteCookie('github');
+    deleteCookie("AccessTokenStudent");
+    deleteCookie("cart");
+    deleteCookie("wishlist");
+    deleteCookie("favorites");
+    deleteCookie("userName");
+    deleteCookie("courses");
+    deleteCookie("userEmail");
+    deleteCookie("userImage");
+    deleteCookie("phone");
+    deleteCookie("gender");
+    deleteCookie("createdAt");
+    deleteCookie("updatedAt");
+    deleteCookie("github");
+    deleteCookie("linkedin");
     sessionStorage.clear();
     setLoading(false);
-    window.location.pathname = '/';
+    window.location.pathname = "/";
   };
 
   return (
     <div
       className="sticky-top"
-      style={{ boxShadow: '0 0 10px 0 rgba(0, 0, 0, 0.2)' }}
+      style={{ boxShadow: "0 0 10px 0 rgba(0, 0, 0, 0.2)" }}
     >
-      <nav className="navbar navbar-expand-lg p-1">
+      <nav className="navbar navbar-expand-lg">
         <div className="container">
           <Link
             className="navbar-brand animate__animated animate__pulse animate__infinite"
@@ -94,7 +97,7 @@ export default function Header() {
             <span className="navbar-toggler-icon"></span>
           </button>
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul className="navbar-nav ms-5 mb-2 mb-lg-0">
+            <ul className="navbar-nav ms-3 mb-2 mb-lg-0">
               <li className="nav-item">
                 <Link
                   className="nav-link active fw-bold"
@@ -105,7 +108,7 @@ export default function Header() {
                   Home
                 </Link>
               </li>
-              {cookieExists('AccessTokenStudent') ? (
+              {cookieExists("AccessTokenStudent") ? (
                 <li className="nav-item">
                   <Link
                     className="nav-link fw-bold"
@@ -113,13 +116,13 @@ export default function Header() {
                     aria-current="page"
                     to="/categories"
                   >
-                    Categories
+                    Courses
                   </Link>
                 </li>
               ) : null}
             </ul>
 
-            {!cookieExists('AccessTokenStudent') ? (
+            {!cookieExists("AccessTokenStudent") ? (
               <div className="d-flex ms-auto">
                 <div className="dropdown login-btn">
                   <button
@@ -181,7 +184,7 @@ export default function Header() {
                   id="navbarSupportedContent"
                 >
                   <ul className="navbar-nav me-4 me-md-0 mb-2 mb-lg-0">
-                    {cookieExists('AccessTokenStudent') && (
+                    {cookieExists("AccessTokenStudent") && (
                       <>
                         <li className="nav-item me-1">
                           <Link
@@ -199,7 +202,10 @@ export default function Header() {
                             to="/cart"
                           >
                             <i className="fa-solid fa-cart-shopping"></i>
-                            <span className="badge bg-danger position-absolute top-1 start-99 translate-middle" style={{fontSize: '10px'}}>
+                            <span
+                              className="badge bg-danger position-absolute top-1 start-99 translate-middle"
+                              style={{ fontSize: "10px" }}
+                            >
                               {cart.length}
                             </span>
                           </Link>
@@ -211,7 +217,10 @@ export default function Header() {
                             to="/favorites"
                           >
                             <i className="fa-solid fa-heart"></i>
-                            <span className="badge bg-danger position-absolute top-1 start-99 translate-middle" style={{fontSize: '10px'}}>
+                            <span
+                              className="badge bg-danger position-absolute top-1 start-99 translate-middle"
+                              style={{ fontSize: "10px" }}
+                            >
                               {favorites.length}
                             </span>
                           </Link>
@@ -222,7 +231,7 @@ export default function Header() {
                 </div>
                 <div
                   className="vr me-1 d-none d-md-block"
-                  style={{ color: '#5151d3' }}
+                  style={{ color: "#5151d3" }}
                 ></div>
                 <div className="dropdown bg-white cursor-pointer">
                   <button
@@ -230,8 +239,7 @@ export default function Header() {
                     type="button"
                     data-bs-toggle="dropdown"
                     aria-expanded="false"
-                    style={{ color: '#5151d3' }}
-
+                    style={{ color: "#5151d3" }}
                   >
                     <img
                       src={sessionStorage.getItem("userImage")}
@@ -240,11 +248,7 @@ export default function Header() {
                       height={30}
                       className="me-2 rounded-circle"
                     />
-                    <span
-                      className="fw-bold"
-                    >
-                      {getCookie('userName')}
-                    </span>
+                    <span className="fw-bold">{getCookie("userName")}</span>
                   </button>
                   <ul className="dropdown-menu dropdown-menu-end">
                     <li className="">
@@ -258,6 +262,7 @@ export default function Header() {
                       </Link>
                     </li>
                     <hr className="dropdown-divider" />
+
                     <li>
                       <button
                         className="dropdown-item logout-btn"

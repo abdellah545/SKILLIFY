@@ -78,7 +78,7 @@ export default function Login() {
                   <button className="signup-login-btn">Sign Up</button>
                 </Link>
               </div>
-              <form onSubmit={handleLogin}>
+              <form onSubmit={handleLogin} autoComplete="off">
                 <br />
                 <div className="mb-4 w-75 m-auto">
                   <div className="text-center">

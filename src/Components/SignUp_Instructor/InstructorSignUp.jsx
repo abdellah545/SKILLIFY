@@ -72,14 +72,14 @@ export default function InstructorSignUp() {
           </div>
           <div className="col-lg-6 col-md-10 col-sm-12 p-0">
             <div className="signup-form p-3">
-              <form onSubmit={handleSignUpInstructor} className="pt-0">
+              <form onSubmit={handleSignUpInstructor} className="pt-0" autoComplete="off">
                 <h1 className="text-center">Sign Up!</h1>
                 <p className="text-center mt-3">Welcome onboard with us!</p>
                 <div className="container">
                   <div className="row justify-content-center">
                     <div className="col-lg-6 col-md-8 col-sm-10">
                       <div className="d-flex flex-column w-100 align-items-center">
-                        <label htmlFor="name" className="pb-2">
+                        <label htmlFor="name" className="pb-2" autoComplete="off">
                           Full Name
                         </label>
                         <input
@@ -177,6 +177,7 @@ export default function InstructorSignUp() {
                         </label>
                         <input
                           type="file"
+                          accept="image/*"
                           name="image"
                           id="image"
                           className="password text-center"

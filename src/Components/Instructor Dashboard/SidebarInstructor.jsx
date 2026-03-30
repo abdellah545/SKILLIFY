@@ -11,8 +11,12 @@ export default function SidebarInstructor() {
     deleteCookie("AccessTokenInstructor");
     deleteCookie("InstructorImage");
     deleteCookie("InstructorName");
+    deleteCookie("InstructorExperience");
+    deleteCookie("InstructorBio");
+    deleteCookie("InstructorTitle");
     deleteCookie("VerifiedSignupInstructorToken");
-    deleteCookie("LoginInstructorToken")
+    deleteCookie("VerifiedLoginInstructorToken");
+    deleteCookie("LoginInstructorToken");
 
     window.location.pathname = "/";
   };
@@ -34,7 +38,7 @@ export default function SidebarInstructor() {
               <div className="d-flex flex-column align-items-center">
                 <div className={style.imageWrapper} onClick={handleImageClick}>
                   <img
-                    src={getCookie("InstructorImage")}
+                    src={sessionStorage.getItem("InstructorImage")}
                     className={style.profileImage}
                     alt=""
                   />
@@ -48,7 +52,7 @@ export default function SidebarInstructor() {
                   style={{ textDecoration: "none" }}
                 >
                   <h4 className="mt-3" style={{ color: "#5151D3" }}>
-                    {getCookie("InstructorName")}
+                    {sessionStorage.getItem("InstructorName")}
                   </h4>
                 </Link>
                 <div className="col-lg-12 text-center mt-5">
@@ -137,45 +141,6 @@ export default function SidebarInstructor() {
                         </Link>
                       </>
                     )}
-
-                    {/* {window.location.pathname ===
-                    "/instructor-dashboard/edit-course" ? (
-                      <>
-                        <Link
-                          to="/instructor-dashboard/edit-course"
-                          style={{
-                            textDecoration: "none",
-                            color: "#5151D3",
-                          }}
-                          className={`${style.list}`}
-                        >
-                          <li
-                            className={`mb-3 fw-bold`}
-                            style={{
-                              backgroundColor: "rgba(81, 81, 211, 0.3)",
-                              padding: "10px",
-                            }}
-                          >
-                            <i className="fa-solid fa-pen-to-square"></i> Edit Course
-                          </li>
-                        </Link>
-                      </>
-                    ) : (
-                      <>
-                        <Link
-                          to="/instructor-dashboard/edit-course"
-                          style={{ textDecoration: "none", color: "#5151D3" }}
-                          className={`${style.list}`}
-                        >
-                          <li
-                            className={`mb-3 fw-bold`}
-                            style={{ padding: "10px" }}
-                          >
-                            <i className="fa-solid fa-pen-to-square"></i> Edit Course
-                          </li>
-                        </Link>
-                      </>
-                    )} */}
 
                     {window.location.pathname ===
                     "/instructor-dashboard/edit-profile" ? (

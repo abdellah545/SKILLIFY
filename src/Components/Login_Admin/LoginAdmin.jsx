@@ -20,7 +20,10 @@ export default function Login() {
     const trimmedUsername = username.trim();
 
     // Check if both username and password are 'admin'
-    if (trimmedUsername !== "admin" || password !== "admin") {
+    if (
+      trimmedUsername !== "seifabdellah@gmail.com" ||
+      password !== "Password123@"
+    ) {
       alert("Invalid username or password. Please try again.");
       setLoading(false); // Ensure loading is reset if credentials are wrong
       return; // Stop the function if the validation fails
@@ -42,8 +45,8 @@ export default function Login() {
       );
       console.log(res);
 
-      setCookie("AccessTokenAdmin", res.data);
-      window.location.pathname = "/admin-dashboard";
+      setCookie("AccessTokenAdminLogin", res.data.token);
+      window.location.pathname = "/admin-auth";
       setLoading(false);
     } catch (err) {
       console.log("error", err);
@@ -60,7 +63,12 @@ export default function Login() {
           <div className="col-lg-6 col-md-8 col-sm-10 p-0">
             <div className="signup-form p-3">
               <h1 className="text-center my-2">Welcome Admin</h1>
-              <form onSubmit={handleLogin} className="d-flex flex-column mt-5">
+              <form
+                onSubmit={handleLogin}
+                className="d-flex flex-column"
+                autoComplete="off"
+                style={{ width: "100%", marginTop: "100px" }}
+              >
                 <br />
                 <div className="mb-4 w-75 m-auto">
                   <div className="text-center">
@@ -115,9 +123,6 @@ export default function Login() {
                     </>
                   )}
                 </div>
-                <br />
-
-                <br />
               </form>
             </div>
           </div>

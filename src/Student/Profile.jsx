@@ -62,7 +62,7 @@ export default function Profile() {
     <>
       <section className={`my-5 container`}>
         <div className="row justify-content-between">
-          <div className="col-lg-5 col-md-12">
+          <div className="col-lg-6 col-md-12">
             <div className={`row ${style.profile_info}`}>
               <div className="col-lg-3 col-md-3">
                 <img
@@ -96,14 +96,7 @@ export default function Profile() {
                   style={{ color: "#5151D3" }}
                 ></i>{" "}
                 Email Address :{" "}
-                <span style={{ color: "black" }}>
-                  <a
-                    href={`mailto:${getCookie("userEmail")}}?subject=Contact`}
-                    className="link"
-                  >
-                    {getCookie("userEmail")}
-                  </a>
-                </span>
+                <span style={{ color: "black" }}>{getCookie("userEmail")}</span>
               </p>
               <p className="fw-bold" style={{ color: "#5151D3" }}>
                 <i
@@ -111,16 +104,23 @@ export default function Profile() {
                   style={{ color: "#5151D3" }}
                 ></i>{" "}
                 WhatsApp :{" "}
-                <span style={{ color: "black" }}>
-                  <a
-                    href={`https://wa.me/${getCookie("phone")}`}
-                    className="link"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {getCookie("phone")}
-                  </a>
-                </span>
+                <span style={{ color: "black" }}>{getCookie("phone")}</span>
+              </p>
+              <p className="fw-bold" style={{ color: "#5151D3" }}>
+                <i
+                  className="fa-brands fa-github fw-bold"
+                  style={{ color: "#5151D3" }}
+                ></i>{" "}
+                Github :{" "}
+                <span style={{ color: "black" }}>{getCookie("github")}</span>
+              </p>
+              <p className="fw-bold" style={{ color: "#5151D3" }}>
+                <i
+                  className="fa-brands fa-linkedin-in fw-bold"
+                  style={{ color: "#5151D3" }}
+                ></i>{" "}
+                LinkedIn :{" "}
+                <span style={{ color: "black" }}>{getCookie("linkedin")}</span>
               </p>
               <hr />
               <p className="fw-bold" style={{ color: "#5151D3" }}>
@@ -131,7 +131,7 @@ export default function Profile() {
               </p>
             </div>
           </div>
-          <div className="col-lg-6 col-md-12">
+          <div className="col-lg-5 col-md-12">
             <div className={`row ${style.profile_info}`}>
               <h3 className="fw-bold" style={{ color: "#5151D3" }}>
                 Courses

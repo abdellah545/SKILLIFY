@@ -167,13 +167,13 @@
 										"header": [
 											{
 												"key": "Authorization",
-												"value": "SHA eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjIyNzgzNmQ2OWJjYjA3Mjc2OTA5NGQiLCJpYXQiOjE3MTM4MTI1MjUsImV4cCI6MTcxMzgxNjEyNX0.tw9qb_0WXOGNH9w1Na0nJj9wtdzB1tnCtndA6jva4JM",
+												"value": "SHA eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjZiN2IwZjkyNjE5NDc2OTljMzcwYmIiLCJpYXQiOjE3MTkxODA5MjYsImV4cCI6MTcxOTE4NDUyNn0.X9H9SuFpknpREq91mJbJkT3wWlJHgh_-OCRFTccHMiA",
 												"type": "text"
 											}
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n    \"otp\":\"7727\"\r\n}",
+											"raw": "{\r\n    \"otp\":\"2911\"\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -205,7 +205,7 @@
 										"header": [
 											{
 												"key": "Authorization",
-												"value": "SHA eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjBjOGUyMjJhZDAwYjNmMmY4NmNmMTEiLCJpYXQiOjE3MTIwOTkwMzEsImV4cCI6MTcxMjEwMjYzMX0.d543UjAN6Ml3_B4AduHZ6ShCWdUPpQQPhfQxXmWSVN8",
+												"value": "SHA eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjZiN2IwZjkyNjE5NDc2OTljMzcwYmIiLCJpYXQiOjE3MTkxODA1NjgsImV4cCI6MTcxOTE4NDE2OH0.h3tylE9vst7Nff-JIhbAVVBKHMLyDb2b5HMfF6kMBpI",
 												"type": "text"
 											}
 										],
@@ -509,7 +509,7 @@
 								"header": [
 									{
 										"key": "Authorization",
-										"value": "SHA eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjAwZDkzODE5ZmYzZjczMmMwNzYzMGQiLCJpYXQiOjE3MTM1MzQ2MDcsImV4cCI6MTcxMzU5OTQwN30.k2KXZNo03ckXe0D6ePoyW6gbF0yN8ktefVhI3D4BT_U",
+										"value": "SHA eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjZiN2IwZjkyNjE5NDc2OTljMzcwYmIiLCJpYXQiOjE3MTkxMzExNzAsImV4cCI6MTcxOTE5NTk3MH0.COEWBOJHCuCOzk1IgaqWaQm8TgNmVYkAFN-KBkvs9-c",
 										"type": "text"
 									}
 								],
@@ -563,7 +563,7 @@
 								"header": [
 									{
 										"key": "Authorization",
-										"value": "SHA eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjIyNzgzNmQ2OWJjYjA3Mjc2OTA5NGQiLCJpYXQiOjE3MTM3NDU2NTEsImV4cCI6MTcxMzgxMDQ1MX0.LPBV5meKb6FlwehBClg_WLNuaGvv1YHGQFm6WO03N6s",
+										"value": "SHA eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjZiN2IwZjkyNjE5NDc2OTljMzcwYmIiLCJpYXQiOjE3MTkxODA5NTAsImV4cCI6MTcxOTI0NTc1MH0.TXrgWNZKHq4lj21gRgOO6Tp_u46CaSHGX6V1BSB9Y1Q",
 										"type": "text"
 									}
 								],
@@ -1126,7 +1126,7 @@
 										"header": [
 											{
 												"key": "Authorization",
-												"value": "SHA eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjZjNmZjODkyNjE5NDc2OTljMzcxMmQiLCJpYXQiOjE3MTgzODI3MTMsImV4cCI6MTcxODQ0NzUxM30.wrUDyzQunWCiYhIZ5wUV_YLCxTKhoVWkv147zYCp78Y",
+												"value": "SHA eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjdjZGRlZTdkYTRiYjQ4ZjA4NzdmNjYiLCJpYXQiOjE3MTk0NjA4MjYsImV4cCI6MTcxOTUyNTYyNn0.4sNcY7V4N9-0YeK6ocVHgh5hvyCdR2abfFNUbc1JkFY",
 												"type": "text"
 											}
 										],
@@ -1141,12 +1141,12 @@
 												{
 													"key": "ID",
 													"type": "file",
-													"src": "/D:/Images/3lg6vy.jpg"
+													"src": "/D:/Images/vertical.png"
 												},
 												{
 													"key": "Graduation_Certificate",
 													"type": "file",
-													"src": "/D:/Images/vertical.png"
+													"src": "/D:/Images/CronJob for student mailing.png"
 												}
 											]
 										},
@@ -1627,7 +1627,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"username\":\"admin\",\r\n    \"password\":\"admin\"\r\n}",
+									"raw": "{\r\n    \"username\":\"joeshirf@gmail.com\",\r\n    \"password\":\"Password123@\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1647,6 +1647,44 @@
 									"path": [
 										"admin",
 										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Verify Login",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "SHA_ADMIN eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjE5Y2QyNDExOGJkMjE3MjkwOTNmMjYiLCJpYXQiOjE3MTk0NzEwNzQsImV4cCI6MTcxOTUzNTg3NH0.t4smsE293x9M9H5mQbRL2eLB9Ovlw9eOXh9cAI_Ajks",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"otp\":\"7668\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://165.232.129.48:3000/admin/verifyLogin",
+									"protocol": "https",
+									"host": [
+										"165",
+										"232",
+										"129",
+										"48"
+									],
+									"port": "3000",
+									"path": [
+										"admin",
+										"verifyLogin"
 									]
 								}
 							},

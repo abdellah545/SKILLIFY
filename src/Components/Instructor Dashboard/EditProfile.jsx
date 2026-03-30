@@ -9,7 +9,10 @@ import { getCookie, setCookie } from "../../Helper/CookiesHelper";
 export default function EditProfile() {
   const [file, setFile] = useState(null);
   const [imagePreviewUrl, setImagePreviewUrl] = useState("");
+  const [name, setName] = useState("");
   const [title, setTitle] = useState("");
+  const [experience, setExperience] = useState("");
+  const [bio, setBio] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
@@ -46,6 +49,9 @@ export default function EditProfile() {
     }
     formData.append("title", title);
     formData.append("password", password);
+    formData.append("experience", experience);
+    formData.append("bio", bio);
+    formData.append("name", name);
 
     try {
       const res = await axios.patch(
@@ -59,22 +65,23 @@ export default function EditProfile() {
         }
       );
 
-      Swal.fire("Success", "Profile updated successfully", "success");
-      setCookie("InstructorImage", res.data.image);
-      setCookie("InstructorTitle", res.data.title);
+      Swal.fire("Success", "Profile updated successfully", "success").then(
+        () => {
+          sessionStorage.setItem("InstructorImage", res.data.image);
+          setCookie("InstructorTitle", res.data.title);
+          setCookie("InstructorExperience", res.data.experience);
+          setCookie("InstructorBio", res.data.bio);
+          sessionStorage.setItem("InstructorName", res.data.name);
+          // window.location.reload();
+
+          window.location.pathname = "/instructor-dashboard";
+
+        }
+      );
 
       setLoading(false);
 
       // Reset all fields and file input
-
-      setTimeout(() => {
-        setFile(null);
-        setImagePreviewUrl("");
-        setTitle("");
-        setPassword("");
-        fileInputRef.current.value = ""; // Reset the file input using the ref
-        window.location.reload();
-      }, 1000);
     } catch (err) {
       console.error(err);
       Swal.fire("Error", "Failed to update profile", "error");
@@ -90,7 +97,9 @@ export default function EditProfile() {
             <SidebarInstructor />
           </div>
           <div className="col-lg-10 p-0">
-            <div className={`container-fluid ${style.scrollableContainer} py-3`}>
+            <div
+              className={`container-fluid ${style.scrollableContainer} py-3`}
+            >
               <button
                 className={`d-lg-none w-50 mx-auto mb-3 ${style.toggle_left_btn}`}
                 type="button"
@@ -156,6 +165,24 @@ export default function EditProfile() {
                   <hr />
                   <div className="mb-3 w-50 mx-auto">
                     <label
+                      htmlFor="name"
+                      className="form-label fw-bold d-block"
+                    >
+                      Name
+                    </label>
+                    <input
+                      type="text"
+                      className={`${style.input}`}
+                      id="name"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      required
+                      placeholder="Enter name"
+                    />
+                  </div>
+                  <hr />
+                  <div className="mb-3 w-50 mx-auto">
+                    <label
                       htmlFor="title"
                       className="form-label fw-bold d-block"
                     >
@@ -169,6 +196,24 @@ export default function EditProfile() {
                       onChange={(e) => setTitle(e.target.value)}
                       required
                       placeholder="Enter title"
+                    />
+                  </div>
+                  <hr />
+                  <div className="mb-3 w-50 mx-auto">
+                    <label
+                      htmlFor="experience"
+                      className="form-label fw-bold d-block"
+                    >
+                      Years of Experience
+                    </label>
+                    <input
+                      type="text"
+                      className={`${style.input}`}
+                      id="experience"
+                      value={experience}
+                      onChange={(e) => setExperience(e.target.value)}
+                      required
+                      placeholder="Enter experience"
                     />
                   </div>
                   <hr />
@@ -190,9 +235,27 @@ export default function EditProfile() {
                     />
                     {!validatePassword(password) && passwordError && (
                       <p style={{ color: "red", fontSize: "12px" }}>
-                        *Password must be at least 6 characters, contain at least one uppercase letter, one number, and one special character.
+                        *Password must be at least 6 characters, contain at
+                        least one uppercase letter, one number, and one special
+                        character.
                       </p>
                     )}
+                  </div>
+
+                  <hr />
+                  <div className="mb-3 w-50 mx-auto">
+                    <label htmlFor="bio" className="form-label fw-bold d-block">
+                      Bio
+                    </label>
+                    <input
+                      type="text"
+                      className={`${style.input}`}
+                      id="bio"
+                      value={bio}
+                      onChange={(e) => setBio(e.target.value)}
+                      required
+                      placeholder="Enter bio"
+                    />
                   </div>
                   <hr />
                   <div className="mb-3 w-50 mx-auto text-center">

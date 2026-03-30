@@ -60,8 +60,11 @@ export default function Auth() {
         // Navigation and session storage management here
         // deleteCookie("VerifiedLoginInstructorToken");
         setCookie("AccessTokenInstructor", res.data.token);
-        setCookie("InstructorName", res.data.user.name);
-        setCookie("InstructorImage", res.data.user.image);
+        sessionStorage.setItem("InstructorName", res.data.user.name);
+        sessionStorage.setItem("InstructorImage", res.data.user.image);
+        setCookie("InstructorBio", res.data.user.bio);
+        setCookie("InstructorExperience", res.data.user.experience);
+        setCookie("InstructorTitle", res.data.user.title);
         window.location.pathname = "/instructor-dashboard";
         setLoading(false);
       }

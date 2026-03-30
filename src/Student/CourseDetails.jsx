@@ -358,7 +358,7 @@ export default function CourseDetails() {
                     : "Add to Cart"}
                 </button>
 
-                <div className="mt-3 d-flex justify-content-end">
+                <div className="mt-3 d-flex justify-content-start">
                   <button
                     className="border-0 bg-white"
                     onClick={toggleFavorite}

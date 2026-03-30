@@ -3,7 +3,6 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import baseURL from "../BaseURL/BaseURL";
 import { getCookie } from "../Helper/CookiesHelper";
-import { useForm } from "react-hook-form";
 
 export default function MyCourses() {
   const [courses, setCourses] = useState([]);
@@ -12,37 +11,46 @@ export default function MyCourses() {
   const [totalCourses, setTotalCourses] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
 
+  const [isSubmitting, setIsSubmitting] = useState(false); // New state variable
+
   const limit = 6;
-  const fetchCourses = useCallback(() => {
-    document.title = "SKILLIFY | Categories";
-    setLoading(true);
-    const url = `${baseURL}/users/courses/?page=${currentPage}&limit=${limit}`;
-    axios
-      .get(url, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "SHA " + getCookie("AccessTokenStudent"),
-        },
-      })
-      .then((response) => {
-        setCourses(response.data.searchResults); // This ensures that only the current page's courses are displayed
-        setTotalCourses(response.data.total);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error("There was an error!", error);
-        setError(error);
-        setLoading(false);
-      });
-  }, [currentPage, limit]);
+
+  const fetchCourses = useCallback(
+    (isSubmit = false) => {
+      document.title = "SKILLIFY | Courses";
+      if (isSubmit) setLoading(true); // Only set loading if it's a submit action
+      const url = `${baseURL}/users/courses/?page=${currentPage}&limit=${limit}`;
+      axios
+        .get(url, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "SHA " + getCookie("AccessTokenStudent"),
+          },
+        })
+        .then((response) => {
+          setCourses(response.data.searchResults); // This ensures that only the current page's courses are displayed
+          setTotalCourses(response.data.total);
+          setLoading(false);
+          setIsSubmitting(false); // Reset the submitting state
+        })
+        .catch((error) => {
+          console.error("There was an error!", error);
+          setError(error);
+          setLoading(false);
+          setIsSubmitting(false); // Reset the submitting state
+        });
+    },
+    [currentPage, limit]
+  );
 
   useEffect(() => {
-    fetchCourses();
-  }, [fetchCourses]);
+    fetchCourses(isSubmitting);
+  }, [fetchCourses, isSubmitting]);
 
   const handlePageChange = (newPage) => {
     if (newPage > 0 && newPage <= Math.ceil(totalCourses / limit)) {
       setCurrentPage(newPage);
+      setIsSubmitting(true); // Set submitting state when changing pages
     }
   };
 
@@ -54,12 +62,18 @@ export default function MyCourses() {
     );
   if (error) return <div>Error: {error.message}</div>;
   if (!courses.length)
-    return <div className="text-center fw-bold fs-1">No courses found!</div>;
+    return (
+      <div className="text-center fw-bold fs-1">
+        <div className="redirect">
+          <div className="loader"></div>
+        </div>
+      </div>
+    );
 
   return (
     <div className="container my-5 pb-5">
       <h1 className="text-center fw-bold mb-3" style={{ color: "#5151D3" }}>
-        SKILLIFY Courses
+        SKILLIFY COURSES
       </h1>
       <hr />
       <div className="d-flex justify-content-between">
@@ -68,6 +82,7 @@ export default function MyCourses() {
         </p>
         <p className="fw-bold">Total Courses: {totalCourses}</p>
       </div>
+
       <hr />
       <div className="row">
         {courses.map((course) => (

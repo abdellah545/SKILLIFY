@@ -72,8 +72,8 @@ export default function AddCourse() {
         position: "Center",
         icon: "success",
         title: "Course added successfully",
-        showConfirmButton: false,
-        timer: 2000,
+      }).then(() => {
+        window.location.pathname = "/instructor-dashboard";
       });
       setLoading(false);
     } catch (err) {
