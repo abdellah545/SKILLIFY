@@ -20,7 +20,7 @@ export default function Footer() {
       >
         All Rights Reserved
       </div>
-      {/* <ChatApp /> */}
+      
     </div>
   );
 }

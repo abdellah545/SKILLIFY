@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import InstructorLayout from "./InstructorLayout";
 import style from "./InstructorDashboard.module.css";
-import SidebarInstructor from "./SidebarInstructor";
 import axios from "axios";
 import { getCookie } from "../../Helper/CookiesHelper";
 import baseURL from "../../BaseURL/BaseURL";
@@ -9,6 +9,7 @@ import baseURL from "../../BaseURL/BaseURL";
 export default function InstructorDashboard() {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -21,180 +22,98 @@ export default function InstructorDashboard() {
         });
         setCourses(response.data);
       } catch (error) {
-        console.error("There was an error fetching the courses!", error);
+        console.error("Error fetching courses:", error);
       } finally {
         setLoading(false);
       }
     };
-
     fetchCourses();
   }, []);
 
+  const filtered = courses.filter((c) =>
+    (c.title ?? "").toLowerCase().includes(search.toLowerCase())
+  );
+
   return (
-    <>
-      <div className={`${style.content}`}>
-        <div className="row g-0">
-          <div className="col-lg-2 d-none d-lg-block">
-            <SidebarInstructor />
+    <InstructorLayout title="My Courses">
+
+      {/* Header */}
+      <div className={style.pageHeader}>
+        <div>
+          <h2 className={style.pageTitle}>My Courses</h2>
+          <p className={style.pageSubtitle}>Manage and update your courses</p>
+        </div>
+        <div className={style.headerActions}>
+          <span className={style.statsChip}>
+            <span>{courses.length}</span> Courses
+          </span>
+          <Link to="/instructor-dashboard/add-course" className={style.addBtn}>
+            <i className="fa-solid fa-plus"></i> Add Course
+          </Link>
+        </div>
+      </div>
+
+      {/* Search */}
+      <div className={style.searchBar}>
+        <i className="fa-solid fa-magnifying-glass" style={{ color: "#94a3b8", marginRight: 10 }}></i>
+        <input
+          type="text"
+          placeholder="Search courses..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className={style.searchInput}
+        />
+      </div>
+
+      {/* Content */}
+      {loading ? (
+        <div className={style.loadingWrapper}>
+          <div className="spinner-border" style={{ color: "#5151D3" }} role="status">
+            <span className="visually-hidden">Loading...</span>
           </div>
-          <div className="col-lg-10 p-0">
-            <div className={`col-lg-12 p-0 ${style.scrollableContainer}`}>
-              <div className="row pt-3 mx-2 g-0">
-                <button
-                  className={`d-lg-none w-50 mx-auto mb-3 ${style.toggle_left_btn}`}
-                  type="button"
-                  data-bs-toggle="offcanvas"
-                  data-bs-target="#leftOffcanvas"
-                  aria-controls="leftOffcanvas"
-                >
-                  Side Bar
-                </button>
-                <h1
-                  className="text-center fw-bold"
-                  style={{ color: "#5151D3" }}
-                >
-                  My Courses
-                </h1>
-                <hr />
-                {loading ? (
-                  <div className="text-center">
-                    <span
-                      className="spinner-border spinner-border-lg"
-                      style={{ color: "#5151D3" }}
-                      role="status"
-                      aria-hidden="true"
-                    ></span>
-                  </div>
-                ) : courses.length > 0 ? (
-                  courses.map((course) => (
-                    <div
-                      key={course.id}
-                      className="col-lg-4 col-md-6 col-sm-12 mb-3 g-2"
-                    >
-                      <div className="card">
-                        <div
-                          className="card-img"
-                          style={{
-                            backgroundPosition: "center",
-                            backgroundSize: "cover",
-                            boxShadow: "0 4px 6px rgba(0, 0, 0, 0.2)",
-                          }}
-                        >
-                          <img
-                            src={course.image}
-                            className="img-fluid"
-                            alt={course.title}
-                            style={{
-                              objectFit: "cover",
-                              height: "250px",
-                              width: "100%",
-                            }}
-                          />
-                        </div>
-                        <div className="card-body p-2 ">
-                          <h3
-                            className="card-title text-center fw-bold"
-                            style={{ color: "#5151D3" }}
-                          >
-                            {course.title}
-                          </h3>
-                          <div className="card-text mb-1">
-                            <div className="row">
-                              <div className="col-12 text-truncate">
-                                {course.description}
-                              </div>
-                            </div>
-                          </div>
-                          <hr />
-                          <div className="card-text mb-3">
-                            <div className="row">
-                              <div className="col-6">
-                                <Link
-                                  to={`/instructor-dashboard/edit-course/${course._id}`}
-                                  style={{ textDecoration: "none" }}
-                                >
-                                  <button className="btn btn-primary w-100">
-                                    <i className="fa-solid fa-pen-to-square"></i>{" "}
-                                    Edit Course
-                                  </button>
-                                </Link>
-                              </div>
-                              <div className="col-6">
-                                <Link
-                                  to={`/instructor-dashboard/upload-content/${course._id}`}
-                                  style={{ textDecoration: "none" }}
-                                >
-                                  <button className="btn btn-primary w-100">
-                                    <i className="fa-solid fa-eye"></i>{" "}
-                                    View Content
-                                  </button>
-                                </Link>
-                              </div>
-                            </div>
-                          </div>
-                          <p className="card-footer d-flex justify-content-between align-items-center mb-0 bg-white">
-                            <div>
-                              <i
-                                className="fas fa-users"
-                                style={{ color: "#5151D3" }}
-                              ></i>
-                              <span style={{ color: "#5151D3" }}> Users: </span>
-                              {course.students?.length || 0}
-                            </div>
-                            <div>
-                              <i
-                                className="fas fa-star"
-                                style={{ color: "#5151D3" }}
-                              ></i>
-                              <span style={{ color: "#5151D3" }}>
-                                {" "}
-                                Rating:{" "}
-                              </span>
-                              {course.rating || 0}
-                            </div>
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  ))
-                ) : (
-                  <div className="col-12 text-center">
-                    <p className="mt-3 fw-bold fs-1">No courses yet</p>
-                  </div>
-                )}
+          <p>Loading your courses...</p>
+        </div>
+      ) : filtered.length === 0 ? (
+        <div className={style.emptyState}>
+          <div style={{ fontSize: "3rem", marginBottom: 12 }}>📚</div>
+          <h4>{courses.length === 0 ? "No courses yet" : "No results found"}</h4>
+          <p>{courses.length === 0 ? "Start by adding your first course!" : "Try adjusting your search."}</p>
+          {courses.length === 0 && (
+            <Link to="/instructor-dashboard/add-course" className={style.addBtn} style={{ marginTop: 16 }}>
+              <i className="fa-solid fa-plus"></i> Add Your First Course
+            </Link>
+          )}
+        </div>
+      ) : (
+        <div className={style.courseGrid}>
+          {filtered.map((course) => (
+            <div key={course._id} className={style.courseCard}>
+              <div className={style.cardImageWrapper}>
+                <img src={course.image} alt={course.title} className={style.cardImage} />
+                <div className={style.cardOverlay}>
+                  <span className={style.ratingBadge}>⭐ {course.rating || 0}</span>
+                </div>
+              </div>
+              <div className={style.cardBody}>
+                <h3 className={style.cardTitle}>{course.title}</h3>
+                <p className={style.cardDesc}>{course.description}</p>
+                <div className={style.cardMeta}>
+                  <span><i className="fas fa-users" style={{ marginRight: 5 }}></i>{course.students?.length || 0} students</span>
+                  <span><i className="fas fa-star" style={{ marginRight: 5 }}></i>{course.rating || 0} rating</span>
+                </div>
+                <div className={style.cardActions}>
+                  <Link to={`/instructor-dashboard/edit-course/${course._id}`} className={style.editBtn}>
+                    <i className="fa-solid fa-pen-to-square"></i> Edit
+                  </Link>
+                  <Link to={`/instructor-dashboard/upload-content/${course._id}`} className={style.viewBtn}>
+                    <i className="fa-solid fa-eye"></i> Content
+                  </Link>
+                </div>
               </div>
             </div>
-          </div>
+          ))}
         </div>
-      </div>
-      <button
-        className={`d-lg-none ${style.toggle_left_btn}`}
-        type="button"
-        data-bs-toggle="offcanvas"
-        data-bs-target="#leftOffcanvas"
-        aria-controls="leftOffcanvas"
-      >
-        <i className="fa-solid fa-right-long fs-4"></i>
-      </button>
-      <div
-        className="offcanvas offcanvas-start"
-        data-bs-backdrop="static"
-        tabIndex="-1"
-        id="leftOffcanvas"
-        aria-labelledby="leftOffcanvasLabel"
-      >
-        <div className="offcanvas-header">
-          <button
-            type="button"
-            className="btn-close"
-            data-bs-dismiss="offcanvas"
-            aria-label="Close"
-          ></button>
-        </div>
-        <div className="offcanvas-body p-0">
-          <SidebarInstructor />
-        </div>
-      </div>
-    </>
+      )}
+    </InstructorLayout>
   );
 }

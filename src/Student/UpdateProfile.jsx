@@ -1,37 +1,54 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { Link } from "react-router-dom";
 import style from "./Profile.module.css";
 import { getCookie, setCookie } from "../Helper/CookiesHelper";
 import baseURL from "../BaseURL/BaseURL";
 
 export default function UpdateProfile() {
+  document.title = "SKILLIFY | Update Profile";
+
   const [selectedImage, setSelectedImage] = useState(null);
-  const [imagePreviewUrl, setImagePreviewUrl] = useState("");
-  const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
+  const [imageFile, setImageFile] = useState(null);
+  const [name, setName] = useState(getCookie("userName") || "");
+  const [phone, setPhone] = useState(getCookie("phone") || "");
   const [password, setPassword] = useState("");
-  const [github, setGithub] = useState("");
-  const [linkedin, setLinkedin] = useState("");
+  const [github, setGithub] = useState(getCookie("github") || "");
+  const [linkedin, setLinkedin] = useState(getCookie("linkedin") || "");
+  
   const [loading, setLoading] = useState(false);
   const [passwordError, setPasswordError] = useState("");
   const [githubError, setGithubError] = useState("");
   const [linkedinError, setLinkedinError] = useState("");
-  const [error, setError] = useState(false);
+  
+  const [showPass, setShowPass] = useState(false);
+  const fileInputRef = useRef(null);
+
+  const currentImage = sessionStorage.getItem("userImage");
 
   const validatePassword = (password) => {
+    if (!password) return true; // Only validate if user is trying to change it
     const passwordPattern = /^(?=.*[A-Z])(?=.*[@$!%*?&])(?=.*[0-9]).{6,}$/;
     return passwordPattern.test(password);
   };
 
   const validateGithub = (github) => {
+    if (!github) return true;
     const githubPattern = /^https:\/\/github\.com\/[A-Za-z0-9_-]+$/;
     return githubPattern.test(github);
+  };
+
+  const validateLinkedin = (linkedin) => {
+    if (!linkedin) return true;
+    const linkedinPattern = /^https:\/\/(www\.)?linkedin\.com\/.*$/;
+    return linkedinPattern.test(linkedin);
   };
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file && file.type.startsWith("image/")) {
+      setImageFile(file);
       const reader = new FileReader();
       reader.onload = () => {
         setSelectedImage(reader.result);
@@ -39,16 +56,14 @@ export default function UpdateProfile() {
       reader.readAsDataURL(file);
     } else {
       setSelectedImage(null);
-      setImagePreviewUrl(null);
+      setImageFile(null);
     }
   };
 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
-    if (!validatePassword(e.target.value)) {
-      setPasswordError(
-        "Password must be at least 6 characters, contain one uppercase letter, one number, and one special character."
-      );
+    if (e.target.value && !validatePassword(e.target.value)) {
+      setPasswordError("Min 6 characters, one uppercase, one number, and one special character.");
     } else {
       setPasswordError("");
     }
@@ -56,10 +71,8 @@ export default function UpdateProfile() {
 
   const handleGithubChange = (e) => {
     setGithub(e.target.value);
-    if (!validateGithub(e.target.value)) {
-      setGithubError(
-        "GitHub URL must be in the format: https://github.com/username"
-      );
+    if (e.target.value && !validateGithub(e.target.value)) {
+      setGithubError("Format: https://github.com/username");
     } else {
       setGithubError("");
     }
@@ -67,10 +80,8 @@ export default function UpdateProfile() {
 
   const handleLinkedinChange = (e) => {
     setLinkedin(e.target.value);
-    if (!validateGithub(e.target.value)) {
-      setLinkedinError(
-        "LinkedIn URL must be in the format: https://www.linkedin.com/in/username"
-      );
+    if (e.target.value && !validateLinkedin(e.target.value)) {
+      setLinkedinError("Format: https://linkedin.com/in/username");
     } else {
       setLinkedinError("");
     }
@@ -78,10 +89,8 @@ export default function UpdateProfile() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(true);
 
-    if (!validatePassword(password) || !validateGithub(github)) {
-      setError(true);
+    if (!validatePassword(password) || !validateGithub(github) || !validateLinkedin(linkedin)) {
       return;
     }
 
@@ -90,11 +99,12 @@ export default function UpdateProfile() {
     const formData = new FormData();
     formData.append("name", name);
     formData.append("phone", phone);
-    formData.append("password", password);
+    if (password) formData.append("password", password);
     formData.append("github", github);
     formData.append("linkedin", linkedin);
-    if (selectedImage) {
-      formData.append("image", selectedImage);
+    
+    if (imageFile) {
+      formData.append("image", imageFile);
     }
 
     try {
@@ -109,148 +119,164 @@ export default function UpdateProfile() {
         }
       );
 
-      // console.log("Profile updated successfully:", response.data);
-
       Swal.fire({
         icon: "success",
         title: "Profile Updated",
         text: "Your profile has been updated successfully.",
-        confirmButtonText: "OK",
+        confirmButtonText: "Awesome!",
+        customClass: {
+          confirmButton: 'btn btn-primary'
+        }
       }).then(() => {
-        sessionStorage.setItem("userImage", response.data.image);
-        setCookie("userName", response.data.name);
-        setCookie("github", response.data.github);
-        setCookie("linkedin", response.data.linkedin);
-        window.location.reload();
+        if (response.data.image) sessionStorage.setItem("userImage", response.data.image);
+        if (response.data.name) setCookie("userName", response.data.name);
+        if (response.data.github) setCookie("github", response.data.github);
+        if (response.data.linkedin) setCookie("linkedin", response.data.linkedin);
+        if (response.data.phone) setCookie("phone", response.data.phone);
+        window.location.pathname = "/profile";
       });
     } catch (error) {
       console.error("There was an error updating the profile!", error);
+      Swal.fire({
+        icon: "error",
+        title: "Update Failed",
+        text: error?.response?.data?.message || "An unexpected error occurred."
+      });
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="container py-5">
-      <div className="row justify-content-center">
-        <div className="col-12">
-          <h1 className={`text-center fw-bold ${style.header}`}>
-            Update Profile
-          </h1>
-        </div>
-        <div className="col-lg-6 col-md-12">
-          <form onSubmit={handleSubmit}>
-            <div className={`row py-5 flex-column ${style.profile_info}`}>
-              <label htmlFor="image" className={style.label}>
-                Profile Image
-              </label>
+    <div className={style.pageContainer}>
+      <div className={style.pageHeader}>
+        <h1 className={style.pageTitle}>Update Profile</h1>
+        <p className={style.pageSubtitle}>Keep your personal details and professional links up to date.</p>
+      </div>
+
+      <div className={style.formCard}>
+        <form onSubmit={handleSubmit}>
+          
+          <div className={style.imageUploadGroup}>
+            <div className={style.imagePreview}>
+              {selectedImage ? (
+                <img src={selectedImage} alt="Selected profile" style={{ width: "100%", height: "100%", borderRadius: "50%", objectFit: "cover" }} />
+              ) : currentImage ? (
+                <img src={currentImage} alt="Current profile" style={{ width: "100%", height: "100%", borderRadius: "50%", objectFit: "cover" }} />
+              ) : (
+                <i className="fa-solid fa-user"></i>
+              )}
+            </div>
+            <div className={style.fileInputWrapper}>
+              <label className={style.formLabel}>Profile Photo</label>
+              <div 
+                className={style.fileInputLabel}
+                onClick={() => fileInputRef.current.click()}
+              >
+                <i className="fa-solid fa-camera"></i> Change Photo
+              </div>
               <input
                 type="file"
-                id="image"
-                name="image"
                 accept="image/*"
+                ref={fileInputRef}
+                className={style.fileInput}
                 onChange={handleImageChange}
-                className={style.input_field}
               />
-              {selectedImage && (
-                <img
-                  src={selectedImage}
-                  alt="Selected"
-                  className={style.selected_image}
-                  style={{ width: "200px" }}
-                />
-              )}
+            </div>
+          </div>
 
-              <hr />
-              <label htmlFor="name" className={style.label} id="label">
-                Name
-              </label>
+          <div className={style.formGroup}>
+            <label htmlFor="name" className={style.formLabel}>Full Name</label>
+            <input
+              type="text"
+              id="name"
+              className={style.formInput}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Enter your full name"
+              required
+            />
+          </div>
+
+          <div className={style.formGroup}>
+            <label htmlFor="phone" className={style.formLabel}>Phone Number</label>
+            <input
+              type="text"
+              id="phone"
+              className={style.formInput}
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              placeholder="Enter your phone number"
+              required
+            />
+          </div>
+
+          <div className={style.formGroup}>
+            <label htmlFor="password" className={style.formLabel}>New Password (Optional)</label>
+            <div style={{ position: "relative" }}>
               <input
-                type="text"
-                id="name"
-                name="name"
-                placeholder="Enter your name"
-                className={style.input_field}
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-              />
-              <hr />
-              <label htmlFor="phone" className={style.label} id="label">
-                Phone
-              </label>
-              <input
-                type="text"
-                id="phone"
-                name="phone"
-                placeholder="Enter your phone number"
-                className={style.input_field}
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-                required
-              />
-              <hr />
-              <label htmlFor="password" className={style.label}>
-                Password
-              </label>
-              <input
+                type={showPass ? "text" : "password"}
                 id="password"
-                name="password"
-                type="password"
-                placeholder="Enter your password"
+                className={style.formInput}
                 value={password}
                 onChange={handlePasswordChange}
-                className={style.input_field}
+                placeholder="Leave blank to keep current password"
+                style={{ paddingRight: "40px" }}
               />
-              {passwordError && (
-                <p style={{ color: "red", fontSize: "12px" }}>
-                  {passwordError}
-                </p>
-              )}
-              <hr />
-
-              <label htmlFor="github" className={style.label}>
-                GitHub
-              </label>
-              <input
-                type="text"
-                id="github"
-                name="github"
-                placeholder="https://github.com/username"
-                value={github}
-                onChange={handleGithubChange}
-                className={style.input_field}
-              />
-              {githubError && (
-                <p style={{ color: "red", fontSize: "12px" }}>{githubError}</p>
-              )}
-
-              <hr />
-              <label htmlFor="linkedin" className={style.label} id="label">
-                LinkedIn
-              </label>
-              <input
-                type="text"
-                id="linkedin"
-                name="linkedin"
-                placeholder="https://www.linkedin.com/in/username"
-                value={linkedin}
-                onChange={handleLinkedinChange}
-                className={style.input_field}
-                required
-              />
-              <hr />
-
-              <button
-                type="submit"
-                className="btn btn-primary mt-3"
-                disabled={loading}
+              <span 
+                onClick={() => setShowPass(!showPass)} 
+                style={{ position: "absolute", right: "12px", top: "50%", transform: "translateY(-50%)", cursor: "pointer", opacity: 0.6 }}
               >
-                {loading ? "Updating..." : "Update Profile"}
-              </button>
+                {showPass ? "🙈" : "👁️"}
+              </span>
             </div>
-          </form>
-        </div>
+            {passwordError && <p style={{ color: "#ef4444", fontSize: "0.8rem", marginTop: "6px" }}>{passwordError}</p>}
+          </div>
+
+          <div className={style.formGroup}>
+            <label htmlFor="github" className={style.formLabel}>GitHub Profile</label>
+            <input
+              type="text"
+              id="github"
+              className={style.formInput}
+              value={github}
+              onChange={handleGithubChange}
+              placeholder="https://github.com/username"
+            />
+            {githubError && <p style={{ color: "#ef4444", fontSize: "0.8rem", marginTop: "6px" }}>{githubError}</p>}
+          </div>
+
+          <div className={style.formGroup}>
+            <label htmlFor="linkedin" className={style.formLabel}>LinkedIn Profile</label>
+            <input
+              type="text"
+              id="linkedin"
+              className={style.formInput}
+              value={linkedin}
+              onChange={handleLinkedinChange}
+              placeholder="https://linkedin.com/in/username"
+            />
+            {linkedinError && <p style={{ color: "#ef4444", fontSize: "0.8rem", marginTop: "6px" }}>{linkedinError}</p>}
+          </div>
+
+          <div style={{ display: "flex", gap: "16px", marginTop: "32px" }}>
+            <Link to="/profile" className="btn" style={{ flex: 1, padding: "14px", background: "#f1f5f9", color: "#475569", fontWeight: 700, borderRadius: "12px" }}>
+              Cancel
+            </Link>
+            <button
+              type="submit"
+              className={style.submitBtn}
+              disabled={loading || passwordError || githubError || linkedinError}
+              style={{ flex: 2 }}
+            >
+              {loading ? (
+                <><div className="spinner-border spinner-border-sm"></div> Saving...</>
+              ) : (
+                <><i className="fa-solid fa-floppy-disk"></i> Save Changes</>
+              )}
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   );

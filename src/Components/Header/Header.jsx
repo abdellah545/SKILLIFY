@@ -8,7 +8,10 @@ import { cookieExists, deleteCookie, getCookie } from "../../Helper/CookiesHelpe
 
 export default function Header() {
   const [loading, setLoading] = useState(false);
-  const { cart, favorites } = useCart(); // Access cart and favorites from context
+  const [isNavOpen, setIsNavOpen] = useState(false);
+  const { cart, favorites } = useCart();
+
+  const closeNav = () => setIsNavOpen(false);
 
   // const deleteCookie = (name) => {
   //   document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;`;
@@ -76,27 +79,27 @@ export default function Header() {
       className="sticky-top"
       style={{ boxShadow: "0 0 10px 0 rgba(0, 0, 0, 0.2)" }}
     >
-      <nav className="navbar navbar-expand-lg">
+      <nav className="navbar navbar-expand-lg py-1">
         <div className="container">
           <Link
-            className="navbar-brand animate__animated animate__pulse animate__infinite"
+            className="navbar-brand brand-logo"
             id="navbar-link"
             to="/"
+            onClick={closeNav}
           >
             SKILLIFY
           </Link>
           <button
             className="navbar-toggler"
             type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent"
-            aria-expanded="false"
+            aria-expanded={isNavOpen}
             aria-label="Toggle navigation"
+            onClick={() => setIsNavOpen(!isNavOpen)}
           >
             <span className="navbar-toggler-icon"></span>
           </button>
-          <div className="collapse navbar-collapse" id="navbarSupportedContent">
+          <div className={`collapse navbar-collapse ${isNavOpen ? 'show' : ''}`} id="navbarSupportedContent">
             <ul className="navbar-nav ms-3 mb-2 mb-lg-0">
               <li className="nav-item">
                 <Link
@@ -104,6 +107,7 @@ export default function Header() {
                   id="nav-link"
                   aria-current="page"
                   to="/"
+                  onClick={closeNav}
                 >
                   Home
                 </Link>
@@ -115,6 +119,7 @@ export default function Header() {
                     id="nav-link"
                     aria-current="page"
                     to="/categories"
+                    onClick={closeNav}
                   >
                     Courses
                   </Link>
@@ -124,9 +129,9 @@ export default function Header() {
 
             {!cookieExists("AccessTokenStudent") ? (
               <div className="d-flex ms-auto">
-                <div className="dropdown login-btn">
+                <div className="dropdown me-2">
                   <button
-                    className="btn border-0 dropdown-toggle text-white fw-bold"
+                    className="btn border-0 dropdown-toggle login-btn"
                     type="button"
                     data-bs-toggle="dropdown"
                     aria-expanded="false"
@@ -135,27 +140,27 @@ export default function Header() {
                   </button>
                   <ul className="dropdown-menu">
                     <li className="">
-                      <Link className="dropdown-item" to="/login-admin">
+                      <Link className="dropdown-item" to="/login-admin" onClick={closeNav}>
                         As an admin
                       </Link>
                     </li>
                     <hr className="dropdown-divider" />
                     <li className="">
-                      <Link className="dropdown-item" to="/login">
+                      <Link className="dropdown-item" to="/login" onClick={closeNav}>
                         As a student
                       </Link>
                     </li>
                     <hr className="dropdown-divider" />
                     <li>
-                      <Link className="dropdown-item" to="/login-instructor">
+                      <Link className="dropdown-item" to="/login-instructor" onClick={closeNav}>
                         As an instructor
                       </Link>
                     </li>
                   </ul>
                 </div>
-                <div className="dropdown signup-btn">
+                <div className="dropdown">
                   <button
-                    className="btn btn-transparent border-0 dropdown-toggle fw-bold"
+                    className="btn border-0 dropdown-toggle signup-btn"
                     type="button"
                     data-bs-toggle="dropdown"
                     aria-expanded="false"
@@ -164,13 +169,13 @@ export default function Header() {
                   </button>
                   <ul className="dropdown-menu">
                     <li className="">
-                      <Link className="dropdown-item" to="/register">
+                      <Link className="dropdown-item" to="/register" onClick={closeNav}>
                         As a student
                       </Link>
                     </li>
                     <hr className="dropdown-divider" />
                     <li>
-                      <Link className="dropdown-item" to="/register-instructor">
+                      <Link className="dropdown-item" to="/register-instructor" onClick={closeNav}>
                         Apply to be an instructor
                       </Link>
                     </li>
@@ -191,6 +196,7 @@ export default function Header() {
                             className="nav-link fw-bold"
                             id="nav-link"
                             to="/student-courses"
+                            onClick={closeNav}
                           >
                             My Courses
                           </Link>
@@ -200,6 +206,7 @@ export default function Header() {
                             className="nav-link fw-bold"
                             id="nav-link"
                             to="/cart"
+                            onClick={closeNav}
                           >
                             <i className="fa-solid fa-cart-shopping"></i>
                             <span
@@ -215,6 +222,7 @@ export default function Header() {
                             className="nav-link fw-bold"
                             id="nav-link"
                             to="/favorites"
+                            onClick={closeNav}
                           >
                             <i className="fa-solid fa-heart"></i>
                             <span
@@ -252,12 +260,12 @@ export default function Header() {
                   </button>
                   <ul className="dropdown-menu dropdown-menu-end">
                     <li className="">
-                      <Link className="dropdown-item" to="/profile">
+                      <Link className="dropdown-item" to="/profile" onClick={closeNav}>
                         Profile
                       </Link>
                     </li>
                     <li className="">
-                      <Link className="dropdown-item" to="/updateProfile">
+                      <Link className="dropdown-item" to="/updateProfile" onClick={closeNav}>
                         Update Profile
                       </Link>
                     </li>

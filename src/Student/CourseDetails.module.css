@@ -1,0 +1,355 @@
+.pageContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  font-family: 'Inter', sans-serif;
+  color: #1e293b;
+}
+
+.courseHeader {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.courseTitle {
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  font-weight: 800;
+  color: #1e293b;
+  margin-bottom: 12px;
+}
+
+.courseSubtitle {
+  font-size: 1.15rem;
+  color: #64748b;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.layoutGrid {
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  gap: 40px;
+  align-items: start;
+}
+
+/* ── Left Column: Details & Content ── */
+.mainColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.infoCard {
+  background: white;
+  border-radius: 20px;
+  padding: 32px;
+  box-shadow: 0 10px 30px rgba(81, 81, 211, 0.05);
+  border: 1px solid #f1f5f9;
+}
+
+.infoRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 0;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.infoRow:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.infoRow:first-child {
+  padding-top: 0;
+}
+
+.infoIcon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: rgba(81, 81, 211, 0.1);
+  color: #5151D3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.infoLabel {
+  font-size: 0.9rem;
+  color: #64748b;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.infoValue {
+  font-size: 1.05rem;
+  color: #1e293b;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+.sectionTitle {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #1e293b;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.contentCard {
+  background: white;
+  border-radius: 20px;
+  padding: 32px;
+  box-shadow: 0 10px 30px rgba(81, 81, 211, 0.05);
+  border: 1px solid #f1f5f9;
+}
+
+.videoList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.videoItem {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  background: #f8fafc;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 1px solid transparent;
+}
+
+.videoItem:hover {
+  background: white;
+  border-color: #cbd5e1;
+  box-shadow: 0 4px 12px rgba(81, 81, 211, 0.08);
+  transform: translateY(-2px);
+}
+
+.videoThumbnail {
+  width: 100px;
+  height: 60px;
+  border-radius: 8px;
+  object-fit: cover;
+  margin-right: 16px;
+  flex-shrink: 0;
+  background: #e2e8f0;
+}
+
+.videoDetails {
+  flex: 1;
+}
+
+.videoTitle {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 4px;
+}
+
+.videoDate {
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
+.playIcon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(81, 81, 211, 0.1);
+  color: #5151D3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 16px;
+  transition: all 0.2s;
+}
+
+.videoItem:hover .playIcon {
+  background: #5151D3;
+  color: white;
+}
+
+.emptyContent {
+  text-align: center;
+  padding: 40px 20px;
+  background: #f8fafc;
+  border-radius: 16px;
+  border: 1px dashed #cbd5e1;
+  color: #64748b;
+  font-weight: 600;
+}
+
+/* ── Right Column: Sticky Action Card ── */
+.actionCard {
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 15px 40px rgba(81, 81, 211, 0.1);
+  border: 1px solid #f1f5f9;
+  position: sticky;
+  top: 90px;
+}
+
+.cardImage {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+}
+
+.cardBody {
+  padding: 30px;
+}
+
+.priceRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.priceLabel {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #64748b;
+}
+
+.priceValue {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #5151D3;
+}
+
+.courseDesc {
+  font-size: 0.95rem;
+  color: #475569;
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+.actionBtn {
+  width: 100%;
+  padding: 16px;
+  background: linear-gradient(135deg, #5151D3, #3b3bcf);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-weight: 800;
+  font-size: 1.1rem;
+  transition: all 0.2s;
+  box-shadow: 0 8px 20px rgba(81, 81, 211, 0.25);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.actionBtn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(81, 81, 211, 0.35);
+}
+
+.actionBtn:disabled {
+  opacity: 0.8;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btnPurchased {
+  background: #16a34a;
+  box-shadow: 0 8px 20px rgba(22, 163, 74, 0.25);
+}
+
+.btnPurchased:hover:not(:disabled) {
+  box-shadow: 0 12px 28px rgba(22, 163, 74, 0.35);
+}
+
+.btnCart {
+  background: #f59e0b;
+  box-shadow: 0 8px 20px rgba(245, 158, 11, 0.25);
+}
+
+.actionsSecondary {
+  display: flex;
+  justify-content: center;
+}
+
+.favoriteBtn {
+  background: transparent;
+  border: 1px solid #e2e8f0;
+  color: #64748b;
+  padding: 10px 24px;
+  border-radius: 50px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.favoriteBtn:hover {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+}
+
+.favoriteBtn.active {
+  color: #dc2626;
+  background: rgba(239, 68, 68, 0.05);
+  border-color: rgba(239, 68, 68, 0.2);
+}
+
+/* Loading */
+.loadingWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 50vh;
+  gap: 16px;
+  font-weight: 700;
+  color: #5151D3;
+}
+
+/* Responsive */
+@media (max-width: 991px) {
+  .layoutGrid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  .actionCard {
+    position: relative;
+    top: 0;
+    grid-row: 1; /* Move card to top on mobile */
+  }
+}
+
+@media (max-width: 576px) {
+  .infoCard, .contentCard {
+    padding: 20px;
+  }
+  .videoItem {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .videoThumbnail {
+    width: 100%;
+    height: 140px;
+    margin-right: 0;
+    margin-bottom: 12px;
+  }
+  .playIcon {
+    margin: 12px 0 0;
+    align-self: flex-end;
+  }
+}

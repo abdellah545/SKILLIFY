@@ -1,0 +1,114 @@
+.pageContainer {
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  background-color: #f8fafc;
+  font-family: 'Inter', sans-serif;
+}
+
+.statusCard {
+  background: white;
+  border-radius: 24px;
+  padding: 40px;
+  max-width: 500px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(81, 81, 211, 0.08);
+  border: 1px solid rgba(81, 81, 211, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Decorative background blur */
+.statusCard::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(81, 81, 211, 0.03) 0%, transparent 60%);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.contentWrapper {
+  position: relative;
+  z-index: 1;
+}
+
+.imageWrapper {
+  width: 160px;
+  height: 160px;
+  margin: 0 auto 24px;
+  padding: 10px;
+  border-radius: 50%;
+  background: #f8fafc;
+  border: 2px dashed rgba(81, 81, 211, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.statusImage {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #1e293b;
+  margin-bottom: 12px;
+}
+
+.statusText {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #5151D3;
+  margin-bottom: 8px;
+}
+
+.messageText {
+  font-size: 1rem;
+  color: #64748b;
+  margin-bottom: 32px;
+  line-height: 1.6;
+}
+
+.actionBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 32px;
+  background: linear-gradient(135deg, #5151D3, #3b3bcf);
+  color: white;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 1.05rem;
+  text-decoration: none;
+  transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  box-shadow: 0 4px 14px rgba(81, 81, 211, 0.25);
+  cursor: pointer;
+  border: none;
+  width: 100%;
+}
+
+.actionBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(81, 81, 211, 0.35);
+  color: white;
+}
+
+@media (max-width: 576px) {
+  .statusCard {
+    padding: 30px 20px;
+  }
+  .title {
+    font-size: 1.6rem;
+  }
+}

@@ -7,22 +7,19 @@ import "bootstrap/dist/js/bootstrap.bundle.min";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import { cookieExists } from "./Helper/CookiesHelper"; // Ensure correct import path
 
+import { disableBackendDependency } from "./mockBackend";
+
+// Globally disable all backend interactions for UI preview
+disableBackendDependency();
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
-// Check if the 'AccessTokenStudent' cookie exists
-const hasAccessToken = cookieExists("AccessTokenStudent");
-
-// Conditional rendering based on cookie existence
 root.render(
-  hasAccessToken ? (
+  <React.Fragment>
     <CartProvider>
       <App />
     </CartProvider>
-  ) : (
-    <React.Fragment>
-      <App />
-    </React.Fragment>
-  )
+  </React.Fragment>
 );
 
 // If you want to start measuring performance in your app, pass a function

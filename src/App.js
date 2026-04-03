@@ -1,129 +1,66 @@
-import React from "react";
+import React, { Suspense, lazy } from "react";
 import {
   createBrowserRouter,
   RouterProvider,
-  Navigate,
 } from "react-router-dom";
-import Home from "./Components/Home/Home";
-import AdminDashboard from "./Components/Dashboard/AdminDashboard";
+
+// ── Globals ──
 import Layout from "./Components/Layout/Layout";
-import LoginAdmin from "./Components/Login_Admin/LoginAdmin";
-import SignUp from "./Components/Sign up/SignUp";
-import Login from "./Components/Login/Login";
-import Auth from "./Components/Sign up/Auth";
-import AuthSignup from "./Components/Sign up/AuthSignup";
-import ForgotPassword from "./Components/ForgotPassword/ForgotPassword";
-import VerifyCode from "./Components/ForgotPassword/VerifyCode";
-import ResetPassword from "./Components/ForgotPassword/ResetPassword";
-import LoginInstructor from "./Components/Login_Instructor/LoginInstructor";
-import AuthLoginInstructor from "./Components/Login_Instructor/AuthLoginInstructor";
-import InstructorSignUp from "./Components/SignUp_Instructor/InstructorSignUp";
-import AuthSignUpInstructor from "./Components/SignUp_Instructor/AuthSignUpInstructor";
-import Pending from "./Components/Pending/Pending";
-import Confirmation from "./Components/Pending/Confirmation";
-import Rejection from "./Components/Pending/Rejection";
-import UploadPapers from "./Components/Login_Instructor/UploadPapers";
-import InstructorDashboard from "./Components/Instructor Dashboard/InstructorDashboard";
-import AddCourse from "./Components/Instructor Dashboard/AddCourse";
-import MyCourses from "./Student/MyCourses";
-import CourseDetails from "./Student/CourseDetails";
-import Categories from "./Student/Categories";
-import Cart from "./Student/Cart";
-import EditProfile from "./Components/Instructor Dashboard/EditProfile";
-import EditCourse from "./Components/Instructor Dashboard/EditCourse";
-import InstructorPapers from "./Components/Dashboard/InstructorPapers";
-import Favorites from "./Student/Favorites";
-import Profile from "./Student/Profile";
-import UpdateProfile from "./Student/UpdateProfile";
-import UploadContent from "./Components/Instructor Dashboard/UploadContent";
-import AuthAdmin from "./Components/Login_Admin/AuthAdmin";
+// Home loaded eagerly since it's the main landing page and fastest to render
+import Home from "./Components/Home/Home";
 
-//========================= COOKIES =========================
-const deleteCookie = (name) => {
-  document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;`;
-};
-const cookieExists = (name) => {
-  const cookieName = `${name}=`;
-  const decodedCookie = decodeURIComponent(document.cookie);
-  const cookieArray = decodedCookie.split(";");
+// ── Lazy Loading Components for Ultimate Performance ──
+// This technique (Code Splitting) reduces the initial JS bundle size dramatically.
 
-  for (let i = 0; i < cookieArray.length; i++) {
-    let cookie = cookieArray[i];
-    while (cookie.charAt(0) === " ") {
-      cookie = cookie.substring(1);
-    }
-    if (cookie.indexOf(cookieName) === 0) {
-      return true; // Cookie found
-    }
-  }
+// Dashboard & Layouts
+const AdminDashboard = lazy(() => import("./Components/Dashboard/AdminDashboard"));
+const InstructorPapers = lazy(() => import("./Components/Dashboard/InstructorPapers"));
+const InstructorDashboard = lazy(() => import("./Components/Instructor Dashboard/InstructorDashboard"));
 
-  return false; // Cookie not found
-};
-const getCookie = (name) => {
-  const cookieName = `${name}=`;
-  const decodedCookie = decodeURIComponent(document.cookie);
-  const cookieArray = decodedCookie.split(";");
+// Auth & Login
+const LoginAdmin = lazy(() => import("./Components/Login_Admin/LoginAdmin"));
+const AuthAdmin = lazy(() => import("./Components/Login_Admin/AuthAdmin"));
+const Login = lazy(() => import("./Components/Login/Login"));
+const Auth = lazy(() => import("./Components/Sign up/Auth"));
+const SignUp = lazy(() => import("./Components/Sign up/SignUp"));
+const AuthSignup = lazy(() => import("./Components/Sign up/AuthSignup"));
+const ForgotPassword = lazy(() => import("./Components/ForgotPassword/ForgotPassword"));
+const VerifyCode = lazy(() => import("./Components/ForgotPassword/VerifyCode"));
+const ResetPassword = lazy(() => import("./Components/ForgotPassword/ResetPassword"));
+const LoginInstructor = lazy(() => import("./Components/Login_Instructor/LoginInstructor"));
+const AuthLoginInstructor = lazy(() => import("./Components/Login_Instructor/AuthLoginInstructor"));
+const InstructorSignUp = lazy(() => import("./Components/SignUp_Instructor/InstructorSignUp"));
+const AuthSignUpInstructor = lazy(() => import("./Components/SignUp_Instructor/AuthSignUpInstructor"));
 
-  for (let i = 0; i < cookieArray.length; i++) {
-    let cookie = cookieArray[i];
-    while (cookie.charAt(0) === " ") {
-      cookie = cookie.substring(1);
-    }
-    if (cookie.indexOf(cookieName) === 0) {
-      return cookie.substring(cookieName.length, cookie.length);
-    }
-  }
+// Pending & Verifications
+const Pending = lazy(() => import("./Components/Pending/Pending"));
+const Confirmation = lazy(() => import("./Components/Pending/Confirmation"));
+const Rejection = lazy(() => import("./Components/Pending/Rejection"));
+const UploadPapers = lazy(() => import("./Components/Login_Instructor/UploadPapers"));
 
-  return null;
-};
-//========================= COOKIES =========================
+// Instructor Operations
+const AddCourse = lazy(() => import("./Components/Instructor Dashboard/AddCourse"));
+const EditProfile = lazy(() => import("./Components/Instructor Dashboard/EditProfile"));
+const EditCourse = lazy(() => import("./Components/Instructor Dashboard/EditCourse"));
+const UploadContent = lazy(() => import("./Components/Instructor Dashboard/UploadContent"));
 
-// ========================= PROTECTED ROUTE =========================
-const isAuthenticated = () => {
-  if (cookieExists("AccessTokenAdmin")) {
-    return true;
-  } // Placeholder, implement your logic here
-};
+// Student Operations
+const MyCourses = lazy(() => import("./Student/MyCourses"));
+const CourseDetails = lazy(() => import("./Student/CourseDetails"));
+const Categories = lazy(() => import("./Student/Categories"));
+const Cart = lazy(() => import("./Student/Cart"));
+const Favorites = lazy(() => import("./Student/Favorites"));
+const Profile = lazy(() => import("./Student/Profile"));
+const UpdateProfile = lazy(() => import("./Student/UpdateProfile"));
 
-// Define a higher-order component for protected routes for admin
-const ProtectedRoute = ({ element, path }) => {
-  if (!isAuthenticated()) {
-    // Redirect to login if not authenticated
-    return <Navigate to="/login-admin" replace />;
-  }
-  return <>{element}</>;
-};
+// Loader Component for Suspense Fallback
+const PageLoader = () => (
+  <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100vh', gap: '20px', background: '#f8fafc' }}>
+    <div className="spinner-border" style={{ width: '4rem', height: '4rem', color: '#5151D3' }} role="status"></div>
+    <span style={{ color: '#64748b', fontWeight: 600, fontSize: '1.2rem' }}>Loading SKILLIFY...</span>
+  </div>
+);
 
-const isAuthenticatedStudent = () => {
-  if (cookieExists("AccessTokenStudent")) {
-    return true;
-  } // Placeholder, implement your logic here
-};
-
-// Define a higher-order component for protected routes for student
-const ProtectedRouteStudent = ({ element, path }) => {
-  if (!isAuthenticatedStudent()) {
-    // Redirect to login if not authenticated
-    return <Navigate to="/login" replace />;
-  }
-  return <>{element}</>;
-};
-
-const isAuthenticatedInstructor = () => {
-  if (cookieExists("AccessTokenInstructor")) {
-    return true;
-  } // Placeholder, implement your logic here
-};
-
-// Define a higher-order component for protected routes for instructor
-const ProtectedRouteInstructor = ({ element, path }) => {
-  if (!isAuthenticatedInstructor()) {
-    // Redirect to login if not authenticated
-    return <Navigate to="/login-instructor" replace />;
-  }
-  return <>{element}</>;
-};
-// ========================= PROTECTED ROUTE =========================
 export default function App() {
   const router = createBrowserRouter([
     {
@@ -143,121 +80,61 @@ export default function App() {
         { path: "/AuthSignUpInstructor", element: <AuthSignUpInstructor /> },
         { path: "/forgot-password", element: <ForgotPassword /> },
         { path: "/forgot-password/verify-code", element: <VerifyCode /> },
-        {
-          path: "/forgot-password/verify-code/reset-password",
-          element: <ResetPassword />,
-        },
+        { path: "/forgot-password/verify-code/reset-password", element: <ResetPassword /> },
         { path: "/pending", element: <Pending /> },
         { path: "/UploadPapers", element: <UploadPapers /> },
         { path: "/confirmation", element: <Confirmation /> },
         { path: "/rejection", element: <Rejection /> },
         { path: "/categories", element: <Categories /> },
-        {
-          path: "/student-courses",
-          element: (
-            <ProtectedRouteStudent
-              element={<MyCourses />}
-              path="/student-courses"
-            />
-          ),
-        },
-        {
-          path: "/profile",
-          element: (
-            <ProtectedRouteStudent element={<Profile />} path="/profile" />
-          ),
-        },
-        {
-          path: "/updateProfile",
-          element: (
-            <ProtectedRouteStudent
-              element={<UpdateProfile />}
-              path="/updateProfile"
-            />
-          ),
-        },
-        {
-          path: "/favorites",
-          element: (
-            <ProtectedRouteStudent element={<Favorites />} path="/favorites" />
-          ),
-        },
-        {
-          path: "/cart",
-          element: <ProtectedRouteStudent element={<Cart />} path="/cart" />,
-        },
-        {
-          path: "/courseDetails/:id",
-          element: (
-            <ProtectedRouteStudent
-              element={<CourseDetails />}
-              path="/courseDetails"
-            />
-          ),
-        },
+        { path: "/student-courses", element: <MyCourses /> },
+        { path: "/profile", element: <Profile /> },
+        { path: "/updateProfile", element: <UpdateProfile /> },
+        { path: "/favorites", element: <Favorites /> },
+        { path: "/cart", element: <Cart /> },
+        { path: "/courseDetails/:id", element: <CourseDetails /> },
       ],
     },
-    // Define the admin-dashboard route separately without Layout
-    {
-      path: "/admin-dashboard",
-      element: (
-        <ProtectedRoute element={<AdminDashboard />} path="/admin-dashboard" />
-      ),
-    },
-    {
-      path: "/instructor/:id",
-      element: <InstructorPapers />,
-    },
-    {
-      path: "/instructor-dashboard",
-      element: (
-        <ProtectedRouteInstructor
-          element={<InstructorDashboard />}
-          path="/instructor-dashboard"
-        />
-      ),
-    },
-    {
-      path: "/instructor-dashboard/add-course",
-      element: (
-        <ProtectedRouteInstructor
-          element={<AddCourse />}
-          path="/instructor-dashboard/add-course"
-        />
-      ),
-    },
-    {
-      path: "/instructor-dashboard/edit-profile",
-      element: (
-        <ProtectedRouteInstructor
-          element={<EditProfile />}
-          path="/instructor-dashboard/edit-profile"
-        />
-      ),
-    },
-    {
-      path: "/instructor-dashboard/edit-course/:id",
-      element: (
-        <ProtectedRouteInstructor
-          element={<EditCourse />}
-          path="/instructor-dashboard/edit-course/:id"
-        />
-      ),
-    },
-    {
-      path: "/instructor-dashboard/upload-content/:id",
-      element: (
-        <ProtectedRouteInstructor
-          element={<UploadContent />}
-          path="/instructor-dashboard/upload-content/:id"
-        />
-      ),
-    },
+    { path: "/admin-dashboard", element: <AdminDashboard /> },
+    { path: "/instructor/:id", element: <InstructorPapers /> },
+    { path: "/instructor-dashboard", element: <InstructorDashboard /> },
+    { path: "/instructor-dashboard/add-course", element: <AddCourse /> },
+    { path: "/instructor-dashboard/edit-profile", element: <EditProfile /> },
+    { path: "/instructor-dashboard/edit-course/:id", element: <EditCourse /> },
+    { path: "/instructor-dashboard/upload-content/:id", element: <UploadContent /> },
   ]);
+
   return (
     <>
-      {" "}
-      <RouterProvider router={router} />
+      <div style={{
+        padding: "10px",
+        background: "#1e293b",
+        color: "white",
+        display: "flex",
+        flexWrap: "wrap",
+        gap: "10px",
+        justifyContent: "center",
+        borderBottom: "2px solid #5151D3",
+        position: "relative",
+        zIndex: 99999
+      }}>
+        <strong style={{ alignSelf: "center", marginRight: "10px", color: "#60a5fa" }}>Dev Nav:</strong>
+        <a href="/" style={{ color: "white", textDecoration: "none", fontSize: "14px", padding: "4px 8px", background: "#334155", borderRadius: "4px" }}>Home</a>
+        <a href="/login" style={{ color: "white", textDecoration: "none", fontSize: "14px", padding: "4px 8px", background: "#334155", borderRadius: "4px" }}>Login</a>
+        <a href="/register" style={{ color: "white", textDecoration: "none", fontSize: "14px", padding: "4px 8px", background: "#334155", borderRadius: "4px" }}>Sign Up</a>
+        <a href="/login-admin" style={{ color: "white", textDecoration: "none", fontSize: "14px", padding: "4px 8px", background: "#334155", borderRadius: "4px" }}>Admin Login</a>
+        <a href="/login-instructor" style={{ color: "white", textDecoration: "none", fontSize: "14px", padding: "4px 8px", background: "#334155", borderRadius: "4px" }}>Inst. Login</a>
+        <a href="/admin-dashboard" style={{ color: "white", textDecoration: "none", fontSize: "14px", padding: "4px 8px", background: "#334155", borderRadius: "4px" }}>Admin Dash</a>
+        <a href="/instructor-dashboard" style={{ color: "white", textDecoration: "none", fontSize: "14px", padding: "4px 8px", background: "#334155", borderRadius: "4px" }}>Inst. Dash</a>
+        <a href="/student-courses" style={{ color: "white", textDecoration: "none", fontSize: "14px", padding: "4px 8px", background: "#334155", borderRadius: "4px" }}>My Courses</a>
+        <a href="/profile" style={{ color: "white", textDecoration: "none", fontSize: "14px", padding: "4px 8px", background: "#334155", borderRadius: "4px" }}>Profile</a>
+        <a href="/categories" style={{ color: "white", textDecoration: "none", fontSize: "14px", padding: "4px 8px", background: "#334155", borderRadius: "4px" }}>Categories</a>
+        <a href="/cart" style={{ color: "white", textDecoration: "none", fontSize: "14px", padding: "4px 8px", background: "#334155", borderRadius: "4px" }}>Cart</a>
+      </div>
+      
+      {/* Suspense Wrapper manages loading state for Lazy Components */}
+      <Suspense fallback={<PageLoader />}>
+        <RouterProvider router={router} />
+      </Suspense>
     </>
   );
 }

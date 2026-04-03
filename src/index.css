@@ -5,9 +5,56 @@
 *{
   margin: 0;
   padding: 0;
-  height: 100%;
   box-sizing: border-box;
-  font-family: monospace;
+  font-family: 'Inter', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+html, body, #root {
+  min-height: 100vh;
+}
+
+/* Global Professional UI Styles */
+input.form-control, 
+select.form-select, 
+textarea.form-control {
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  padding: 10px 15px;
+  transition: all 0.3s ease;
+  background-color: #f8fafc;
+}
+
+input.form-control:focus, 
+select.form-select:focus, 
+textarea.form-control:focus {
+  border-color: #5151D3;
+  box-shadow: 0 0 0 3px rgba(81, 81, 211, 0.2);
+  background-color: #ffffff;
+  outline: none;
+}
+
+button.btn, .btn {
+  border-radius: 8px;
+  padding: 10px 20px;
+  transition: all 0.2s ease-in-out;
+  font-weight: 500;
+}
+
+button.btn:hover, .btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.card {
+  border-radius: 12px;
+  border: none;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
 .loader {

@@ -1,0 +1,139 @@
+.pageContainer {
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  background-color: #f8fafc;
+  font-family: 'Inter', sans-serif;
+}
+
+.uploadCard {
+  background: white;
+  border-radius: 24px;
+  padding: 40px;
+  max-width: 600px;
+  width: 100%;
+  box-shadow: 0 20px 40px rgba(81, 81, 211, 0.08);
+  border: 1px solid rgba(81, 81, 211, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #1e293b;
+  margin-bottom: 8px;
+}
+
+.subtitle {
+  color: #64748b;
+  font-size: 1.05rem;
+}
+
+.uploadGroup {
+  margin-bottom: 24px;
+}
+
+.uploadLabel {
+  display: block;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 12px;
+  font-size: 0.95rem;
+}
+
+.dropZone {
+  border: 2px dashed #cbd5e1;
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  background: #f8fafc;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.dropZone:hover {
+  border-color: #5151D3;
+  background: rgba(81, 81, 211, 0.05);
+}
+
+.dropZoneActive {
+  border-color: #16a34a;
+  background: rgba(34, 197, 94, 0.05);
+}
+
+.fileInput {
+  display: none;
+}
+
+.iconWrapper {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(81, 81, 211, 0.1);
+  color: #5151D3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.fileName {
+  color: #1e293b;
+  font-weight: 600;
+  font-size: 0.9rem;
+  word-break: break-all;
+}
+
+.uploadPlaceholder {
+  color: #94a3b8;
+  font-size: 0.9rem;
+}
+
+.submitBtn {
+  width: 100%;
+  padding: 16px;
+  background: linear-gradient(135deg, #5151D3, #3b3bcf);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-weight: 800;
+  font-size: 1.1rem;
+  transition: all 0.2s;
+  box-shadow: 0 8px 20px rgba(81, 81, 211, 0.3);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 32px;
+}
+
+.submitBtn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(81, 81, 211, 0.4);
+}
+
+.submitBtn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+@media (max-width: 576px) {
+  .uploadCard {
+    padding: 30px 20px;
+  }
+}
