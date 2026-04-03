@@ -1,298 +1,175 @@
 import React, { useState, useRef } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
-import style from "./EditProfile.module.css";
-import SidebarInstructor from "./SidebarInstructor";
+import InstructorLayout from "./InstructorLayout";
 import baseURL from "../../BaseURL/BaseURL";
 import { getCookie, setCookie } from "../../Helper/CookiesHelper";
+import dashStyle from "./InstructorDashboard.module.css";
 
 export default function EditProfile() {
   const [file, setFile] = useState(null);
   const [imagePreviewUrl, setImagePreviewUrl] = useState("");
+  const [fileName, setFileName] = useState("");
   const [name, setName] = useState("");
   const [title, setTitle] = useState("");
   const [experience, setExperience] = useState("");
   const [bio, setBio] = useState("");
   const [password, setPassword] = useState("");
+  const [showPass, setShowPass] = useState(false);
   const [loading, setLoading] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
-  const fileInputRef = useRef(null); // Create a ref for the file input
+  const fileInputRef = useRef(null);
 
   const handleImageChange = (e) => {
-    if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
-      setFile(file);
-      setImagePreviewUrl(URL.createObjectURL(file));
-    }
+    const f = e.target.files?.[0];
+    if (f) { setFile(f); setFileName(f.name); setImagePreviewUrl(URL.createObjectURL(f)); }
   };
 
-  const validatePassword = (password) => {
-    const passwordPattern = /^(?=.*[A-Z])(?=.*[@$!%*?&])(?=.*[0-9]).{6,}$/;
-    return passwordPattern.test(password);
-  };
+  const validatePassword = (p) => /^(?=.*[A-Z])(?=.*[@$!%*?&])(?=.*[0-9]).{6,}$/.test(p);
 
   const handleEditProfile = async (e) => {
     e.preventDefault();
+    if (!validatePassword(password)) { setPasswordError(true); return; }
+    setPasswordError(false);
     setLoading(true);
-
-    if (!validatePassword(password)) {
-      setPasswordError(true);
-      setLoading(false);
-      return;
-    } else {
-      setPasswordError(false);
-    }
-
     const formData = new FormData();
-    if (file) {
-      formData.append("image", file);
-    }
+    if (file) formData.append("image", file);
     formData.append("title", title);
     formData.append("password", password);
     formData.append("experience", experience);
     formData.append("bio", bio);
     formData.append("name", name);
-
     try {
-      const res = await axios.patch(
-        `${baseURL}/instructors/updateProfile`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: "SHA " + getCookie("AccessTokenInstructor"),
-          },
-        }
-      );
-
-      Swal.fire("Success", "Profile updated successfully", "success").then(
-        () => {
-          sessionStorage.setItem("InstructorImage", res.data.image);
-          setCookie("InstructorTitle", res.data.title);
-          setCookie("InstructorExperience", res.data.experience);
-          setCookie("InstructorBio", res.data.bio);
-          sessionStorage.setItem("InstructorName", res.data.name);
-          // window.location.reload();
-
-          window.location.pathname = "/instructor-dashboard";
-
-        }
-      );
-
-      setLoading(false);
-
-      // Reset all fields and file input
+      const res = await axios.patch(`${baseURL}/instructors/updateProfile`, formData, {
+        headers: { "Content-Type": "multipart/form-data", Authorization: "SHA " + getCookie("AccessTokenInstructor") },
+      });
+      Swal.fire("Success", "Profile updated successfully", "success").then(() => {
+        sessionStorage.setItem("InstructorImage", res.data.image);
+        sessionStorage.setItem("InstructorName", res.data.name);
+        setCookie("InstructorTitle", res.data.title);
+        setCookie("InstructorExperience", res.data.experience);
+        setCookie("InstructorBio", res.data.bio);
+        window.location.pathname = "/instructor-dashboard";
+      });
     } catch (err) {
-      console.error(err);
       Swal.fire("Error", "Failed to update profile", "error");
+    } finally {
       setLoading(false);
     }
   };
 
+  const inputStyle = { width: "100%", border: "2px solid #e2e8f0", borderRadius: 10, padding: "10px 14px", fontSize: "0.92rem", background: "#f8fafc", outline: "none", transition: "border-color 0.2s", color: "#1e293b" };
+  const labelStyle = { fontWeight: 700, color: "#475569", fontSize: "0.88rem", display: "block", marginBottom: 6 };
+
+  const currentName = sessionStorage.getItem("InstructorName") || getCookie("InstructorName") || "Instructor";
+  const currentImage = sessionStorage.getItem("InstructorImage") || getCookie("InstructorImage");
+
   return (
-    <>
-      <div className={style.content}>
-        <div className="row g-0">
-          <div className="col-lg-2 d-none d-lg-block">
-            <SidebarInstructor />
+    <InstructorLayout title="Edit Profile">
+
+      {/* Header */}
+      <div className={dashStyle.pageHeader}>
+        <div>
+          <h2 className={dashStyle.pageTitle}>Edit Profile</h2>
+          <p className={dashStyle.pageSubtitle}>Update your instructor profile information</p>
+        </div>
+        <Link to="/instructor-dashboard" className={dashStyle.addBtn}
+          style={{ background: "rgba(81,81,211,0.1)", color: "#5151D3", boxShadow: "none" }}>
+          ← Back
+        </Link>
+      </div>
+
+      <form onSubmit={handleEditProfile}>
+
+        {/* Current profile preview */}
+        <div style={{ background: "white", borderRadius: 18, padding: "20px 24px", boxShadow: "0 6px 24px rgba(81,81,211,0.07)", border: "1px solid #f1f5f9", marginBottom: 20, display: "flex", alignItems: "center", gap: 18, flexWrap: "wrap" }}>
+          {imagePreviewUrl ? (
+            <img src={imagePreviewUrl} alt="Preview" style={{ width: 72, height: 72, borderRadius: "50%", objectFit: "cover", border: "3px solid rgba(81,81,211,0.3)", flexShrink: 0 }} />
+          ) : currentImage ? (
+            <img src={currentImage} alt="Current" style={{ width: 72, height: 72, borderRadius: "50%", objectFit: "cover", border: "3px solid rgba(81,81,211,0.3)", flexShrink: 0 }} onError={(e) => e.target.style.display = "none"} />
+          ) : (
+            <div style={{ width: 72, height: 72, borderRadius: "50%", background: "linear-gradient(135deg,#5151D3,#3b3bcf)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.8rem", color: "white", fontWeight: 800, flexShrink: 0 }}>
+              {currentName.charAt(0).toUpperCase()}
+            </div>
+          )}
+          <div>
+            <p style={{ margin: 0, fontWeight: 700, color: "#1e293b", fontSize: "1.05rem" }}>{currentName}</p>
+            <p style={{ margin: "2px 0 0", color: "#64748b", fontSize: "0.83rem" }}>{getCookie("InstructorTitle") || "Instructor"}</p>
+            {getCookie("InstructorExperience") && <p style={{ margin: "2px 0 0", color: "#94a3b8", fontSize: "0.78rem" }}>{getCookie("InstructorExperience")} years of experience</p>}
           </div>
-          <div className="col-lg-10 p-0">
-            <div
-              className={`container-fluid ${style.scrollableContainer} py-3`}
-            >
-              <button
-                className={`d-lg-none w-50 mx-auto mb-3 ${style.toggle_left_btn}`}
-                type="button"
-                data-bs-toggle="offcanvas"
-                data-bs-target="#leftOffcanvas"
-                aria-controls="leftOffcanvas"
-              >
-                Side Bar
-              </button>
-              <h2
-                className="text-center mt-3 fw-bold"
-                style={{ color: "#5151D3" }}
-              >
-                Edit Profile
-              </h2>
+        </div>
 
-              <hr />
-              <h1
-                className="text-center py-3 fw-bold"
-                style={{ color: "#5151D3" }}
-              >
-                You must fill the following fields
-              </h1>
-              <div className="container">
-                <form onSubmit={handleEditProfile}>
-                  <div className="mb-3 w-50 mx-auto">
-                    <label
-                      htmlFor="profileImage"
-                      className="form-label fw-bold"
-                    >
-                      Profile Image
-                    </label>
-                    <input
-                      type="file"
-                      accept="image/*" // Only accept image files
-                      className={`form-control mt-1 mx-auto ${style.input}`}
-                      id="profileImage"
-                      ref={fileInputRef} // Attach the ref to the file input
-                      onChange={handleImageChange}
-                      required
-                      style={{
-                        border: "2px solid #5151D3",
-                        borderRadius: "5px",
-                        color: "#5151D3",
-                      }}
-                    />
-                    {imagePreviewUrl && (
-                      <div className="mt-3">
-                        <img
-                          src={imagePreviewUrl}
-                          alt="Profile Preview"
-                          className="img-thumbnail d-block mx-auto"
-                          style={{
-                            borderRadius: "50%",
-                            width: "200px",
-                            height: "200px",
-                          }}
-                          onLoad={() => URL.revokeObjectURL(imagePreviewUrl)}
-                        />
-                      </div>
-                    )}
-                  </div>
-                  <hr />
-                  <div className="mb-3 w-50 mx-auto">
-                    <label
-                      htmlFor="name"
-                      className="form-label fw-bold d-block"
-                    >
-                      Name
-                    </label>
-                    <input
-                      type="text"
-                      className={`${style.input}`}
-                      id="name"
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      required
-                      placeholder="Enter name"
-                    />
-                  </div>
-                  <hr />
-                  <div className="mb-3 w-50 mx-auto">
-                    <label
-                      htmlFor="title"
-                      className="form-label fw-bold d-block"
-                    >
-                      Title
-                    </label>
-                    <input
-                      type="text"
-                      className={`${style.input}`}
-                      id="title"
-                      value={title}
-                      onChange={(e) => setTitle(e.target.value)}
-                      required
-                      placeholder="Enter title"
-                    />
-                  </div>
-                  <hr />
-                  <div className="mb-3 w-50 mx-auto">
-                    <label
-                      htmlFor="experience"
-                      className="form-label fw-bold d-block"
-                    >
-                      Years of Experience
-                    </label>
-                    <input
-                      type="text"
-                      className={`${style.input}`}
-                      id="experience"
-                      value={experience}
-                      onChange={(e) => setExperience(e.target.value)}
-                      required
-                      placeholder="Enter experience"
-                    />
-                  </div>
-                  <hr />
-                  <div className="mb-3 w-50 mx-auto">
-                    <label
-                      htmlFor="password"
-                      className="form-label fw-bold d-block"
-                    >
-                      Password
-                    </label>
-                    <input
-                      type="password"
-                      className={`${style.input}`}
-                      id="password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      required
-                      placeholder="Enter password"
-                    />
-                    {!validatePassword(password) && passwordError && (
-                      <p style={{ color: "red", fontSize: "12px" }}>
-                        *Password must be at least 6 characters, contain at
-                        least one uppercase letter, one number, and one special
-                        character.
-                      </p>
-                    )}
-                  </div>
-
-                  <hr />
-                  <div className="mb-3 w-50 mx-auto">
-                    <label htmlFor="bio" className="form-label fw-bold d-block">
-                      Bio
-                    </label>
-                    <input
-                      type="text"
-                      className={`${style.input}`}
-                      id="bio"
-                      value={bio}
-                      onChange={(e) => setBio(e.target.value)}
-                      required
-                      placeholder="Enter bio"
-                    />
-                  </div>
-                  <hr />
-                  <div className="mb-3 w-50 mx-auto text-center">
-                    <button
-                      type="submit"
-                      className="btn w-50 fw-bold"
-                      style={{ backgroundColor: "#5151D3", color: "white" }}
-                      disabled={loading}
-                    >
-                      {loading ? "Updating..." : "Update"}
-                    </button>
-                  </div>
-                </form>
+        {/* Form fields */}
+        <div style={{ background: "white", borderRadius: 18, padding: "24px", boxShadow: "0 6px 24px rgba(81,81,211,0.07)", border: "1px solid #f1f5f9", marginBottom: 20 }}>
+          <h5 style={{ fontWeight: 700, color: "#1e293b", marginBottom: 20, display: "flex", alignItems: "center", gap: 8 }}>
+            <i className="fa-solid fa-user-pen" style={{ color: "#5151D3" }}></i> Profile Details
+          </h5>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(220px,1fr))", gap: 16 }}>
+            {/* Photo */}
+            <div>
+              <label style={labelStyle}>Profile Image</label>
+              <input type="file" accept="image/*" ref={fileInputRef} style={{ display: "none" }} onChange={handleImageChange} />
+              <div onClick={() => fileInputRef.current.click()}
+                style={{ display: "flex", alignItems: "center", gap: 10, border: "2px dashed #c7d2fe", borderRadius: 10, padding: "11px 14px", cursor: "pointer", background: "#f8f8ff" }}>
+                <i className="fa-solid fa-camera" style={{ color: "#5151D3" }}></i>
+                <span style={{ color: fileName ? "#1e293b" : "#94a3b8", fontSize: "0.85rem" }}>{fileName || "Change profile photo"}</span>
               </div>
+            </div>
+            {/* Name */}
+            <div>
+              <label htmlFor="epName" style={labelStyle}>Full Name</label>
+              <input id="epName" style={inputStyle} type="text" placeholder="Enter name" value={name} onChange={(e) => setName(e.target.value)} required
+                onFocus={(e) => e.target.style.borderColor = "#5151D3"} onBlur={(e) => e.target.style.borderColor = "#e2e8f0"} />
+            </div>
+            {/* Title */}
+            <div>
+              <label htmlFor="epTitle" style={labelStyle}>Title</label>
+              <input id="epTitle" style={inputStyle} type="text" placeholder="e.g. Web Developer" value={title} onChange={(e) => setTitle(e.target.value)} required
+                onFocus={(e) => e.target.style.borderColor = "#5151D3"} onBlur={(e) => e.target.style.borderColor = "#e2e8f0"} />
+            </div>
+            {/* Experience */}
+            <div>
+              <label htmlFor="epExp" style={labelStyle}>Years of Experience</label>
+              <input id="epExp" style={inputStyle} type="text" placeholder="e.g. 5" value={experience} onChange={(e) => setExperience(e.target.value)} required
+                onFocus={(e) => e.target.style.borderColor = "#5151D3"} onBlur={(e) => e.target.style.borderColor = "#e2e8f0"} />
+            </div>
+            {/* Password */}
+            <div>
+              <label htmlFor="epPass" style={labelStyle}>New Password</label>
+              <div style={{ position: "relative" }}>
+                <input id="epPass" style={{ ...inputStyle, paddingRight: 40 }} type={showPass ? "text" : "password"}
+                  placeholder="Enter new password" value={password} onChange={(e) => setPassword(e.target.value)} required
+                  onFocus={(e) => e.target.style.borderColor = "#5151D3"} onBlur={(e) => e.target.style.borderColor = "#e2e8f0"} />
+                <span onClick={() => setShowPass(!showPass)} style={{ position: "absolute", right: 12, top: "50%", transform: "translateY(-50%)", cursor: "pointer" }}>
+                  {showPass ? "🙈" : "👁️"}
+                </span>
+              </div>
+              {passwordError && !validatePassword(password) && (
+                <p style={{ color: "#ef4444", fontSize: "0.78rem", marginTop: 4 }}>*Min 6 chars, 1 uppercase, 1 number, 1 special char</p>
+              )}
+            </div>
+            {/* Bio */}
+            <div style={{ gridColumn: "1 / -1" }}>
+              <label htmlFor="epBio" style={labelStyle}>Bio</label>
+              <textarea id="epBio" style={{ ...inputStyle, minHeight: 90, resize: "vertical" }} placeholder="Tell students about yourself..."
+                value={bio} onChange={(e) => setBio(e.target.value)} required
+                onFocus={(e) => e.target.style.borderColor = "#5151D3"} onBlur={(e) => e.target.style.borderColor = "#e2e8f0"} />
             </div>
           </div>
         </div>
-        <div
-          className="offcanvas offcanvas-start"
-          data-bs-backdrop="static"
-          tabIndex="-1"
-          id="leftOffcanvas"
-          aria-labelledby="leftOffcanvasLabel"
-        >
-          <div className="offcanvas-header">
-            <button
-              type="button"
-              className="btn-close"
-              data-bs-dismiss="offcanvas"
-              aria-label="Close"
-            ></button>
-          </div>
-          <div className="offcanvas-body p-0">
-            <SidebarInstructor />
-          </div>
+
+        <div style={{ display: "flex", justifyContent: "flex-start" }}>
+          <button type="submit" disabled={loading} style={{
+            background: "linear-gradient(135deg,#5151D3,#3b3bcf)", color: "white", border: "none",
+            padding: "12px 32px", borderRadius: 12, fontSize: "0.95rem", fontWeight: 700,
+            cursor: loading ? "not-allowed" : "pointer", opacity: loading ? 0.7 : 1,
+            display: "flex", alignItems: "center", gap: 8, boxShadow: "0 4px 14px rgba(81,81,211,0.3)"
+          }}>
+            {loading ? <><div className="spinner-border spinner-border-sm text-white" role="status"></div> Updating...</> : <><i className="fa-solid fa-floppy-disk"></i> Save Changes</>}
+          </button>
         </div>
-      </div>
-    </>
+      </form>
+    </InstructorLayout>
   );
 }

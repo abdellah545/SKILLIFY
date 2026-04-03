@@ -3,25 +3,27 @@ import style from "./TagsInput.module.css"; // Import or define CSS styles here
 
 function TagsInput({ value, setValue, placeholder }) {
   const [input, setInput] = useState("");
+  // Normalize: always work with an array even if API returns undefined/string
+  const safeValue = Array.isArray(value) ? value : [];
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter" && input.trim()) {
       e.preventDefault();
-      if (!value.includes(input.trim())) {
-        setValue([...value, input.trim()]);
+      if (!safeValue.includes(input.trim())) {
+        setValue([...safeValue, input.trim()]);
         setInput("");
       }
     }
   };
 
   const removeTag = (tag) => {
-    setValue(value.filter((item) => item !== tag));
+    setValue(safeValue.filter((item) => item !== tag));
   };
 
   return (
     <div className={style.tagsInput}>
       <ul>
-        {value.map((tag, index) => (
+        {safeValue.map((tag, index) => (
           <li key={index}>
             {tag}
             <button

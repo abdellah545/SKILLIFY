@@ -1,16 +1,6 @@
 import React, { useEffect, useState } from "react";
 import style from "./AdminDashboard.module.css";
 import LeftSidebar from "./LeftSidebar";
-// import RightSidebar from "./RightSidebar";
-
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import Avatar from "@mui/material/Avatar";
 import axios from "axios";
 import baseURL from "../../BaseURL/BaseURL";
 import { Link } from "react-router-dom";
@@ -18,12 +8,16 @@ import { getCookie } from "../../Helper/CookiesHelper";
 
 export default function AdminDashboard() {
   const [applications, setApplications] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState("");
 
   function formatDate(dateString) {
     const date = new Date(dateString);
     return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
   }
+
   const handleGetApplications = async () => {
+    setLoading(true);
     try {
       const res = await axios.get(`${baseURL}/admin/applications`, {
         headers: {
@@ -32,174 +26,184 @@ export default function AdminDashboard() {
         },
       });
       setApplications(res.data);
-      console.log(res);
     } catch (err) {
       console.log(err);
+    } finally {
+      setLoading(false);
     }
   };
+
   useEffect(() => {
     handleGetApplications();
   }, []);
 
-  return (
-    <>
-      <div className={`${style.padding} position-relative ${style.content}`}>
-        <div className="row">
-          <div className="col-lg-2 d-none d-lg-block p-0">
-            <LeftSidebar />
-          </div>
+  const filtered = applications.filter((app) =>
+    (app.name ?? "").toLowerCase().includes(search.toLowerCase())
+  );
 
-          <div className={`col-lg-10 col-md-12 p-0`}>
-            <div className={`${style.scrollableContainer} py-5`}>
-              <div className="row text-center">
-                <button
-                  className={`d-lg-none w-50 mx-auto mb-3 ${style.toggle_left_btn}`}
-                  type="button"
-                  data-bs-toggle="offcanvas"
-                  data-bs-target="#leftOffcanvas"
-                  aria-controls="leftOffcanvas"
-                >
-                  Side Bar
-                </button>
-                <TableContainer
-                  component={Paper}
-                  sx={{
-                    width: "70%",
-                    margin: "auto",
-                    borderRadius: "15px",
-                    boxShadow: "0 0 10px 0 #5151D3",
-                  }}
-                >
-                  <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                    <TableHead>
-                      <TableRow>
-                        <TableCell
-                          align="start"
-                          sx={{
-                            fontWeight: "bold",
-                            color: "#5151D3",
-                            width: "30%",
-                            fontSize: "24px",
-                          }}
-                        >
-                          Submits
-                        </TableCell>
-                        <TableCell
-                          align="center"
-                          sx={{
-                            fontWeight: "bold",
-                            color: "#5151D3",
-                            width: "20%",
-                            fontSize: "24px",
-                          }}
-                        >
-                          ID
-                        </TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {applications.map((row) => (
-                        <TableRow
-                          key={row._id}
-                          sx={{
-                            "&:last-child td, &:last-child th": { border: 0 },
-                          }}
-                        >
-                          <TableCell
-                            component="th"
-                            scope="row"
-                            sx={{
-                              display: "flex",
-                              alignItems: "center",
-                            }} // Updated for vertical stacking
-                          >
-                            {" "}
-                            {/* Encapsulating avatar and name */}
-                            <Avatar sx={{ bgcolor: "#5151D3" }}>
-                              {row.name.charAt(0).toUpperCase()}
-                            </Avatar>
-                            <span
-                              style={{
-                                marginLeft: "24px",
-                                fontSize: "20px",
-                                color: "#5151D3",
-                                fontWeight: "bold",
-                                display: "flex",
-                                flexDirection: "column",
-                              }}
-                            >
-                              <Link
-                                to={`/instructor/${row._id}`}
-                                style={{ color: "#5151D3" }}
-                              >
-                                {row.name}
-                              </Link>{" "}
-                              {row.rejected ? (
-                                <span
-                                  style={{
-                                    color: "red",
-                                    fontSize: "12px",
-                                  }}
-                                >
-                                  Rejected
-                                </span>
-                              ) : (
-                                <>
-                                  <span
-                                  className="text-secondary"
-                                    style={{
-                                      
-                                      fontSize: "12px",
-                                    }}
-                                  >
-                                    Pending
-                                  </span>
-                                </>
-                              )}
-                              {/* Date below name */}
-                              <span style={{ color: "gray" }}>
-                                {formatDate(row.createdAt)}
-                              </span>
-                            </span>
-                          </TableCell>
-                          <TableCell
-                            align="center"
-                            sx={{
-                              color: "#5151D3",
-                            }}
-                          >
-                            <h6
-                              style={{
-                                textAlign: "center",
-                                border: "1px solid #5151D3",
-                                borderRadius: "5px",
-                                fontSize: "17px",
-                                padding: "0 10px",
-                              }}
-                            >
-                              {row._id}
-                            </h6>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-              </div>
-            </div>
+  const getInitial = (name) => (name?.charAt(0) ?? "?").toUpperCase();
+
+  const getStatusBadge = (app) => {
+    if (app.rejected) return { label: "Rejected", color: "#ef4444", bg: "#fef2f2" };
+    if (app.approved) return { label: "Approved", color: "#22c55e", bg: "#f0fdf4" };
+    return { label: "Pending", color: "#f59e0b", bg: "#fffbeb" };
+  };
+
+  const avatarColors = ["#5151D3", "#8b5cf6", "#3b82f6", "#ec4899", "#14b8a6"];
+
+  return (
+    <div className={style.dashboardWrapper}>
+      {/* ── Sidebar (Desktop) ── */}
+      <aside className={style.sidebar}>
+        <LeftSidebar />
+      </aside>
+
+      {/* ── Main Content ── */}
+      <main className={style.mainContent}>
+
+        {/* Mobile top bar */}
+        <div className={style.mobileTopBar}>
+          <button
+            className={style.menuBtn}
+            type="button"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#leftOffcanvas"
+            aria-controls="leftOffcanvas"
+          >
+            <i className="fa-solid fa-bars"></i>
+          </button>
+          <span className={style.mobileTitle}>Admin Dashboard</span>
+        </div>
+
+        {/* Header */}
+        <div className={style.pageHeader}>
+          <div>
+            <h2 className={style.pageTitle}>Instructor Applications</h2>
+            <p className={style.pageSubtitle}>
+              Review and manage instructor submissions
+            </p>
+          </div>
+          <div className={style.statsChip}>
+            <span>{applications.length}</span> Total
           </div>
         </div>
-      </div>
-      <button
-        className={`d-lg-none ${style.toggle_left_btn}`}
-        type="button"
-        data-bs-toggle="offcanvas"
-        data-bs-target="#leftOffcanvas"
-        aria-controls="leftOffcanvas"
-      >
-        <i class="fa-solid fa-right-long fs-4"></i>
-      </button>
 
+        {/* Search */}
+        <div className={style.searchBar}>
+          <i className="fa-solid fa-magnifying-glass" style={{ color: "#94a3b8", marginRight: 10 }}></i>
+          <input
+            type="text"
+            placeholder="Search by name..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className={style.searchInput}
+          />
+        </div>
+
+        {/* Table / Cards */}
+        {loading ? (
+          <div className={style.loadingWrapper}>
+            <div className="spinner-border" style={{ color: "#5151D3" }} role="status">
+              <span className="visually-hidden">Loading...</span>
+            </div>
+            <p style={{ marginTop: 12, color: "#64748b" }}>Loading applications...</p>
+          </div>
+        ) : filtered.length === 0 ? (
+          <div className={style.emptyState}>
+            <div style={{ fontSize: "3rem", marginBottom: 12 }}>📋</div>
+            <h4>No applications found</h4>
+            <p>Try adjusting your search or check back later.</p>
+          </div>
+        ) : (
+          <>
+            {/* Desktop Table */}
+            <div className={style.tableWrapper}>
+              <table className={style.table}>
+                <thead>
+                  <tr>
+                    <th>Instructor</th>
+                    <th>Status</th>
+                    <th>Submitted</th>
+                    <th>ID</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filtered.map((row, i) => {
+                    const status = getStatusBadge(row);
+                    return (
+                      <tr key={row._id}>
+                        <td>
+                          <div className={style.nameCell}>
+                            <div
+                              className={style.avatar}
+                              style={{ background: avatarColors[i % avatarColors.length] }}
+                            >
+                              {getInitial(row.name)}
+                            </div>
+                            <div>
+                              <span className={style.nameText}>{row.name ?? "—"}</span>
+                              <span className={style.emailText}>{row.email ?? ""}</span>
+                            </div>
+                          </div>
+                        </td>
+                        <td>
+                          <span className={style.badge} style={{ color: status.color, background: status.bg }}>
+                            {status.label}
+                          </span>
+                        </td>
+                        <td className={style.dateText}>{formatDate(row.createdAt)}</td>
+                        <td>
+                          <span className={style.idChip}>{row._id?.slice(-8)}</span>
+                        </td>
+                        <td>
+                          <Link to={`/instructor/${row._id}`} className={style.viewBtn}>
+                            View <i className="fa-solid fa-arrow-right" style={{ fontSize: "0.75rem" }}></i>
+                          </Link>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Mobile Cards */}
+            <div className={style.cardGrid}>
+              {filtered.map((row, i) => {
+                const status = getStatusBadge(row);
+                return (
+                  <div key={row._id} className={style.card}>
+                    <div className={style.cardHeader}>
+                      <div
+                        className={style.avatar}
+                        style={{ background: avatarColors[i % avatarColors.length] }}
+                      >
+                        {getInitial(row.name)}
+                      </div>
+                      <div>
+                        <span className={style.nameText}>{row.name ?? "—"}</span>
+                        <span className={style.emailText}>{row.email ?? ""}</span>
+                      </div>
+                      <span className={style.badge} style={{ color: status.color, background: status.bg, marginLeft: "auto" }}>
+                        {status.label}
+                      </span>
+                    </div>
+                    <div className={style.cardFooter}>
+                      <span className={style.dateText}>📅 {formatDate(row.createdAt)}</span>
+                      <Link to={`/instructor/${row._id}`} className={style.viewBtn}>
+                        View Details →
+                      </Link>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </>
+        )}
+      </main>
+
+      {/* Mobile Offcanvas Sidebar */}
       <div
         className="offcanvas offcanvas-start"
         data-bs-backdrop="static"
@@ -219,6 +223,6 @@ export default function AdminDashboard() {
           <LeftSidebar />
         </div>
       </div>
-    </>
+    </div>
   );
 }

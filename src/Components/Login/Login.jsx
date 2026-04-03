@@ -63,115 +63,69 @@ export default function Login() {
     }
   }
   return (
-    <section className="section-signup p-5">
+    <section className="section-signup">
       <div className="container">
         <div className="row justify-content-center">
-          <div className="col-lg-6 col-md-8 col-sm-10 p-0">
-            <img src={rigisterPhoto} alt="" className="w-100 h-100" />
-          </div>
-          <div className="col-lg-6 col-md-8 col-sm-10 p-0">
-            <div className="signup-form p-3">
-              <h1 className="text-center my-2">Welcome Back</h1>
-              <div className="d-flex justify-content-center align-items-center mb-5">
-                <p className="text-center mt-3 mx-3">First time here ?</p>
-                <Link to="/register">
-                  <button className="signup-login-btn">Sign Up</button>
-                </Link>
+          <div className="col-12 col-md-10 col-lg-8">
+            <div className="signup-wrapper d-flex flex-column flex-md-row">
+              <div className="col-md-6 signup-image-container">
+                <img src={rigisterPhoto} alt="Login" />
               </div>
-              <form onSubmit={handleLogin} autoComplete="off">
-                <br />
-                <div className="mb-4 w-75 m-auto">
-                  <div className="text-center">
-                    <label htmlFor="email">Email</label>
-                  </div>
-                  <input
-                    placeholder="Enter your email"
-                    type="email"
-                    className="email-login text-center"
-                    id="email"
-                    aria-describedby="emailHelp"
-                    onChange={(e) => setEmail(e.target.value)}
-                    
-                  />
-                </div>
-                {/* {emailError && (
-                  <p
-                    style={{
-                      color: "red",
-                      fontSize: "14px",
-                      textAlign: "center",
-                    }}
-                  >
-                    *Email is incorrect
-                  </p>
-                )} */}
-                <div className="mb-4 w-75 m-auto">
-                  <div className="text-center">
-                    <label htmlFor="password" className="">
-                      Password
-                    </label>
-                  </div>
-                  <input
-                    placeholder="Enter your password"
-                    type="password"
-                    className="password-login text-center"
-                    id="password"
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
-                </div>
+              <div className="col-md-6 signup-form">
+                <h1 className="text-center">Welcome Back</h1>
+                <p className="text-center subtitle">Sign in to continue your learning journey</p>
 
-                {passwordError && (
-                  <p
-                    style={{
-                      color: "red",
-                      fontSize: "14px",
-                      textAlign: "center",
-                    }}
-                  >
-                    *Password is incorrect
-                  </p>
-                )}
-
-                <div className="d-flex justify-content-center mt-4">
-                  {handleLogin && (
-                    <>
-                      <Link
-                        to="/Auth"
-                        type="submit"
-                        onClick={handleLogin}
-                        className="login-form-btn text-center text-white fs-5"
-                      >
-                        {loading ? (
-                          <>
-                            <div className="d-flex justify-content-center">
-                              <div
-                                class="spinner-border text-white"
-                                role="status"
-                              >
-                                <span class="sr-only">Loading...</span>
-                              </div>
-                            </div>
-                          </>
-                        ) : (
-                          <>Login</>
-                        )}
-                      </Link>
-                    </>
-                  )}
-                </div>
-                <div className="d-flex justify-content-center align-items-center mt-3">
-                  <Link
-                    to="/forgot-password"
-                    className="text-decoration-underline fs-5"
-                    style={{ color: "blue" }}
-                  >
-                    Forgot your password ?
+                <div className="text-center mb-4">
+                  <span style={{ color: '#64748b', fontSize: '0.95rem' }}>First time here?</span>{" "}
+                  <Link to="/register">
+                    <button className="signup-login-btn ms-2">Sign Up</button>
                   </Link>
                 </div>
-                <br />
 
-                <br />
-              </form>
+                <form onSubmit={handleLogin} autoComplete="off">
+                  <div className="mb-3">
+                    <label htmlFor="email" className="form-label-custom">Email</label>
+                    <input
+                      placeholder="Enter your email"
+                      type="email"
+                      className="form-input-custom"
+                      id="email"
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
+                    {emailError && <p className="error-text">*Invalid email address</p>}
+                  </div>
+
+                  <div className="mb-3">
+                    <label htmlFor="password" className="form-label-custom">Password</label>
+                    <input
+                      placeholder="Enter your password"
+                      type="password"
+                      className="form-input-custom"
+                      id="password"
+                      onChange={(e) => setPassword(e.target.value)}
+                    />
+                    {passwordError && <p className="error-text">*Incorrect password</p>}
+                  </div>
+
+                  <div className="text-end mb-3">
+                    <Link to="/forgot-password" style={{ color: '#5151D3', fontSize: '0.9rem', textDecoration: 'none', fontWeight: 500 }}>
+                      Forgot your password?
+                    </Link>
+                  </div>
+
+                  <Link
+                    to="/Auth"
+                    onClick={handleLogin}
+                    className="login-form-btn"
+                  >
+                    {loading ? (
+                      <div className="spinner-border spinner-border-sm text-white" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                      </div>
+                    ) : "Login"}
+                  </Link>
+                </form>
+              </div>
             </div>
           </div>
         </div>

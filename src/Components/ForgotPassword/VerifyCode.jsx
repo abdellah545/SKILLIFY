@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import rigisterPhoto from "../../assets/register.png";
 import "../Sign up/SignUp.css";
-import "../Login/Login.css";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import baseURL from "../../BaseURL/BaseURL";
@@ -9,18 +8,14 @@ import { deleteCookie, getCookie, setCookie } from "../../Helper/CookiesHelper";
 
 export default function VerifyCode() {
   const [otp, setOtp] = useState("");
-  const [seconds, setSeconds] = useState(10);
+  const [seconds, setSeconds] = useState(60);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    // Set up an interval to decrement the timer every second
+    if (seconds <= 0) return;
     const intervalId = setInterval(() => {
-      setSeconds((prevSeconds) => prevSeconds - 1);
+      setSeconds((prev) => prev - 1);
     }, 1000);
-    // Clear the interval when the component unmounts or when seconds reach 0
-    if (seconds === 0) {
-      clearInterval(intervalId);
-    }
     return () => clearInterval(intervalId);
   }, [seconds]);
 
@@ -30,9 +25,7 @@ export default function VerifyCode() {
     try {
       const res = await axios.post(
         `${baseURL}/users/verifyResetPassword`,
-        {
-          otp: String(otp),
-        },
+        { otp: String(otp) },
         {
           headers: {
             "Content-Type": "application/json",
@@ -40,86 +33,97 @@ export default function VerifyCode() {
           },
         }
       );
-
       if (res.status === 200) {
         deleteCookie("ResetToken1");
         setCookie("ResetToken2", res.data.token);
-        window.location.pathname =
-          "/forgot-password/verify-code/reset-password";
-        setLoading(false);
+        window.location.pathname = "/forgot-password/verify-code/reset-password";
       }
     } catch (err) {
-      alert(err.response.data.message);
+      alert(err.response?.data?.message || "Invalid code");
+    } finally {
       setLoading(false);
     }
   };
 
   return (
-    <>
-      <section className="section-signup p-5">
-        <div className="container">
-          <div className="row justify-content-center">
-            <div className="col-lg-6 col-md-8 col-sm-10 p-0">
-              <img src={rigisterPhoto} alt="" className="w-100 h-100" />
-            </div>
-            <div className="col-lg-6 col-md-8 col-sm-10 p-0">
-              <div className="signup-form py-5">
-                <form action="" className="w-75 mx-auto">
-                  <h1 className="text-center my-2">Verification</h1>
-                  <div className="d-flex justify-content-center align-items-center mb-5">
-                    <p className="text-center my-5 fs-4">
-                      Enter the code received on your email
-                    </p>
-                  </div>
-                  <div className="mb-2">
+    <section className="section-signup">
+      <div className="container">
+        <div className="row justify-content-center">
+          <div className="col-12 col-md-9 col-lg-7">
+            <div className="signup-wrapper d-flex flex-column flex-md-row">
+
+              {/* Left image panel */}
+              <div className="col-md-5 signup-image-container">
+                <img src={rigisterPhoto} alt="Verify Code" />
+              </div>
+
+              {/* Right form panel */}
+              <div className="col-md-7 signup-form">
+                {/* Icon */}
+                <div className="text-center mb-3">
+                  <div style={{
+                    width: 64, height: 64, borderRadius: "50%",
+                    background: "linear-gradient(135deg, #5151D3, #3b3bcf)",
+                    display: "inline-flex", alignItems: "center",
+                    justifyContent: "center", fontSize: "1.8rem", marginBottom: 12
+                  }}>📧</div>
+                  <h1>Verify Code</h1>
+                  <p className="subtitle">
+                    Enter the 6-digit code sent to your email
+                  </p>
+                </div>
+
+                <form onSubmit={handleResetCode} autoComplete="off">
+                  <div className="mb-3">
+                    <label htmlFor="otp" className="form-label-custom">Verification Code</label>
                     <input
-                      type="password"
-                      className="email-login my-3 text-center"
-                      id="password"
-                      placeholder="Enter Code"
-                      required
+                      id="otp"
+                      type="text"
+                      inputMode="numeric"
+                      maxLength={6}
+                      className="form-input-custom text-center"
+                      style={{ letterSpacing: "0.3em", fontSize: "1.3rem" }}
+                      placeholder="------"
                       onChange={(e) => setOtp(e.target.value)}
+                      required
                     />
                   </div>
-                  <div className="d-flex justify-content-center align-items-center w-100">
-                    <Link
-                      to="/forgot-password/verify-code/reset-password"
-                      className="signup-login-btn w-100 fs-5 text-center"
-                      onClick={handleResetCode}
-                    >
-                      {loading ? (
-                        <div className="d-flex justify-content-center mb-3">
-                          <div
-                            class="spinner-border text-white"
-                            role="status"
-                          >
-                            <span class="sr-only">Loading...</span>
-                          </div>
-                        </div>
-                      ) : (
-                        "Verify Code"
-                      )}
-                    </Link>
-                  </div>
-                  <br />
-                  <div className="d-flex justify-content-center mt-5">
-                    <div>
-                      <Link
-                        to="/login"
-                        className="text-decoration-underline fs-5"
-                        style={{ color: "blue" }}
-                      >
-                        Back to Login
+
+                  {/* Timer */}
+                  <div className="text-center mb-3">
+                    {seconds > 0 ? (
+                      <span style={{ color: "#64748b", fontSize: "0.9rem" }}>
+                        Code expires in <strong style={{ color: seconds < 15 ? "#ef4444" : "#5151D3" }}>
+                          {String(Math.floor(seconds / 60)).padStart(2, "0")}:{String(seconds % 60).padStart(2, "0")}
+                        </strong>
+                      </span>
+                    ) : (
+                      <Link to="/forgot-password" style={{ color: "#5151D3", fontSize: "0.9rem", fontWeight: 600, textDecoration: "none" }}>
+                        Resend Code
                       </Link>
-                    </div>
-                    
+                    )}
+                  </div>
+
+                  <button type="submit" className="signup-btn-form" disabled={loading}>
+                    {loading ? (
+                      <div className="spinner-border spinner-border-sm text-white" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                      </div>
+                    ) : "Verify Code"}
+                  </button>
+
+                  <div className="text-center mt-3">
+                    <Link to="/login" style={{ color: "#5151D3", fontSize: "0.9rem", fontWeight: 600, textDecoration: "none" }}>
+                      ← Back to Login
+                    </Link>
                   </div>
                 </form>
               </div>
+
             </div>
           </div>
         </div>
-      </section>
-    </>
+      </div>
+    </section>
   );
 }

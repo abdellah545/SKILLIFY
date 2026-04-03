@@ -54,76 +54,94 @@ export default function Login() {
     }
   }
   return (
-    <section className="section-signup p-5">
+    <section className="section-signup">
       <div className="container">
         <div className="row justify-content-center">
-          <div className="col-lg-6 col-md-8 col-sm-10 p-0">
-            <img src={rigisterPhoto} alt="" className="w-100 h-100" />
-          </div>
-          <div className="col-lg-6 col-md-8 col-sm-10 p-0">
-            <div className="signup-form p-3">
-              <h1 className="text-center my-2">Welcome Admin</h1>
-              <form
-                onSubmit={handleLogin}
-                className="d-flex flex-column"
-                autoComplete="off"
-                style={{ width: "100%", marginTop: "100px" }}
+          <div className="col-12 col-md-10 col-lg-7">
+            <div className="signup-wrapper d-flex flex-column flex-md-row">
+              {/* Left decorative panel */}
+              <div
+                className="col-md-5 d-none d-md-flex flex-column align-items-center justify-content-center"
+                style={{
+                  background: "linear-gradient(135deg, #1e293b 0%, #0f172a 100%)",
+                  padding: "40px 30px",
+                  textAlign: "center",
+                }}
               >
-                <br />
-                <div className="mb-4 w-75 m-auto">
-                  <div className="text-center">
-                    <label htmlFor="email">Username</label>
-                  </div>
-                  <input
-                    placeholder="Enter your username"
-                    type="text"
-                    className="email-login text-center"
-                    id="username"
-                    aria-describedby="emailHelp"
-                    onChange={(e) => setUsername(e.target.value)}
-                    // onChange={(e) => setUsername(e.target.value)}
-                  />
+                <div style={{ fontSize: "4rem", marginBottom: "20px" }}>🛡️</div>
+                <h2 style={{ color: "#fff", fontWeight: 800, fontSize: "1.5rem" }}>Admin Portal</h2>
+                <p style={{ color: "#94a3b8", marginTop: "12px", fontSize: "0.95rem", lineHeight: 1.6 }}>
+                  Secure access for administrators only. Manage users, courses, and platform settings.
+                </p>
+                <div style={{ marginTop: "30px", display: "flex", gap: "10px", flexWrap: "wrap", justifyContent: "center" }}>
+                  {["Users", "Courses", "Analytics", "Settings"].map((tag) => (
+                    <span key={tag} style={{ background: "rgba(255,255,255,0.1)", color: "#60a5fa", borderRadius: "50px", padding: "4px 14px", fontSize: "0.8rem", fontWeight: 600 }}>
+                      {tag}
+                    </span>
+                  ))}
                 </div>
+              </div>
 
-                <div className="mb-4 w-75 m-auto">
-                  <div className="text-center">
-                    <label htmlFor="password" className="">
-                      Password
-                    </label>
+              {/* Right form panel */}
+              <div className="col-md-7 signup-form">
+                <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "8px" }}>
+                  <div style={{ width: 40, height: 40, borderRadius: "10px", background: "linear-gradient(135deg, #1e293b, #0f172a)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.2rem" }}>
+                    🛡️
                   </div>
-                  <input
-                    placeholder="Enter your password"
-                    type="password"
-                    className="password-login text-center"
-                    id="password"
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
+                  <h1 style={{ margin: 0, fontSize: "1.8rem" }}>Admin Login</h1>
                 </div>
-                <div className="d-flex justify-content-center mt-4">
-                  {handleLogin && (
-                    <>
-                      <button
-                        type="submit"
-                        className="login-form-btn text-center text-white fs-5"
-                        disabled={loading}
-                      >
-                        {loading ? (
-                          <div className="d-flex justify-content-center">
-                            <div
-                              className="spinner-border text-white"
-                              role="status"
-                            >
-                              <span className="sr-only">Loading...</span>
-                            </div>
-                          </div>
-                        ) : (
-                          "Login"
-                        )}
-                      </button>
-                    </>
-                  )}
-                </div>
-              </form>
+                <p className="subtitle">Restricted access — authorized personnel only</p>
+
+                <form onSubmit={handleLogin} autoComplete="off">
+                  <div className="mb-3">
+                    <label htmlFor="username" className="form-label-custom">Username / Email</label>
+                    <input
+                      id="username"
+                      type="text"
+                      placeholder="Enter your admin username"
+                      className="form-input-custom"
+                      onChange={(e) => setUsername(e.target.value)}
+                      required
+                    />
+                  </div>
+
+                  <div className="mb-4">
+                    <label htmlFor="password" className="form-label-custom">Password</label>
+                    <input
+                      id="password"
+                      type="password"
+                      placeholder="Enter your password"
+                      className="form-input-custom"
+                      onChange={(e) => setPassword(e.target.value)}
+                      required
+                    />
+                  </div>
+
+                  <button
+                    type="submit"
+                    className="signup-btn-form"
+                    disabled={loading}
+                    style={{ marginTop: 0 }}
+                  >
+                    {loading ? (
+                      <div className="spinner-border spinner-border-sm text-white" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                      </div>
+                    ) : "Login as Admin"}
+                  </button>
+
+                  <p style={{ marginTop: "20px", textAlign: "center", color: "#94a3b8", fontSize: "0.85rem" }}>
+                    Not an admin?{" "}
+                    <Link to="/login" style={{ color: "#5151D3", fontWeight: 600, textDecoration: "none" }}>
+                      Student Login
+                    </Link>
+                    {" · "}
+                    <Link to="/login-instructor" style={{ color: "#5151D3", fontWeight: 600, textDecoration: "none" }}>
+                      Instructor Login
+                    </Link>
+                  </p>
+                </form>
+              </div>
             </div>
           </div>
         </div>

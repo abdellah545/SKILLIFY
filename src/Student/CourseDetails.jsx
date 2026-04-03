@@ -3,21 +3,22 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import baseURL from "../BaseURL/BaseURL";
 import { useParams } from "react-router-dom";
-import "../Components/loading.css";
 import { getCookie, setCookie } from "../Helper/CookiesHelper";
 import Modal from "react-bootstrap/Modal";
-import style from "./Categories.module.css";
-import logo from "../assets/icon-logo.png";
 import { Button } from "react-bootstrap";
+import style from "./CourseDetails.module.css";
+import logo from "../assets/icon-logo.png"; // Placeholder for video thumbnails
 
 export default function CourseDetails() {
   const [course, setCourse] = useState(null);
   const [loading, setLoading] = useState(true);
   const [addloading, setAddLoading] = useState(false);
   const [error, setError] = useState(null);
+  
   const [isFavorite, setIsFavorite] = useState(false);
   const [isPurchased, setIsPurchased] = useState(false);
   const [isInCart, setIsInCart] = useState(false);
+  
   const [courseContent, setCourseContent] = useState([]);
   const [selectedVideo, setSelectedVideo] = useState(null);
   const [showModal, setShowModal] = useState(false);
@@ -28,7 +29,6 @@ export default function CourseDetails() {
   const fetchCourseContent = async () => {
     setLoadingContent(true);
     const token = getCookie("AccessTokenStudent");
-    console.log("Token:", token); // Debugging: Log the token to the console
 
     try {
       const response = await axios.get(
@@ -41,10 +41,9 @@ export default function CourseDetails() {
         }
       );
       setCourseContent(response.data);
-      setLoadingContent(false);
     } catch (error) {
       console.error("Error fetching course content:", error);
-      setError(error);
+    } finally {
       setLoadingContent(false);
     }
   };
@@ -52,7 +51,6 @@ export default function CourseDetails() {
   useEffect(() => {
     const fetchCourseDetails = async () => {
       const token = getCookie("AccessTokenStudent");
-      console.log("Token:", token); // Debugging: Log the token to the console
 
       try {
         const response = await axios.get(`${baseURL}/users/courses/${id}`, {
@@ -61,11 +59,13 @@ export default function CourseDetails() {
             Authorization: "SHA " + token,
           },
         });
+        
         setCourse(response.data);
         setLoading(false);
 
         const courses = JSON.parse(getCookie("courses") || "[]");
-        setIsPurchased(courses.includes(id));
+        const purchased = courses.includes(id);
+        setIsPurchased(purchased);
 
         const cart = JSON.parse(getCookie("cart") || "[]");
         setIsInCart(cart.includes(id));
@@ -73,12 +73,11 @@ export default function CourseDetails() {
         const favoriteIds = JSON.parse(getCookie("favorites") || "[]");
         setIsFavorite(favoriteIds.includes(id));
 
-        // Fetch course content only if the course is purchased
-        if (courses.includes(id)) {
+        if (purchased) {
           fetchCourseContent();
         }
       } catch (err) {
-        setError("Failed to fetch course details");
+        setError(err.response?.data?.message || "Failed to fetch course details");
         setLoading(false);
       }
     };
@@ -96,53 +95,38 @@ export default function CourseDetails() {
     setSelectedVideo(null);
   };
 
-  const formatDate = (dateString) => {
-    const options = {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    };
-    return new Date(dateString).toLocaleDateString(undefined, options);
-  };
-
   const handleAddToCart = async (e) => {
-    setAddLoading(true);
     e.preventDefault();
+    setAddLoading(true);
     const token = getCookie("AccessTokenStudent");
-    console.log("Token:", token); // Debugging: Log the token to the console
 
     try {
       await axios.post(
         `${baseURL}/users/cart/${id}`,
         {},
         {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "SHA " + token,
-          },
+          headers: { Authorization: "SHA " + token },
         }
       );
-      Swal.fire("Success", "Course added to cart successfully", "success").then(
-        () => {
-          window.location.reload();
-        }
-      );
-      setAddLoading(false);
+      
       const cart = JSON.parse(getCookie("cart") || "[]");
-
       if (!cart.includes(id)) {
         cart.push(id);
         setCookie("cart", JSON.stringify(cart));
       }
+      setIsInCart(true);
+
+      Swal.fire({
+        icon: "success",
+        title: "Added!",
+        text: "Course added to cart successfully",
+        timer: 1500,
+        showConfirmButton: false
+      });
     } catch (err) {
       console.error(err);
-      Swal.fire(
-        "Error",
-        "You already bought this course before, or is already in your cart",
-        "error"
-      );
+      Swal.fire("Error", "You already bought this course, or it's in your cart.", "error");
+    } finally {
       setAddLoading(false);
     }
   };
@@ -150,39 +134,24 @@ export default function CourseDetails() {
   const toggleFavorite = async () => {
     let favorites = JSON.parse(getCookie("favorites") || "[]");
     const token = getCookie("AccessTokenStudent");
-    console.log("Token:", token); // Debugging: Log the token to the console
 
     if (isFavorite) {
+      // Remove
       const index = favorites.indexOf(id);
-      if (index > -1) {
-        favorites.splice(index, 1);
-      }
+      if (index > -1) favorites.splice(index, 1);
       setCookie("favorites", JSON.stringify(favorites));
       setIsFavorite(false);
 
       try {
         await axios.delete(`${baseURL}/users/favorite/${id}`, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "SHA " + token,
-          },
-        });
-        Swal.fire(
-          "Success",
-          "Course removed from favorites successfully",
-          "success"
-        ).then(() => {
-          window.location.reload();
+          headers: { Authorization: "SHA " + token },
         });
       } catch (err) {
         console.error(err);
-        Swal.fire(
-          "Error",
-          "Failed to remove the course from favorites",
-          "error"
-        );
+        Swal.fire("Error", "Failed to remove from favorites", "error");
       }
     } else {
+      // Add
       favorites.push(id);
       setCookie("favorites", JSON.stringify(favorites));
       setIsFavorite(true);
@@ -191,210 +160,210 @@ export default function CourseDetails() {
         await axios.post(
           `${baseURL}/users/favorite/${id}`,
           {},
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: "SHA " + token,
-            },
-          }
+          { headers: { Authorization: "SHA " + token } }
         );
-        Swal.fire(
-          "Success",
-          "Course added to favorites successfully",
-          "success"
-        ).then(() => {
-          window.location.reload();
-        });
       } catch (err) {
         console.error(err);
-        Swal.fire("Error", "The Course is already in your favorites", "error");
+        Swal.fire("Error", "Failed to add to favorites", "error");
       }
     }
   };
 
-  if (loading)
+  if (loading) {
     return (
-      <div className="redirect">
-        <div className="loader"></div>
+      <div className={style.loadingWrapper}>
+        <div className="spinner-border" style={{ width: "4rem", height: "4rem" }} role="status"></div>
+        <p>Loading course details...</p>
       </div>
     );
+  }
 
-  if (error) return <div>Error: {error.toString()}</div>;
+  if (error) {
+    return (
+      <div className={style.pageContainer}>
+        <div className="alert alert-danger text-center fw-bold" style={{ borderRadius: 16 }}>
+          Oops! {error}
+        </div>
+      </div>
+    );
+  }
 
-  if (!course) return <div>No course found!</div>;
+  if (!course) return null;
 
   return (
-    <>
-      <div className="container-fluid my-5">
-        <div className="row">
-          <div className="col-lg-7 col-md-12 col-sm-12">
-            <h1 className="text-center fw-bold" style={{ color: "#5151D3" }}>
-              {course.title}
-            </h1>
-            <p className="text-center fs-5 fw-bold text-muted">
-              Here you are on the right path to becoming a hero in your field by
-              enabling you to achieve your goals.
-            </p>
-            <hr />
-            <p
-              className="text-center fs-5 fw-bold"
-              style={{ color: "#5151D3" }}
-            >
-              This course created by:{" "}
-              <span className="text-capitalize text-muted">
-                {course.instructorId?.name || "Unknown"}
-              </span>
-            </p>
-            <div className="row">
-              <div className="col-lg-6 text-center">
-                <p className="fs-5 fw-bold" style={{ color: "#5151D3" }}>
-                  Last Updated:{" "}
-                  <span className="text-muted">
-                    {new Date(course.updatedAt).toLocaleDateString()}
-                  </span>
-                </p>
-              </div>
-              <div className="col-lg-6 text-center">
-                <p className="fs-5 fw-bold" style={{ color: "#5151D3" }}>
-                  Course Duration:{" "}
-                  <span className="text-muted">{course.duration} hours</span>
-                </p>
-              </div>
-              <div className="col-lg-6 text-center">
-                <p className="fs-5 fw-bold" style={{ color: "#5151D3" }}>
-                  Language:{" "}
-                  <span className="text-muted text-capitalize">
-                    {course.language}
-                  </span>
-                </p>
-              </div>
-              <div className="col-lg-6 text-center">
-                <p className="fs-5 fw-bold" style={{ color: "#5151D3" }}>
-                  Language Level:{" "}
-                  <span className="text-muted text-capitalize">
-                    {course.level}
-                  </span>
-                </p>
+    <div className={style.pageContainer}>
+      
+      <div className={style.courseHeader}>
+        <h1 className={style.courseTitle}>{course.title}</h1>
+        <p className={style.courseSubtitle}>
+          Here you are on the right path to becoming a hero in your field. Complete this course to achieve your goals!
+        </p>
+      </div>
+
+      <div className={style.layoutGrid}>
+        
+        {/* ── Left Column: Information & Course Content ── */}
+        <div className={style.mainColumn}>
+          
+          <div className={style.infoCard}>
+            <div className={style.infoRow}>
+              <div className={style.infoIcon}><i className="fa-solid fa-chalkboard-user"></i></div>
+              <div>
+                <div className={style.infoLabel}>Instructor</div>
+                <div className={style.infoValue}>{course.instructorId?.name || "Unknown"}</div>
               </div>
             </div>
-            <hr />
-            <h1
-              className="text-center mt-3 fw-bold"
-              style={{ color: "#5151D3" }}
-            >
-              Course Content
-            </h1>
+            
+            <div className={style.infoRow}>
+              <div className={style.infoIcon}><i className="fa-solid fa-clock"></i></div>
+              <div>
+                <div className={style.infoLabel}>Duration</div>
+                <div className={style.infoValue}>{course.duration} Hours</div>
+              </div>
+            </div>
+            
+            <div className={style.infoRow}>
+              <div className={style.infoIcon}><i className="fa-solid fa-language"></i></div>
+              <div>
+                <div className={style.infoLabel}>Language</div>
+                <div className={style.infoValue}>{course.language}</div>
+              </div>
+            </div>
 
-            {isPurchased ? (
-              loadingContent ? (
-                <div className="text-center">
-                  <div className="spinner-border text-primary" role="status">
-                    <span className="visually-hidden">Loading...</span>
-                  </div>
-                </div>
-              ) : courseContent.length === 0 ? (
-                <div className="text-center fw-bold fs-1">No Content Yet</div>
-              ) : (
-                <div className="list-group w-75 mx-auto">
-                  {courseContent.map((content) => (
-                    <div
-                      key={content._id}
-                      className="list-group-item list-group-item-action d-flex align-items-center"
-                      onClick={() => handleVideoClick(content)}
-                      style={{ cursor: "pointer" }}
-                    >
-                      <img
-                        src={logo}
-                        alt={content.title}
-                        style={{
-                          width: "80px",
-                          height: "45px",
-                          marginRight: "15px",
-                          objectFit: "cover",
-                        }}
-                      />
-                      <div>
-                        <h5 className="mb-1">{content.title}</h5>
-                        <small className="text-muted">
-                          {formatDate(content.createdAt)}
-                        </small>
+            <div className={style.infoRow}>
+              <div className={style.infoIcon}><i className="fa-solid fa-layer-group"></i></div>
+              <div>
+                <div className={style.infoLabel}>Level</div>
+                <div className={style.infoValue}>{course.level}</div>
+              </div>
+            </div>
+
+            <div className={style.infoRow}>
+              <div className={style.infoIcon}><i className="fa-regular fa-calendar-check"></i></div>
+              <div>
+                <div className={style.infoLabel}>Last Updated</div>
+                <div className={style.infoValue}>{new Date(course.updatedAt).toLocaleDateString()}</div>
+              </div>
+            </div>
+          </div>
+
+          <div className={style.contentCard}>
+            <h2 className={style.sectionTitle}>
+              <i className="fa-solid fa-list-ul" style={{ color: '#5151D3' }}></i> Course Curriculum
+            </h2>
+            
+            {!isPurchased ? (
+              <div className={style.emptyContent}>
+                <i className="fa-solid fa-lock" style={{ fontSize: '2.5rem', marginBottom: '12px', color: '#cbd5e1' }}></i>
+                <p>Course content is locked.</p>
+                <span style={{ fontSize: '0.9rem' }}>Purchase this course to unlock access to all video materials.</span>
+              </div>
+            ) : loadingContent ? (
+              <div className="text-center py-4">
+                <div className="spinner-border text-primary" role="status"></div>
+                <div className="mt-2 text-muted fw-bold">Loading curriculum...</div>
+              </div>
+            ) : courseContent.length === 0 ? (
+              <div className={style.emptyContent}>
+                No video content has been uploaded to this course yet.
+              </div>
+            ) : (
+              <div className={style.videoList}>
+                {courseContent.map((content, index) => (
+                  <div key={content._id} className={style.videoItem} onClick={() => handleVideoClick(content)}>
+                    <img src={logo} alt="Thumbnail" className={style.videoThumbnail} />
+                    <div className={style.videoDetails}>
+                      <div className={style.videoTitle}>
+                        {index + 1}. {content.title}
+                      </div>
+                      <div className={style.videoDate}>
+                        Added {new Date(content.createdAt).toLocaleDateString()}
                       </div>
                     </div>
-                  ))}
-                </div>
-              )
-            ) : (
-              <div className="text-center fw-bold fs-5">No Content Yet , Purchase course to see content</div>
+                    <div className={style.playIcon}>
+                      <i className="fa-solid fa-play"></i>
+                    </div>
+                  </div>
+                ))}
+              </div>
             )}
           </div>
-          <div
-            className="col-lg-5 text-center d-flex justify-content-center"
-            style={{ height: "450px" }}
-          >
-            <div className="card">
-              <img
-                src={course.image || "https://picsum.photos/200"}
-                className="img-fluid"
-                alt={course.title}
-                style={{ height: "250px", width: "100%" }}
-              />
-              <div className="card-body">
-                <h3 className="card-title fw-bold">
-                  Price:{" "}
-                  <span style={{ color: "#5151D3" }}>${course.price}</span>
-                </h3>
-                <p>{course.description}</p>
-                <button
-                  onClick={!isInCart && !isPurchased ? handleAddToCart : null}
-                  className="btn btn-primary w-75 fw-bold"
-                  disabled={isInCart || isPurchased || addloading}
-                >
-                  {isInCart
-                    ? "Already in your cart"
-                    : isPurchased
-                    ? "Purchase Complete"
-                    : addloading
-                    ? "Adding..."
-                    : "Add to Cart"}
-                </button>
+        </div>
 
-                <div className="mt-3 d-flex justify-content-start">
-                  <button
-                    className="border-0 bg-white"
-                    onClick={toggleFavorite}
-                    style={{ color: isFavorite ? "red" : "gray" }}
-                  >
-                    <i
-                      className={`fa${
-                        isFavorite ? "-solid" : "-regular"
-                      } fa-heart fs-1`}
-                    ></i>
-                  </button>
-                </div>
+        {/* ── Right Column: Sticky Action Card ── */}
+        <div>
+          <div className={style.actionCard}>
+            <img 
+              src={course.image || "https://picsum.photos/400/250"} 
+              alt={course.title} 
+              className={style.cardImage} 
+            />
+            
+            <div className={style.cardBody}>
+              <div className={style.priceRow}>
+                <span className={style.priceLabel}>Price:</span>
+                <span className={style.priceValue}>${parseFloat(course.price).toFixed(2)}</span>
+              </div>
+              
+              <p className={style.courseDesc}>
+                {course.description}
+              </p>
+
+              <button
+                className={`${style.actionBtn} ${isPurchased ? style.btnPurchased : isInCart ? style.btnCart : ''}`}
+                onClick={!isInCart && !isPurchased ? handleAddToCart : undefined}
+                disabled={isInCart || isPurchased || addloading}
+              >
+                {isPurchased ? (
+                  <><i className="fa-solid fa-circle-check"></i> Purchased</>
+                ) : isInCart ? (
+                  <><i className="fa-solid fa-cart-arrow-down"></i> In Cart</>
+                ) : addloading ? (
+                  <><i className="fa-solid fa-spinner fa-spin"></i> Adding...</>
+                ) : (
+                  <><i className="fa-solid fa-cart-plus"></i> Add to Cart</>
+                )}
+              </button>
+
+              <div className={style.actionsSecondary}>
+                <button 
+                  className={`${style.favoriteBtn} ${isFavorite ? style.active : ''}`}
+                  onClick={toggleFavorite}
+                >
+                  <i className={`fa-${isFavorite ? 'solid' : 'regular'} fa-heart`}></i>
+                  {isFavorite ? "Remove from Favorites" : "Add to Favorites"}
+                </button>
               </div>
             </div>
           </div>
         </div>
       </div>
 
+      {/* Video Modal */}
       {selectedVideo && (
-        <Modal show={showModal} onHide={handleCloseModal} centered>
-          <Modal.Header closeButton>
-            <Modal.Title>{selectedVideo.title}</Modal.Title>
+        <Modal show={showModal} onHide={handleCloseModal} size="lg" centered>
+          <Modal.Header closeButton style={{ borderBottom: 'none', padding: '24px 24px 0' }}>
+            <Modal.Title style={{ fontWeight: 800, color: '#1e293b' }}>{selectedVideo.title}</Modal.Title>
           </Modal.Header>
-          <Modal.Body>
-            <video controls className="w-100">
+          <Modal.Body style={{ padding: '24px' }}>
+            <video 
+              controls 
+              className="w-100" 
+              style={{ borderRadius: '12px', boxShadow: '0 10px 25px rgba(0,0,0,0.1)', background: '#000' }}
+              controlsList="nodownload"
+            >
               <source src={selectedVideo.media} type="video/mp4" />
               Your browser does not support the video tag.
             </video>
           </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleCloseModal}>
-              Close
+          <Modal.Footer style={{ borderTop: 'none', padding: '0 24px 24px' }}>
+            <Button variant="secondary" onClick={handleCloseModal} style={{ borderRadius: '8px', fontWeight: 600 }}>
+              Close Video
             </Button>
           </Modal.Footer>
         </Modal>
       )}
-    </>
+
+    </div>
   );
 }

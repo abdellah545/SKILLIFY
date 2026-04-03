@@ -56,177 +56,101 @@ export default function SignUp() {
   };
 
   return (
-    <section className="section-signup p-5">
+    <section className="section-signup">
       <div className="container">
         <div className="row justify-content-center">
-          <div className="col-lg-6 col-md-10 col-sm-12 p-0">
-            <img src={registerPhoto} alt="" className="w-100 h-100" />
-          </div>
-          <div className="col-lg-6 col-md-10 col-sm-12 p-0">
-            <div className="signup-form p-3">
-              <form onSubmit={handleSignUp} className="pt-5" autoComplete="off">
-                <h1 className="text-center">Sign Up!</h1>
-                <p className="text-center mt-3">Welcome onboard with us!</p>
-                <div className="container">
-                  <div className="row justify-content-center">
-                    <div className="col-lg-6 col-md-8 col-sm-10">
-                      <div className="d-flex flex-column w-100 align-items-center">
-                        <label htmlFor="name" className="pb-2">
-                          Full Name
-                        </label>
-                        <input
-                          id="name"
-                          type="text"
-                          placeholder="Enter your name"
-                          value={name}
-                          onChange={(e) => setName(e.target.value)}
-                          required
-                          className="username text-center"
-                        />
-                        {name === "" && error && (
-                          <p style={{ color: "red", fontSize: "14px" }}>
-                            *Name is required
-                          </p>
-                        )}
-                      </div>
-                    </div>
-                    <div className="col-lg-6 col-md-8 col-sm-10">
-                      <div className="d-flex flex-column w-100 align-items-center">
-                        <label htmlFor="email" className="pb-2">
-                          Email
-                        </label>
-                        <input
-                          id="email"
-                          type="email"
-                          placeholder="Enter your Email"
-                          value={email}
-                          onChange={(e) => setEmail(e.target.value)}
-                          required
-                          className="email text-center"
-                        />
-                        {email === "" && error && (
-                          <p style={{ color: "red", fontSize: "14px" }}>
-                            *Invalid email format
-                          </p>
-                        )}
-                        {emailError && (
-                          <p style={{ color: "red", fontSize: "14px" }}>
-                            *This email already exists
-                          </p>
-                        )}
-                      </div>
-                    </div>
-                    <div className="col-lg-6 col-md-8 col-sm-10">
-                      <div className="d-flex flex-column w-100 align-items-center">
-                        <label htmlFor="password" className="pb-2">
-                          Password
-                        </label>
-                        <input
-                          id="password"
-                          type="password"
-                          placeholder="Enter your Password"
-                          value={password}
-                          onChange={(e) => setPassword(e.target.value)}
-                          required
-                          className="password text-center"
-                        />
-                        {password === "" && error && (
-                          <p style={{ color: "red", fontSize: "12px" }}>
-                            *Password is required
-                          </p>
-                        )}
-                        {!/^(?=.*[A-Z])/.test(password) && error && (
-                          <p style={{ color: "red", fontSize: "12px" }}>
-                            *Password must contain at least one uppercase letter
-                          </p>
-                        )}
-                        {!/^(?=.*[@$!%*?&])/.test(password) && error && (
-                          <p style={{ color: "red", fontSize: "12px" }}>
-                            *Password must contain at least one special
-                            character
-                          </p>
-                        )}
-                        {!/^(?=.*[0-9])/.test(password) && error && (
-                          <p style={{ color: "red", fontSize: "12px" }}>
-                            *Password must contain at least one number
-                          </p>
-                        )}
-                        {!/^.{6,}$/.test(password) && error && (
-                          <p style={{ color: "red", fontSize: "12px" }}>
-                            *Password must be at least 6 characters
-                          </p>
-                        )}
-                      </div>
-                    </div>
-                    <div className="col-lg-6 col-md-8 col-sm-10">
-                      <div className="d-flex flex-column w-100 align-items-center">
-                        <label htmlFor="phone" className="pb-2">
-                          Phone
-                        </label>
-                        <input
-                          id="phone"
-                          type="text"
-                          placeholder="Enter your phone"
-                          value={phone}
-                          onChange={(e) => setPhone(e.target.value)}
-                          required
-                          className="phone text-center"
-                        />
-                        {phone === "" && error && (
-                          <p style={{ color: "red", fontSize: "14px" }}>
-                            *Phone is required
-                          </p>
-                        )}
-                      </div>
-                    </div>
-                    <div className="col-lg-6 col-md-8 col-sm-10">
-                      <div className="d-flex flex-column w-100 align-items-center">
-                        <label htmlFor="gender" className="pb-2">
-                          Gender
-                        </label>
-                        <select
-                          id="gender"
-                          className="text-center"
-                          value={gender}
-                          onChange={(e) => setGender(e.target.value)}
-                          required
-                        >
-                          <option value="">Select Gender</option>
-                          <option value="MALE">Male</option>
-                          <option value="FEMALE">Female</option>
-                          <option value="PREFER NOT TO SAY">
-                            Prefer not to say
-                          </option>
-                        </select>
-                        {gender === "" && error && (
-                          <p style={{ color: "red", fontSize: "14px" }}>
-                            *Gender is required
-                          </p>
-                        )}
-                      </div>
-                    </div>
-                    <div className="d-flex justify-content-center">
-                      <button
-                        type="submit"
-                        className="signup-btn-form m-auto fs-5 text-center text-white"
-                      >
-                        {loading ? (
-                          <div className="d-flex justify-content-center">
-                            <div
-                              className="spinner-border text-white"
-                              role="status"
-                            >
-                              <span className="sr-only">Loading...</span>
-                            </div>
-                          </div>
-                        ) : (
-                          <>Sign Up</>
-                        )}
-                      </button>
-                    </div>
+          <div className="col-12 col-md-10 col-lg-8">
+            <div className="signup-wrapper d-flex flex-column flex-md-row">
+              <div className="col-md-6 signup-image-container">
+                <img src={registerPhoto} alt="Register" />
+              </div>
+              <div className="col-md-6 signup-form">
+                <form onSubmit={handleSignUp} autoComplete="off">
+                  <h1 className="text-center">Sign Up</h1>
+                  <p className="text-center subtitle">Welcome onboard with us!</p>
+                  
+                  <div className="mb-3">
+                    <label htmlFor="name" className="form-label-custom">Full Name</label>
+                    <input
+                      id="name"
+                      type="text"
+                      placeholder="Enter your name"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      required
+                      className="form-input-custom"
+                    />
+                    {name === "" && error && <p className="error-text">*Name is required</p>}
                   </div>
-                </div>
-              </form>
+
+                  <div className="mb-3">
+                    <label htmlFor="email" className="form-label-custom">Email</label>
+                    <input
+                      id="email"
+                      type="email"
+                      placeholder="Enter your Email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      required
+                      className="form-input-custom"
+                    />
+                    {emailError && <p className="error-text">*This email already exists</p>}
+                  </div>
+
+                  <div className="mb-3">
+                    <label htmlFor="password" className="form-label-custom">Password</label>
+                    <input
+                      id="password"
+                      type="password"
+                      placeholder="Enter your Password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      required
+                      className="form-input-custom"
+                    />
+                    {error && !validatePassword(password) && (
+                      <p className="error-text">*Password must be at least 6 characters, contain 1 uppercase letter, 1 number, and 1 special character.</p>
+                    )}
+                  </div>
+
+                  <div className="mb-3">
+                    <label htmlFor="phone" className="form-label-custom">Phone</label>
+                    <input
+                      id="phone"
+                      type="tel"
+                      placeholder="Enter your phone"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                      required
+                      className="form-input-custom"
+                    />
+                  </div>
+
+                  <div className="mb-4">
+                    <label htmlFor="gender" className="form-label-custom">Gender</label>
+                    <select
+                      id="gender"
+                      className="form-input-custom"
+                      value={gender}
+                      onChange={(e) => setGender(e.target.value)}
+                      required
+                    >
+                      <option value="">Select Gender</option>
+                      <option value="MALE">Male</option>
+                      <option value="FEMALE">Female</option>
+                      <option value="PREFER NOT TO SAY">Prefer not to say</option>
+                    </select>
+                  </div>
+
+                  <button type="submit" className="signup-btn-form">
+                    {loading ? (
+                      <div className="spinner-border spinner-border-sm text-white" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                      </div>
+                    ) : "Sign Up"}
+                  </button>
+                </form>
+              </div>
             </div>
           </div>
         </div>
