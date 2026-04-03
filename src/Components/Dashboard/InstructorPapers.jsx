@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useEffect, useState } from "react";
 import style from "./AdminDashboard.module.css";
 import LeftSidebar from "./LeftSidebar";

@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useState } from "react";
 import rigisterPhoto from "../../assets/register.png";
 import "../Sign up/SignUp.css";

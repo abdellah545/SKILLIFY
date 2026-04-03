@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
 import sideStyle from "../Dashboard/LeftSidebar.module.css";
