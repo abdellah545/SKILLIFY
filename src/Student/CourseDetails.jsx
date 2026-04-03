@@ -83,7 +83,7 @@ export default function CourseDetails() {
     };
 
     fetchCourseDetails();
-  }, [id]);
+  }, [id, fetchCourseContent]);
 
   const handleVideoClick = (video) => {
     setSelectedVideo(video);
