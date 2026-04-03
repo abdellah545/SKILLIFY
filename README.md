@@ -1,5 +1,7 @@
 # SKILLIFY | Training Center
 
+🔗 Live Demo: https://skillify-ten.vercel.app/
+
 Secured web application that provides online courses through a multi-role platform for instructors, users, and admins.
 
 ## 📌 Overview
@@ -34,115 +36,13 @@ SKILLIFY is an online learning platform where instructors can publish and manage
 
 Instructors can register and log in to their accounts, create and manage courses, upload learning materials, edit course details, and organize course sessions through a dedicated dashboard.
 
-<p align="center">
-  <img src="./src/assets/Interface/Instructor-dashboard/signup-instructor.png" width="45%" />
-  <img src="./src/assets/Interface/Instructor-dashboard/login-instructor.png" width="45%" />
-</p>
-
-<p align="center">
-  <sub><b>Instructor Sign Up</b> | <b>Instructor Login</b></sub>
-</p>
-
-<br/>
-
-<p align="center">
-  <img src="./src/assets/Interface/Instructor-dashboard/add-course.png" width="45%" />
-  <img src="./src/assets/Interface/Instructor-dashboard/instructor-dashboard.png" width="45%" />
-</p>
-
-<p align="center">
-  <sub><b>Add New Course</b> | <b>Instructor Dashboard / My Courses</b></sub>
-</p>
-
-<br/>
-
-<p align="center">
-  <img src="./src/assets/Interface/Instructor-dashboard/course-content.png" width="45%" />
-  <img src="./src/assets/Interface/Instructor-dashboard/edit-course.png" width="45%" />
-</p>
-
-<p align="center">
-  <sub><b>Manage Course Content</b> | <b>Edit Course Details</b></sub>
-</p>
-
-<br/>
-
-<p align="center">
-  <img src="./src/assets/Interface/Instructor-dashboard/update-course-content.png" width="60%" />
-</p>
-
-<p align="center">
-  <sub><b>Upload and Preview Course Sessions</b></sub>
-</p>
-
 ## 👨‍🎓 User Panel
 
 Users can create accounts, explore all available courses published by instructors, view course details, add courses to favourites or cart, complete purchases, access enrolled courses, and manage their personal profile.
 
-<p align="center">
-  <img src="./src/assets/Interface/user/sign-up-user.png" width="45%" />
-  <img src="./src/assets/Interface/user/skillify-courses.png" width="45%" />
-</p>
-
-<p align="center">
-  <sub><b>User Sign Up</b> | <b>Browse All Available Courses</b></sub>
-</p>
-
-<br/>
-
-<p align="center">
-  <img src="./src/assets/Interface/user/course-details.png" width="45%" />
-  <img src="./src/assets/Interface/user/favorites.png" width="45%" />
-</p>
-
-<p align="center">
-  <sub><b>Course Details & Purchase Flow</b> | <b>Favourite Courses</b></sub>
-</p>
-
-<br/>
-
-<p align="center">
-  <img src="./src/assets/Interface/user/cart.png" width="45%" />
-  <img src="./src/assets/Interface/user/user-courses.png" width="45%" />
-</p>
-
-<p align="center">
-  <sub><b>Shopping Cart & Checkout</b> | <b>User Enrolled Courses</b></sub>
-</p>
-
-<br/>
-
-<p align="center">
-  <img src="./src/assets/Interface/user/user-profile.png" width="45%" />
-  <img src="./src/assets/Interface/user/update-profile.png" width="45%" />
-</p>
-
-<p align="center">
-  <sub><b>User Profile</b> | <b>Update Profile</b></sub>
-</p>
-
 ## 🛡️ Admin Panel
 
 Admins are responsible for reviewing instructor applications and deciding whether submitted instructors should be accepted or rejected before accessing the platform as course publishers.
-
-<p align="center">
-  <img src="./src/assets/Interface/admin-dashboard/admin-login.png" width="45%" />
-  <img src="./src/assets/Interface/admin-dashboard/admin-dashboard.png" width="45%" />
-</p>
-
-<p align="center">
-  <sub><b>Admin Login</b> | <b>Admin Dashboard</b></sub>
-</p>
-
-<br/>
-
-<p align="center">
-  <img src="./src/assets/Interface/admin-dashboard/admin-accept-reject.png" width="60%" />
-</p>
-
-<p align="center">
-  <sub><b>Instructor Application Review (Accept / Reject)</b></sub>
-</p>
 
 ## 🛠️ Built With
 
@@ -153,6 +53,6 @@ Admins are responsible for reviewing instructor applications and deciding whethe
 
 ## 👥 Roles
 
-- **Instructor**: Creates, edits, and manages courses and course content
-- **User**: Browses, favourites, purchases, and accesses enrolled courses
-- **Admin**: Reviews instructor submissions and controls approval workflow
+- **Instructor**: Creates, edits, and manages courses and course content  
+- **User**: Browses, favourites, purchases, and accesses enrolled courses  
+- **Admin**: Reviews instructor submissions and controls approval workflow  
