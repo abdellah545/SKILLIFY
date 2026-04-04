@@ -35,7 +35,7 @@ SKILLIFY is an online learning platform where instructors can publish and manage
 ## Landing Page
 
 <p align="center">
-  <img src="./src/assets/Interface/landing-page/landing.jpeg" width="35%" />
+  <img src="./src\assets\Interface\landing-page/landing.jpeg" width="35%" />
 </p>
 
 ## 🧑‍🏫 Instructor Panel
